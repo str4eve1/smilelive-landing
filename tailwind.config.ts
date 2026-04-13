@@ -23,7 +23,7 @@ export default {
         gold: "#d97706", // Oro più scuro/ambra per contrasto sul bianco
         "gold-dim": "#b45309",
         "text-main": "#0f172a", // Grigio scurissimo per il testo (quasi nero)
-        "text-muted": "#64748b", // Grigio medio per testo secondario
+        "text-muted": "#374151", // Grigio scuro leggibile, alto contrasto su bianco
         border: "rgba(15, 23, 42, 0.08)", // Bordo scuro molto trasparente
       },
       fontFamily: {

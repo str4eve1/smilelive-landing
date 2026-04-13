@@ -319,7 +319,7 @@ const TrustMarquee = () => {
             </div>
             <div>
               <p className="text-sm font-medium text-text-main italic leading-relaxed mb-4">"{item.text}"</p>
-              <p className="text-xs font-bold text-text-muted uppercase tracking-wider">{item.author}</p>
+              <p className="text-sm font-bold text-text-muted uppercase tracking-wider">{item.author}</p>
             </div>
           </div>
         ))}
@@ -456,28 +456,28 @@ const AnimatedNumbers = () => {
             <Users className="w-6 h-6 text-gold" />
             <div className="text-2xl font-headline font-bold text-text-main">340+</div>
           </div>
-          <div className="text-[10px] uppercase tracking-widest text-text-muted">Studi Attivi in Italia</div>
+          <div className="text-xs uppercase tracking-widest text-text-muted font-semibold">Studi Attivi in Italia</div>
         </div>
         <div className="flex flex-col items-center justify-center gap-2">
           <div className="flex items-center gap-2">
             <TrendingUp className="w-6 h-6 text-primary" />
             <div className="text-2xl font-headline font-bold text-text-main">+67%</div>
           </div>
-          <div className="text-[10px] uppercase tracking-widest text-text-muted">Conversione Media</div>
+          <div className="text-xs uppercase tracking-widest text-text-muted font-semibold">Conversione Media</div>
         </div>
         <div className="flex flex-col items-center justify-center gap-2">
           <div className="flex items-center gap-2">
             <Activity className="w-6 h-6 text-secondary" />
             <div className="text-2xl font-headline font-bold text-text-main">€700k+</div>
           </div>
-          <div className="text-[10px] uppercase tracking-widest text-text-muted">Generati in Extra</div>
+          <div className="text-xs uppercase tracking-widest text-text-muted font-semibold">Generati in Extra</div>
         </div>
         <div className="flex flex-col items-center justify-center gap-2">
           <div className="flex items-center gap-2">
             <Zap className="w-6 h-6 text-text-main" />
             <div className="text-2xl font-headline font-bold text-text-main">10s</div>
           </div>
-          <div className="text-[10px] uppercase tracking-widest text-text-muted">Per Simulazione</div>
+          <div className="text-xs uppercase tracking-widest text-text-muted font-semibold">Per Simulazione</div>
         </div>
       </motion.div>
     </section>
@@ -672,7 +672,7 @@ const HowItWorks = () => {
                 {step.num}
               </div>
               <h3 className="font-bold text-lg mb-3 flex items-center gap-2">{step.icon} {step.title}</h3>
-              <p className="text-text-muted text-sm leading-relaxed">{step.desc}</p>
+              <p className="text-text-muted text-base leading-relaxed">{step.desc}</p>
             </motion.div>
           ))}
         </motion.div>
@@ -758,12 +758,12 @@ const ROICalculator = () => {
                 <div className="text-6xl font-headline font-bold text-gold">€{extraRevenue.toLocaleString('it-IT')}</div>
               </div>
               <div className="pt-8 border-t border-secondary/20">
-                <p className="text-sm text-text-muted leading-relaxed">
-                  Con <strong className="text-text-main">{previews}</strong> preview generate e un tasso di conversione del <strong className="text-text-main">{conversion}%</strong>, ottieni <strong className="text-text-main">+{monthlyPatients}</strong> pazienti al mese in più. 
+                <p className="text-base text-text-muted leading-relaxed">
+                  Con <strong className="text-text-main">{previews}</strong> preview generate e un tasso di conversione del <strong className="text-text-main">{conversion}%</strong>, ottieni <strong className="text-text-main">+{monthlyPatients}</strong> pazienti al mese in più.
                   <br/>Con una media di <strong className="text-text-main">€{ticket}</strong> per trattamento, incrementi il tuo fatturato mensile di <strong className="text-gold">€{extraRevenue.toLocaleString('it-IT')}</strong>.
                 </p>
-                <p className="text-xs text-text-muted/70 mt-4">
-                  SmileLive Starter: <strong className="text-text-main/80">€39/mese</strong> annuale. Un solo trattamento in più lo ripaga in meno di un'ora di lavoro.
+                <p className="text-sm text-text-muted mt-4">
+                  SmileLive Starter: <strong className="text-text-main">€39/mese</strong> annuale. Un solo trattamento in più lo ripaga in meno di un'ora di lavoro.
                 </p>
               </div>
             </div>
@@ -857,14 +857,14 @@ const WhatYouGet = () => {
                 <span className="text-3xl">{f.icon}</span>
                 <div>
                   <h3 className="text-lg font-bold text-text-main">{f.title}</h3>
-                  <p className="text-xs text-primary font-medium tracking-wide">{f.subtitle}</p>
+                  <p className="text-sm text-primary font-semibold tracking-wide">{f.subtitle}</p>
                 </div>
               </div>
-              <p className="text-text-muted text-sm leading-relaxed flex-1">{f.body}</p>
+              <p className="text-text-muted text-base leading-relaxed flex-1">{f.body}</p>
               {f.states && (
                 <div className="mt-4 flex flex-wrap gap-2">
                   {f.states.map((s, j) => (
-                    <span key={j} className="text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
+                    <span key={j} className="text-xs font-bold uppercase tracking-wider px-2 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
                       {s}
                     </span>
                   ))}
@@ -934,7 +934,7 @@ const Pricing = () => {
               onClick={() => setIsAnnual(true)} 
               className={`px-6 py-2 rounded-full font-medium transition-all flex items-center gap-2 relative z-10 ${isAnnual ? 'text-text-main' : 'text-text-muted hover:text-text-main'}`}
             >
-              Annuale <span className="text-[10px] bg-primary/20 text-primary px-2 py-0.5 rounded-full uppercase tracking-wider font-bold">-20%</span>
+              Annuale <span className="text-xs bg-primary/20 text-primary px-2 py-0.5 rounded-full uppercase tracking-wider font-bold">-20%</span>
             </button>
             <div className={`absolute top-2 bottom-2 w-[calc(50%-8px)] bg-surface-elevated shadow-lg rounded-full transition-all duration-300 ${isAnnual ? 'left-[calc(50%+4px)]' : 'left-2'}`}></div>
           </div>
@@ -950,10 +950,10 @@ const Pricing = () => {
           {/* FREE */}
           <motion.div variants={fadeUp} className="glass ghost-border rounded-[2rem] p-8 flex flex-col items-center text-center">
             <h3 className="text-xl font-medium mb-1">Free</h3>
-            <p className="text-xs text-text-muted mb-4">Per sempre</p>
+            <p className="text-sm text-text-muted mb-4">Per sempre</p>
             <div className="text-4xl font-headline font-bold mb-1">€0<span className="text-sm text-text-muted font-normal">/mese</span></div>
             <div className="h-[1px] w-full bg-secondary/10 my-5"></div>
-            <ul className="text-text-muted text-sm space-y-3 mb-8 flex-grow text-left">
+            <ul className="text-text-muted text-base space-y-3 mb-8 flex-grow text-left">
               <li className="flex items-start gap-2"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span>Software completo</span></li>
               <li className="flex items-start gap-2"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span><strong className="text-text-main">10 foto + 3 video</strong> nel primo mese</span></li>
               <li className="flex items-start gap-2"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span><strong className="text-text-main">10 Promemoria WhatsApp</strong> nel primo mese</span></li>
@@ -964,15 +964,15 @@ const Pricing = () => {
           {/* Starter */}
           <motion.div variants={fadeUp} className="glass ghost-border rounded-[2rem] p-8 flex flex-col items-center text-center">
             <h3 className="text-xl font-medium mb-1">Starter</h3>
-            <p className="text-xs text-text-muted mb-4">Perfetto per iniziare</p>
+            <p className="text-sm text-text-muted mb-4">Perfetto per iniziare</p>
             <div className="text-4xl font-headline font-bold mb-1">€{getPrice(49)}<span className="text-sm text-text-muted font-normal">/mese</span></div>
-            {isAnnual && <div className="text-xs text-primary mb-1">Risparmi €{(49-39)*12}/anno</div>}
+            {isAnnual && <div className="text-sm text-primary font-semibold mb-1">Risparmi €{(49-39)*12}/anno</div>}
             <div className="h-[1px] w-full bg-secondary/10 my-5"></div>
-            <ul className="text-text-muted text-sm space-y-3 mb-8 flex-grow text-left">
+            <ul className="text-text-muted text-base space-y-3 mb-8 flex-grow text-left">
               <li className="flex items-start gap-2"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span><strong className="text-text-main">30 foto</strong>/mese</span></li>
               <li className="flex items-start gap-2"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span><strong className="text-text-main">5 video</strong>/mese</span></li>
               <li className="flex items-start gap-2"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span><strong className="text-text-main">25 Promemoria</strong> WhatsApp/SMS</span></li>
-              <li className="text-xs opacity-70 pt-2 border-t border-secondary/10">Extra: €2/foto · €4/video · €0,20/promemoria</li>
+              <li className="text-sm pt-2 border-t border-secondary/10 text-text-muted">Extra: €2/foto · €4/video · €0,20/promemoria</li>
             </ul>
             <a href="#" className="w-full py-3 rounded-full border border-secondary/30 hover:bg-secondary/5 transition-all font-medium text-sm text-center">Scegli Starter</a>
           </motion.div>
@@ -984,16 +984,16 @@ const Pricing = () => {
             </div>
             <div className="absolute inset-0 rounded-[2rem] border-2 border-primary/50 pointer-events-none"></div>
             <h3 className="text-xl font-bold mb-1 text-primary mt-3">Premium</h3>
-            <p className="text-xs text-text-muted mb-4">Per studi attivi</p>
+            <p className="text-sm text-text-muted mb-4">Per studi attivi</p>
             <div className="text-5xl font-headline font-bold mb-1">€{getPrice(99)}<span className="text-sm text-text-muted font-normal">/mese</span></div>
-            {isAnnual && <div className="text-xs text-primary mb-1">Risparmi €{(99-79)*12}/anno</div>}
+            {isAnnual && <div className="text-sm text-primary font-semibold mb-1">Risparmi €{(99-79)*12}/anno</div>}
             <div className="h-[1px] w-full bg-secondary/10 my-5"></div>
             <ul className="text-text-main text-sm space-y-3 mb-8 flex-grow text-left">
               <li className="flex items-start gap-2"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span><strong className="text-primary">100 foto</strong>/mese</span></li>
               <li className="flex items-start gap-2"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span><strong className="text-primary">20 video</strong>/mese</span></li>
               <li className="flex items-start gap-2"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span><strong className="text-primary">50 Promemoria</strong> WhatsApp/SMS</span></li>
               <li className="flex items-start gap-2"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span>Supporto prioritario</span></li>
-              <li className="text-xs text-text-muted opacity-80 pt-2 border-t border-secondary/20">Extra: €1/foto · €3/video · €0,19/promemoria</li>
+              <li className="text-sm text-text-muted pt-2 border-t border-secondary/20">Extra: €1/foto · €3/video · €0,19/promemoria</li>
             </ul>
             <a href="#" className="w-full py-3 rounded-full bg-gradient-to-r from-primary to-secondary text-background hover:scale-105 transition-all font-bold text-sm shadow-[0_0_20px_rgba(14,165,233,0.4)] text-center">Scegli Premium</a>
           </motion.div>
@@ -1001,16 +1001,16 @@ const Pricing = () => {
           {/* Business */}
           <motion.div variants={fadeUp} className="glass ghost-border rounded-[2rem] p-8 flex flex-col items-center text-center">
             <h3 className="text-xl font-medium mb-1">Business</h3>
-            <p className="text-xs text-text-muted mb-4">Per grandi studi</p>
+            <p className="text-sm text-text-muted mb-4">Per grandi studi</p>
             <div className="text-4xl font-headline font-bold mb-1">€{getPrice(139)}<span className="text-sm text-text-muted font-normal">/mese</span></div>
-            {isAnnual && <div className="text-xs text-primary mb-1">Risparmi €{(139-111)*12}/anno</div>}
+            {isAnnual && <div className="text-sm text-primary font-semibold mb-1">Risparmi €{(139-111)*12}/anno</div>}
             <div className="h-[1px] w-full bg-secondary/10 my-5"></div>
-            <ul className="text-text-muted text-sm space-y-3 mb-8 flex-grow text-left">
+            <ul className="text-text-muted text-base space-y-3 mb-8 flex-grow text-left">
               <li className="flex items-start gap-2"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span><strong className="text-text-main">200 foto</strong>/mese</span></li>
               <li className="flex items-start gap-2"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span><strong className="text-text-main">40 video</strong>/mese</span></li>
               <li className="flex items-start gap-2"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span><strong className="text-text-main">125 Promemoria</strong> WhatsApp/SMS</span></li>
               <li className="flex items-start gap-2"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span>Supporto prioritario</span></li>
-              <li className="text-xs opacity-70 pt-2 border-t border-secondary/10">Extra: €0,50/foto · €2/video · €0,18/promemoria</li>
+              <li className="text-sm pt-2 border-t border-secondary/10 text-text-muted">Extra: €0,50/foto · €2/video · €0,18/promemoria</li>
             </ul>
             <a href="#" className="w-full py-3 rounded-full border border-secondary/30 hover:bg-secondary/5 transition-all font-medium text-sm text-center">Scegli Business</a>
           </motion.div>
@@ -1114,35 +1114,35 @@ const ForWho = () => {
             <Users className="w-8 h-8 text-primary shrink-0" />
             <div>
               <strong className="text-text-main text-lg">Dentista generalista</strong>
-              <p className="text-text-muted mt-1">Vuoi aumentare i casi estetici senza cambiare il tuo workflow.</p>
+              <p className="text-text-muted text-base mt-1">Vuoi aumentare i casi estetici senza cambiare il tuo workflow.</p>
             </div>
           </motion.div>
           <motion.div whileHover={{ scale: 1.02 }} className="glass ghost-border p-6 rounded-2xl flex gap-4 items-start">
             <Star className="w-8 h-8 text-gold shrink-0" />
             <div>
               <strong className="text-text-main text-lg">Specialista estetica</strong>
-              <p className="text-text-muted mt-1">Hai già i pazienti. Ti manca lo strumento che li fa decidere.</p>
+              <p className="text-text-muted text-base mt-1">Hai già i pazienti. Ti manca lo strumento che li fa decidere.</p>
             </div>
           </motion.div>
           <motion.div whileHover={{ scale: 1.02 }} className="glass ghost-border p-6 rounded-2xl flex gap-4 items-start">
             <Award className="w-8 h-8 text-secondary shrink-0" />
             <div>
               <strong className="text-text-main text-lg">Clinic manager</strong>
-              <p className="text-text-muted mt-1">Vuoi uno standard di consulenza che funzioni su tutto il team.</p>
+              <p className="text-text-muted text-base mt-1">Vuoi uno standard di consulenza che funzioni su tutto il team.</p>
             </div>
           </motion.div>
           <motion.div whileHover={{ scale: 1.02 }} className="glass ghost-border p-6 rounded-2xl flex gap-4 items-start">
             <TrendingUp className="w-8 h-8 text-primary shrink-0" />
             <div>
               <strong className="text-text-main text-lg">Studio giovane</strong>
-              <p className="text-text-muted mt-1">Stai costruendo la tua base pazienti e vuoi differenziarti subito.</p>
+              <p className="text-text-muted text-base mt-1">Stai costruendo la tua base pazienti e vuoi differenziarti subito.</p>
             </div>
           </motion.div>
           <motion.div whileHover={{ scale: 1.02 }} className="glass ghost-border p-6 rounded-2xl flex gap-4 items-start">
             <Activity className="w-8 h-8 text-primary shrink-0" />
             <div>
               <strong className="text-text-main text-lg">Ortodontista / implantologo</strong>
-              <p className="text-text-muted mt-1">Vuoi integrare la visualizzazione nel percorso di accettazione del piano.</p>
+              <p className="text-text-muted text-base mt-1">Vuoi integrare la visualizzazione nel percorso di accettazione del piano.</p>
             </div>
           </motion.div>
         </div>
@@ -1205,7 +1205,7 @@ const FAQ = () => {
                 <ChevronRight className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                 {faq.q}
               </h3>
-              <p className="text-text-muted text-sm pl-7">{faq.a}</p>
+              <p className="text-text-muted text-base pl-7 leading-relaxed">{faq.a}</p>
             </motion.div>
           ))}
         </div>
@@ -1230,26 +1230,26 @@ const Behind = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-left max-w-2xl mx-auto mb-10">
           <div className="glass ghost-border rounded-xl p-4 text-center">
             <div className="text-2xl font-bold text-primary mb-1">50+</div>
-            <div className="text-xs text-text-muted">Cliniche Partner</div>
+            <div className="text-sm font-medium text-text-muted">Cliniche Partner</div>
           </div>
           <div className="glass ghost-border rounded-xl p-4 text-center">
             <div className="text-2xl font-bold text-primary mb-1">€700k+</div>
-            <div className="text-xs text-text-muted">Trattamenti generati</div>
+            <div className="text-sm font-medium text-text-muted">Trattamenti generati</div>
           </div>
           <div className="glass ghost-border rounded-xl p-4 text-center">
             <div className="text-2xl font-bold text-primary mb-1">10s</div>
-            <div className="text-xs text-text-muted">Per risultato</div>
+            <div className="text-sm font-medium text-text-muted">Per risultato</div>
           </div>
           <div className="glass ghost-border rounded-xl p-4 text-center">
             <div className="text-2xl font-bold text-primary mb-1">0</div>
-            <div className="text-xs text-text-muted">Carta richiesta</div>
+            <div className="text-sm font-medium text-text-muted">Carta richiesta</div>
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left max-w-2xl mx-auto">
-          <div className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-primary shrink-0" /> <span className="text-text-muted text-sm">Sviluppato con il feedback di odontotecnici e Odontoiatri italiani</span></div>
-          <div className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-primary shrink-0" /> <span className="text-text-muted text-sm">Testato su casi reali: faccette, sbiancamento, ortodonzia</span></div>
-          <div className="flex items-start gap-3"><ShieldCheck className="w-5 h-5 text-primary shrink-0" /> <span className="text-text-muted text-sm">GDPR nativo — nessun dato salvato mai</span></div>
-          <div className="flex items-start gap-3"><Zap className="w-5 h-5 text-primary shrink-0" /> <span className="text-text-muted text-sm font-bold text-text-main">IL TUO CONVERTITORE DI PAZIENTI INDECISI</span></div>
+          <div className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" /> <span className="text-text-muted text-base">Sviluppato con il feedback di odontotecnici e Odontoiatri italiani</span></div>
+          <div className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" /> <span className="text-text-muted text-base">Testato su casi reali: faccette, sbiancamento, ortodonzia</span></div>
+          <div className="flex items-start gap-3"><ShieldCheck className="w-5 h-5 text-primary shrink-0 mt-0.5" /> <span className="text-text-muted text-base">GDPR nativo — nessun dato salvato mai</span></div>
+          <div className="flex items-start gap-3"><Zap className="w-5 h-5 text-primary shrink-0 mt-0.5" /> <span className="text-base font-bold text-text-main">IL TUO CONVERTITORE DI PAZIENTI INDECISI</span></div>
         </div>
       </motion.div>
     </section>
@@ -1362,16 +1362,16 @@ const FutureVision = () => {
             <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 blur-[50px] rounded-full"></div>
             <Target className="w-8 h-8 text-primary mb-4 relative z-10 group-hover:scale-110 transition-transform" />
             <h3 className="text-xl font-bold mb-2 relative z-10">Marketing e ADS Centralizzati</h3>
-            <p className="text-text-muted text-sm relative z-10">
+            <p className="text-text-muted text-base leading-relaxed relative z-10">
               Intercettiamo i pazienti indecisi o insoddisfatti del proprio sorriso tramite campagne digitali mirate, educandoli alle possibilità estetiche prima ancora che entrino in studio.
             </p>
           </motion.div>
           <motion.div variants={fadeUp} className="glass ghost-border p-8 rounded-[2rem] hover:glow-cyan transition-all relative overflow-hidden border-primary/30 group">
             <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/10 blur-[50px] rounded-full"></div>
-            <div className="absolute top-4 right-4 bg-primary/20 text-primary text-[10px] uppercase tracking-widest font-bold px-2 py-1 rounded">Vantaggio Locale</div>
+            <div className="absolute top-4 right-4 bg-primary/20 text-primary text-xs uppercase tracking-widest font-bold px-2 py-1 rounded">Vantaggio Locale</div>
             <Award className="w-8 h-8 text-primary mb-4 relative z-10 group-hover:scale-110 transition-transform" />
             <h3 className="text-xl font-bold mb-2 relative z-10">Vetrina Specialisti Esclusiva</h3>
-            <p className="text-text-muted text-sm relative z-10">
+            <p className="text-text-muted text-base leading-relaxed relative z-10">
               I pazienti sceglieranno con chi effettuare il trattamento consultando il nostro network. <strong className="text-text-main">Posizionarsi per primi nella propria città garantisce un vantaggio competitivo enorme sulle richieste locali.</strong>
             </p>
           </motion.div>
