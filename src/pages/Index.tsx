@@ -278,7 +278,7 @@ const TopBar = () => {
     <div className="fixed top-0 inset-x-0 z-50 flex flex-col">
       {/* Announcement bar */}
       <div className="bg-primary text-background text-xs md:text-sm font-bold text-center py-2 px-4 flex items-center justify-center gap-2">
-        <span>Il software è gratis. Per sempre.</span>
+        <span>Inizia gratis: 3 anteprime in omaggio.</span>
         <a href="https://app.smilelive.it/" onClick={() => trackCta("inizia_ora", "announcement_bar")} className="underline underline-offset-2 flex items-center gap-1 hover:opacity-80 transition-opacity">
           Inizia ora <ChevronRight className="w-3 h-3 inline" />
         </a>
@@ -389,7 +389,7 @@ const Hero = () => {
           <motion.p variants={fadeUp} className="text-lg text-text-muted leading-relaxed max-w-lg">
             Ogni giorno escono dallo studio pazienti che volevano cambiare il loro sorriso. Non li hai persi perché il prezzo era troppo alto. Li hai persi perché <strong className="text-text-main font-semibold">non riuscivano a immaginarlo.</strong>
             <br /><br />
-            SmileLive mostra loro il risultato. Prima che escano dalla porta. Il software è gratis. Per sempre.
+            SmileLive mostra loro il risultato. Prima che escano dalla porta. Inizi gratis: 3 anteprime in omaggio.
           </motion.p>
 
           <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-6 pt-4">
@@ -801,7 +801,7 @@ const ROICalculator = () => {
                   <br/>Con una media di <strong className="text-text-main">€{ticket}</strong> per trattamento, incrementi il tuo fatturato mensile di <strong className="text-gold">€{extraRevenue.toLocaleString('it-IT')}</strong>.
                 </p>
                 <p className="text-sm text-text-muted mt-4">
-                  SmileLive Standard: <strong className="text-text-main">€{Math.round(49 * 0.8)}/mese</strong> annuale. Un solo trattamento in più lo ripaga in meno di un'ora di lavoro.
+                  SmileLive Studio Piccolo: <strong className="text-text-main">€47/mese</strong> annuale. Un solo trattamento in più lo ripaga in meno di un'ora di lavoro.
                 </p>
               </div>
             </div>
@@ -874,7 +874,7 @@ const WhatYouGet = () => {
             Mentre lo usavi per convertire pazienti indecisi, SmileLive lavorava anche su tutto il resto.
           </p>
           <p className="text-lg text-text-muted max-w-3xl mx-auto">
-            Ogni studio perde soldi in tre modi silenziosi: pazienti che non firmano, appuntamenti dimenticati, burocrazia che mangia ore. SmileLive risolve tutti e tre. In un unico posto. <strong className="text-text-main">Partendo da gratis.</strong>
+            Ogni studio perde soldi in tre modi silenziosi: pazienti che non firmano, appuntamenti dimenticati, burocrazia che mangia ore. SmileLive risolve tutti e tre. In un unico posto. <strong className="text-text-main">E inizi con 3 anteprime gratis.</strong>
           </p>
         </motion.div>
 
@@ -923,7 +923,7 @@ const WhatYouGet = () => {
             Tutto questo normalmente costa €30–50 al mese per ogni singolo strumento. CRM, preventivi digitali, firma elettronica, promemoria automatici, gestione fiscale.
           </p>
           <p className="text-text-main font-bold text-lg">
-            SmileLive li fa tutti. In uno. E il software base è <span className="text-gold">gratis, per sempre.</span>
+            SmileLive li fa tutti. In uno. E sono <span className="text-gold">tutti inclusi nel tuo abbonamento.</span>
           </p>
           <div className="mt-6">
             <motion.a
@@ -945,9 +945,73 @@ const WhatYouGet = () => {
 const Pricing = () => {
   const [isAnnual, setIsAnnual] = useState(true);
 
-  const getPrice = (monthlyPrice: number) => {
-    return isAnnual ? Math.round(monthlyPrice * 0.8) : monthlyPrice;
-  };
+  const studioPlans = [
+    {
+      name: "Studio Piccolo",
+      tagline: "Per studi che iniziano",
+      monthly: 57,
+      annualMonthly: 47,
+      annualTotal: 564,
+      foto: 20,
+      video: 8,
+      promemoria: 25,
+      extra: "5€/foto · 5€/video · €0,20/promemoria",
+      cta: "Scegli Studio Piccolo",
+      ctaId: "scegli_studio_piccolo",
+      highlighted: false,
+    },
+    {
+      name: "Studio Medio",
+      tagline: "Per studi attivi",
+      monthly: 114,
+      annualMonthly: 94,
+      annualTotal: 1128,
+      foto: 50,
+      video: 18,
+      promemoria: 50,
+      extra: "5€/foto · 5€/video · €0,19/promemoria",
+      cta: "Scegli Studio Medio",
+      ctaId: "scegli_studio_medio",
+      highlighted: true,
+    },
+    {
+      name: "Studio Grande",
+      tagline: "Per grandi studi e cliniche",
+      monthly: 157,
+      annualMonthly: 137,
+      annualTotal: 1644,
+      foto: 120,
+      video: 30,
+      promemoria: 125,
+      extra: "2€/foto · 3€/video · €0,18/promemoria",
+      cta: "Scegli Studio Grande",
+      ctaId: "scegli_studio_grande",
+      highlighted: false,
+    },
+  ];
+
+  const rules = [
+    {
+      icon: Sparkles,
+      title: "Inizi gratis",
+      body: "3 foto + 1 video in omaggio alla registrazione. Senza abbonamento generi ancora a 5€/foto e 5€/video — nessun canone fisso.",
+    },
+    {
+      icon: ShieldCheck,
+      title: "Errore nostro? Rigenerazione gratis entro 24h",
+      body: "Se una generazione esce male (denti deformati, artefatti, colori irreali) la segnali con un tasto: la verifichiamo e, se l'errore è nostro, la rifacciamo gratis entro 24 ore.",
+    },
+    {
+      icon: Camera,
+      title: "Le modifiche creative scalano dal piano",
+      body: "Le modifiche che chiedi tu (es. \"più bianchi\", forma diversa) contano come una generazione normale e scalano dalle quote del piano.",
+    },
+    {
+      icon: Zap,
+      title: "Mai un blocco in poltrona",
+      body: "Al raggiungimento del limite non si blocca nulla: addebito automatico dell'extra o passaggio al piano superiore. Col paziente davanti non ti fermi mai.",
+    },
+  ];
 
   return (
     <section id="pricing" className="py-32 bg-surface">
@@ -960,8 +1024,8 @@ const Pricing = () => {
           className="flex flex-col items-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-headline font-bold text-center mb-4">Scegli il tuo piano</h2>
-          <p className="text-xl text-text-muted text-center mb-4">Software gratis per sempre. Paghi solo le preview che usi.</p>
-          <p className="text-base text-text-muted text-center max-w-2xl mb-8">Provi SmileLive con preview di prova in omaggio. Quando sei pronto, scegli un abbonamento per il prezzo migliore — oppure paghi solo quando ti servono.</p>
+          <p className="text-xl text-text-muted text-center mb-4">Inizia gratis con 3 anteprime. Poi scegli il piano giusto per il tuo studio.</p>
+          <p className="text-base text-text-muted text-center max-w-2xl mb-8">L'abbonamento sblocca tutto il software e le generazioni incluse ogni mese. L'opzione annuale si paga in un'unica soluzione anticipata, al prezzo al mese più basso.</p>
           <div className="inline-flex items-center gap-1 bg-background ghost-border rounded-full p-1.5">
             <button
               onClick={() => setIsAnnual(false)}
@@ -973,7 +1037,7 @@ const Pricing = () => {
               onClick={() => setIsAnnual(true)}
               className={`px-5 sm:px-6 py-2 rounded-full font-medium transition-colors duration-200 flex items-center gap-2 ${isAnnual ? 'bg-surface-elevated shadow-md text-text-main' : 'text-text-muted hover:text-text-main'}`}
             >
-              Annuale <span className="text-xs bg-primary/20 text-primary px-2 py-0.5 rounded-full uppercase tracking-wider font-bold">-20%</span>
+              Annuale <span className="text-xs bg-primary/20 text-primary px-2 py-0.5 rounded-full uppercase tracking-wider font-bold">anticipato</span>
             </button>
           </div>
         </motion.div>
@@ -988,71 +1052,99 @@ const Pricing = () => {
           {/* FREE */}
           <motion.div variants={fadeUp} className="glass ghost-border rounded-[2rem] p-8 flex flex-col items-center text-center">
             <h3 className="text-xl font-medium mb-1">Free</h3>
-            <p className="text-sm text-text-muted mb-4">Per sempre</p>
+            <p className="text-sm text-text-muted mb-4">Per provare</p>
             <div className="text-4xl font-headline font-bold mb-1">€0<span className="text-sm text-text-muted font-normal">/mese</span></div>
             <div className="h-[1px] w-full bg-secondary/10 my-5"></div>
             <ul className="text-text-muted text-base space-y-3 mb-8 flex-grow text-left">
-              <li className="flex items-start gap-2"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span>Software completo, sempre</span></li>
-              <li className="flex items-start gap-2"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span><strong className="text-text-main">3 foto + 3 video</strong> in omaggio</span></li>
-              <li className="flex items-start gap-2"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span>Pay-as-you-go: €7/foto · €4/video</span></li>
-              <li className="text-sm pt-2 border-t border-secondary/10 text-text-muted">Niente carta richiesta. Nessun impegno.</li>
+              <li className="flex items-start gap-2"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span><strong className="text-text-main">3 foto + 1 video</strong> in omaggio alla registrazione</span></li>
+              <li className="flex items-start gap-2"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span>Tab <strong className="text-text-main">SmileLive Preview</strong> attiva subito</span></li>
+              <li className="flex items-start gap-2"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span>Poi <strong className="text-text-main">5€/foto · 5€/video</strong>, senza canone</span></li>
+              <li className="text-sm pt-2 border-t border-secondary/10 text-text-muted">Il resto del software si sblocca con l'abbonamento.</li>
             </ul>
             <a href="https://app.smilelive.it/" onClick={() => trackCta("inizia_gratis", "pricing_free")} className="w-full py-3 rounded-full border border-secondary/30 hover:bg-secondary/5 transition-all font-medium text-sm text-center">Inizia gratis</a>
           </motion.div>
 
-          {/* Standard */}
-          <motion.div variants={fadeUp} className="glass ghost-border rounded-[2rem] p-8 flex flex-col items-center text-center">
-            <h3 className="text-xl font-medium mb-1">Standard</h3>
-            <p className="text-sm text-text-muted mb-4">Perfetto per iniziare</p>
-            <div className="text-4xl font-headline font-bold mb-1">€{getPrice(49)}<span className="text-sm text-text-muted font-normal">/mese</span></div>
-            {isAnnual && <div className="text-sm text-primary font-semibold mb-1">Risparmi €{(49-Math.round(49*0.8))*12}/anno</div>}
-            <div className="h-[1px] w-full bg-secondary/10 my-5"></div>
-            <ul className="text-text-muted text-base space-y-3 mb-8 flex-grow text-left">
-              <li className="flex items-start gap-2"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span><strong className="text-text-main">10 foto</strong>/mese</span></li>
-              <li className="flex items-start gap-2"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span><strong className="text-text-main">10 video</strong>/mese</span></li>
-              <li className="flex items-start gap-2"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span><strong className="text-text-main">25 Promemoria</strong> WhatsApp/SMS</span></li>
-              <li className="text-sm pt-2 border-t border-secondary/10 text-text-muted">Extra: €5/foto · €3/video · €0,20/promemoria</li>
-            </ul>
-            <a href="https://app.smilelive.it/" onClick={() => trackCta("scegli_standard", "pricing")} className="w-full py-3 rounded-full border border-secondary/30 hover:bg-secondary/5 transition-all font-medium text-sm text-center">Scegli Standard</a>
-          </motion.div>
+          {studioPlans.map((plan) => {
+            const price = isAnnual ? plan.annualMonthly : plan.monthly;
+            const saving = (plan.monthly - plan.annualMonthly) * 12;
+            return (
+              <motion.div
+                key={plan.name}
+                variants={fadeUp}
+                className={`rounded-[2rem] p-8 flex flex-col items-center text-center ${plan.highlighted ? 'bg-surface-elevated ghost-border relative glow-cyan-strong border-primary/40' : 'glass ghost-border'}`}
+              >
+                {plan.highlighted && (
+                  <>
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-primary to-secondary text-background px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap">
+                      ⭐ Il più scelto
+                    </div>
+                    <div className="absolute inset-0 rounded-[2rem] border-2 border-primary/50 pointer-events-none"></div>
+                  </>
+                )}
+                <h3 className={`mb-1 ${plan.highlighted ? 'text-xl font-bold text-primary mt-3' : 'text-xl font-medium'}`}>{plan.name}</h3>
+                <p className="text-sm text-text-muted mb-4">{plan.tagline}</p>
+                <div className={`${plan.highlighted ? 'text-5xl' : 'text-4xl'} font-headline font-bold mb-1`}>€{price}<span className="text-sm text-text-muted font-normal">/mese</span></div>
+                {isAnnual && (
+                  <div className="text-sm text-primary font-semibold mb-0.5">€{plan.annualTotal.toLocaleString("it-IT")}/anno · risparmi €{saving}</div>
+                )}
+                {isAnnual && (
+                  <div className="text-xs text-text-muted mb-1">in un'unica soluzione anticipata</div>
+                )}
+                <div className="h-[1px] w-full bg-secondary/10 my-5"></div>
+                <ul className={`${plan.highlighted ? 'text-text-main' : 'text-text-muted'} text-base space-y-3 mb-8 flex-grow text-left`}>
+                  <li className="flex items-start gap-2"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span><strong className={plan.highlighted ? 'text-primary' : 'text-text-main'}>{plan.foto} foto</strong> (preview)/mese</span></li>
+                  <li className="flex items-start gap-2"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span><strong className={plan.highlighted ? 'text-primary' : 'text-text-main'}>{plan.video} video</strong>/mese</span></li>
+                  <li className="flex items-start gap-2"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span><strong className={plan.highlighted ? 'text-primary' : 'text-text-main'}>{plan.promemoria} promemoria</strong> WhatsApp/SMS</span></li>
+                  {plan.highlighted && (
+                    <li className="flex items-start gap-2"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span>Supporto prioritario</span></li>
+                  )}
+                  <li className="text-sm pt-2 border-t border-secondary/10 text-text-muted">Extra oltre il piano: {plan.extra}</li>
+                </ul>
+                <a
+                  href="https://app.smilelive.it/"
+                  onClick={() => trackCta(plan.ctaId, "pricing")}
+                  className={`w-full py-3 rounded-full transition-all text-sm text-center ${plan.highlighted ? 'bg-gradient-to-r from-primary to-secondary text-background hover:scale-105 font-bold shadow-[0_0_20px_rgba(14,165,233,0.4)]' : 'border border-secondary/30 hover:bg-secondary/5 font-medium'}`}
+                >
+                  {plan.cta}
+                </a>
+              </motion.div>
+            );
+          })}
+        </motion.div>
 
-          {/* Pro */}
-          <motion.div variants={fadeUp} className="bg-surface-elevated ghost-border rounded-[2rem] p-8 flex flex-col items-center text-center relative glow-cyan-strong border-primary/40">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-primary to-secondary text-background px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap">
-              ⭐ Il più scelto
-            </div>
-            <div className="absolute inset-0 rounded-[2rem] border-2 border-primary/50 pointer-events-none"></div>
-            <h3 className="text-xl font-bold mb-1 text-primary mt-3">Pro</h3>
-            <p className="text-sm text-text-muted mb-4">Per studi attivi</p>
-            <div className="text-5xl font-headline font-bold mb-1">€{getPrice(89)}<span className="text-sm text-text-muted font-normal">/mese</span></div>
-            {isAnnual && <div className="text-sm text-primary font-semibold mb-1">Risparmi €{(89-Math.round(89*0.8))*12}/anno</div>}
-            <div className="h-[1px] w-full bg-secondary/10 my-5"></div>
-            <ul className="text-text-main text-sm space-y-3 mb-8 flex-grow text-left">
-              <li className="flex items-start gap-2"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span><strong className="text-primary">30 foto</strong>/mese</span></li>
-              <li className="flex items-start gap-2"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span><strong className="text-primary">20 video</strong>/mese</span></li>
-              <li className="flex items-start gap-2"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span><strong className="text-primary">50 Promemoria</strong> WhatsApp/SMS</span></li>
-              <li className="flex items-start gap-2"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span>Supporto prioritario</span></li>
-              <li className="text-sm text-text-muted pt-2 border-t border-secondary/20">Extra: €5/foto · €3/video · €0,19/promemoria</li>
-            </ul>
-            <a href="https://app.smilelive.it/" onClick={() => trackCta("scegli_pro", "pricing")} className="w-full py-3 rounded-full bg-gradient-to-r from-primary to-secondary text-background hover:scale-105 transition-all font-bold text-sm shadow-[0_0_20px_rgba(14,165,233,0.4)] text-center">Scegli Pro</a>
-          </motion.div>
-
-          {/* Business */}
-          <motion.div variants={fadeUp} className="glass ghost-border rounded-[2rem] p-8 flex flex-col items-center text-center">
-            <h3 className="text-xl font-medium mb-1">Business</h3>
-            <p className="text-sm text-text-muted mb-4">Per grandi studi</p>
-            <div className="text-4xl font-headline font-bold mb-1">€{getPrice(149)}<span className="text-sm text-text-muted font-normal">/mese</span></div>
-            {isAnnual && <div className="text-sm text-primary font-semibold mb-1">Risparmi €{(149-Math.round(149*0.8))*12}/anno</div>}
-            <div className="h-[1px] w-full bg-secondary/10 my-5"></div>
-            <ul className="text-text-muted text-base space-y-3 mb-8 flex-grow text-left">
-              <li className="flex items-start gap-2"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span><strong className="text-text-main">60 foto</strong>/mese</span></li>
-              <li className="flex items-start gap-2"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span><strong className="text-text-main">30 video</strong>/mese</span></li>
-              <li className="flex items-start gap-2"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span><strong className="text-text-main">125 Promemoria</strong> WhatsApp/SMS</span></li>
-              <li className="flex items-start gap-2"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span>Supporto prioritario</span></li>
-              <li className="text-sm pt-2 border-t border-secondary/10 text-text-muted">Extra: €5/foto · €3/video · €0,18/promemoria</li>
-            </ul>
-            <a href="https://app.smilelive.it/" onClick={() => trackCta("scegli_business", "pricing")} className="w-full py-3 rounded-full border border-secondary/30 hover:bg-secondary/5 transition-all font-medium text-sm text-center">Scegli Business</a>
-          </motion.div>
+        {/* Informativa: come funzionano le generazioni */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.5 }}
+          className="mt-20 max-w-5xl mx-auto text-center"
+        >
+          <h3 className="text-2xl md:text-3xl font-headline font-bold mb-3">Come funzionano le generazioni</h3>
+          <p className="text-text-muted max-w-2xl mx-auto">Regole chiare, nessuna sorpresa in fattura — e nessun blocco col paziente in poltrona.</p>
+        </motion.div>
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-10 max-w-5xl mx-auto"
+        >
+          {rules.map((rule, i) => (
+            <motion.div
+              key={i}
+              variants={fadeUp}
+              className="glass ghost-border rounded-3xl p-6 flex items-start gap-4 hover:border-primary/30 transition-all duration-300 text-left"
+            >
+              <div className="w-11 h-11 shrink-0 rounded-full bg-primary/10 flex items-center justify-center">
+                <rule.icon className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <h4 className="font-headline font-bold text-text-main mb-1">{rule.title}</h4>
+                <p className="text-text-muted text-sm leading-relaxed">{rule.body}</p>
+              </div>
+            </motion.div>
+          ))}
         </motion.div>
 
         {/* Pay-as-you-go callout */}
@@ -1069,19 +1161,10 @@ const Pricing = () => {
           <div className="flex-1">
             <p className="font-headline font-bold text-lg text-text-main mb-1">Senza abbonamento? Paghi solo quando usi.</p>
             <p className="text-text-muted text-base leading-relaxed">
-              Con il piano <strong className="text-text-main">Free</strong> puoi acquistare singole preview a <strong className="text-text-main">€7/foto</strong> e <strong className="text-text-main">€4/video</strong>. Nessun canone fisso, niente contratti. Quando vedi che funziona, passi a un abbonamento e abbatti il prezzo unitario.
+              Dopo le <strong className="text-text-main">3 anteprime in omaggio</strong> puoi generare singole preview a <strong className="text-text-main">5€/foto</strong> e <strong className="text-text-main">5€/video</strong>, senza canone fisso. Quando vedi che funziona, passi a un abbonamento e abbatti il prezzo unitario.
             </p>
           </div>
         </motion.div>
-
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-center text-sm text-text-muted mt-8 max-w-2xl mx-auto"
-        >
-          Hai bisogno di più preview o promemoria in un mese intenso? Acquista pacchetti extra al volo — senza cambiare piano.
-        </motion.p>
       </div>
     </section>
   );
@@ -1217,16 +1300,20 @@ const ForWho = () => {
 const FAQ = () => {
   const faqs = [
     {
-      q: "Il software è davvero gratis? Cosa c'è di nascosto?",
-      a: "Niente. Il software — schede paziente, preventivi digitali, promemoria, dashboard — è gratis per sempre. Paghi solo le preview AI quando le generi. Come un taxi: paghi il tragitto, non il diritto di chiamarlo."
+      q: "Posso provarlo senza abbonarmi?",
+      a: "Sì. La registrazione è gratuita e ti regaliamo 3 foto e 1 video in omaggio nella tab SmileLive Preview — senza carta, senza impegno. Il resto del software resta visibile e si sblocca quando attivi un abbonamento. Per generare ancora senza abbonarti, paghi 5€ a foto e 5€ a video."
     },
     {
-      q: "Meglio l'abbonamento o pagare solo quando uso?",
-      a: "Dipende dal volume. Con il piano Free paghi €7 a foto e €4 a video — perfetto per testare o per studi che fanno poche preview al mese. Sopra le ~7 preview/mese conviene lo Standard a €49: prezzo unitario quasi dimezzato (€5/foto · €3/video) e 25 promemoria inclusi. Pro e Business pagano lo stesso prezzo extra ma con quote incluse molto più alte."
+      q: "Meglio l'abbonamento o pagare a consumo?",
+      a: "Dipende dal volume. Senza abbonamento generi a 5€/foto e 5€/video — comodo per testare. Con un abbonamento Studio hai foto e video inclusi ogni mese a un costo unitario molto più basso, più i promemoria WhatsApp/SMS e tutto il software sbloccato. Sul piano Studio Grande anche gli extra costano meno: 2€/foto e 3€/video."
     },
     {
-      q: "Quante preview di prova ho per testare SmileLive?",
-      a: "Ti regaliamo 3 foto e 3 video in omaggio quando crei l'account — senza carta, senza impegno. Bastano per mostrare lo strumento a pazienti reali e capire se per il tuo studio funziona. Se anche solo 1 firma un trattamento che senza SmileLive non avrebbe firmato, hai già visto il valore."
+      q: "Cosa succede se una preview esce male (denti deformati, artefatti)?",
+      a: "La generazione scala comunque dal piano, ma con un tasto la segnali: verifichiamo il caso e, se l'errore è nostro, la rigeneriamo gratis entro 24 ore. Le modifiche creative che chiedi tu (più bianchi, forma diversa) contano invece come una generazione normale."
+    },
+    {
+      q: "E se finisco le foto o i video inclusi nel mese?",
+      a: "Non ti blocchiamo mai — soprattutto col paziente in poltrona. Al raggiungimento del limite scatta l'addebito automatico dell'extra (5€/foto · 5€/video, 2€/foto · 3€/video sullo Studio Grande) oppure puoi passare al piano superiore. Decidi tu."
     },
     {
       q: "Chi genera le preview? Devo farlo io?",
@@ -1336,7 +1423,7 @@ const FinalCTA = () => {
           Ogni "ci penso" che senti oggi è un trattamento che potrebbe diventare un sì domani.
         </p>
         <p className="text-lg text-text-muted mb-10">
-          Il software è gratis. Le prime <strong className="text-text-main">3 foto + 3 video</strong> sono in omaggio. <span className="text-text-main font-semibold">Il primo risultato potrebbe arrivare questa settimana.</span>
+          Provalo gratis: le prime <strong className="text-text-main">3 foto + 1 video</strong> sono in omaggio. <span className="text-text-main font-semibold">Il primo risultato potrebbe arrivare questa settimana.</span>
         </p>
         <div>
           <motion.a
