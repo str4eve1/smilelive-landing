@@ -292,7 +292,7 @@ const TopBar = () => {
       >
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <img src={logoFinale} alt="SmileLive Logo" className="h-16 w-auto md:h-20 lg:h-24" fetchpriority="high" width="200" height="160" />
+            <img src={logoFinale} alt="SmileLive Logo" className="h-16 w-auto md:h-20 lg:h-24" fetchPriority="high" width="200" height="160" />
           </div>
           <div className="hidden md:flex items-center gap-8 text-sm text-text-muted font-medium">
             <a href="#come-funziona" className="hover:text-primary transition-colors">Come funziona</a>
