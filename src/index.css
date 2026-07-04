@@ -6,7 +6,11 @@
   :root {
     --radius: 0.75rem;
   }
-  
+
+  html {
+    scroll-behavior: smooth;
+  }
+
   * {
     @apply border-border;
   }
@@ -24,6 +28,16 @@
   p {
     text-wrap: pretty;
     overflow-wrap: break-word;
+  }
+
+  /* Focus-visible globale: solo tastiera, non mouse */
+  :focus-visible {
+    outline: 2px solid rgba(2, 132, 199, 0.7);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  :focus:not(:focus-visible) {
+    outline: none;
   }
 }
 
@@ -66,6 +80,22 @@
     box-shadow: 0 0 30px rgba(2, 132, 199, 0.25), inset 0 0 15px rgba(2, 132, 199, 0.05);
     border: 1px solid rgba(2, 132, 199, 0.25);
   }
+
+  /* Glass con highlight interno (Double-Bezel) */
+  .glass-premium {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow:
+      0 4px 24px rgba(0, 0, 0, 0.04),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  }
+
+  /* Shadow colorata (tinted, non pure black) */
+  .shadow-primary-tint {
+    box-shadow: 0 8px 32px rgba(2, 132, 199, 0.18), 0 2px 8px rgba(2, 132, 199, 0.08);
+  }
 }
 
 @layer utilities {
@@ -88,4 +118,84 @@
   .stagger-2 { transition-delay: 200ms; }
   .stagger-3 { transition-delay: 300ms; }
   .stagger-4 { transition-delay: 400ms; }
+
+  /* Tracking stretto per headline display grandi */
+  .tracking-display {
+    letter-spacing: -0.035em;
+  }
+
+  /* Tabular nums per statistiche e prezzi */
+  .num-tabular {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
 }
+
+/* Sfondo a quadratini (motivo brand) — riutilizzabile via <GridBg /> */
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(2,132,199,0.10) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(2,132,199,0.10) 2px, transparent 2px);
+  background-size: 40px 40px;
+}
+
+/* Fluttuamento lievissimo delle card hero: micro-orbita di 2px, lentissima.
+   Classi esplicite (niente arbitrary Tailwind) così la durata è certa. */
+@keyframes cardOrbit {
+  0%   { translate: 0 -4px; }
+  25%  { translate: 4px 0; }
+  50%  { translate: 0 4px; }
+  75%  { translate: -4px 0; }
+  100% { translate: 0 -4px; }
+}
+.card-float-a { animation: cardOrbit 8s linear infinite; }
+.card-float-b { animation: cardOrbit 10s linear infinite; }
+.card-float-c { animation: cardOrbit 9s linear infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .card-float-a, .card-float-b, .card-float-c { animation: none !important; }
+}
+
+/* ── ProblemSection Hormozi-cut: pila di preventivi rifiutati ── */
+.pl-excuses{position:static;display:block;width:0;height:0;margin:0;overflow:visible}
+.pl-excuses span{position:absolute;z-index:9999;white-space:nowrap;box-shadow:0 8px 18px -10px rgba(15,23,42,.3);font-size:12px;font-weight:600;font-style:italic;color:#33648a;background:#e3f2fd;border:1px solid #bfe0f6;border-radius:16px;padding:6px 12px}
+.pl-excuses span::after{content:"";position:absolute;bottom:-6px;left:16px;width:11px;height:11px;background:#e3f2fd;border-right:1px solid #bfe0f6;border-bottom:1px solid #bfe0f6;transform:rotate(45deg)}
+.pl-excuses span::before{content:"\2715";color:#ef4444;font-style:normal;font-weight:800;margin-right:6px}
+.pl-pile{position:relative;width:320px;max-width:100%;margin-top:6px}
+.pl-sizer{position:relative;visibility:hidden;pointer-events:none}
+.pl-sheet{position:absolute;inset:0;opacity:0;will-change:transform,opacity;transition:transform .6s cubic-bezier(.34,1.28,.5,1),opacity .45s}
+.pl-paper{position:relative;background:#fff;border:1px solid rgba(15,23,42,.08);border-radius:6px;box-shadow:0 2px 10px rgba(15,23,42,.05),0 40px 80px -34px rgba(15,23,42,.4);padding:22px 22px 20px;filter:grayscale(.12)}
+.pl-paper::before{content:"";position:absolute;inset:0;border-radius:6px;pointer-events:none;background:repeating-linear-gradient(180deg,transparent,transparent 29px,rgba(15,23,42,.035) 30px)}
+.pl-in{position:relative}
+.pl-head{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #0f172a;padding-bottom:9px;margin-bottom:11px}
+.pl-head b{font-family:'Syne',sans-serif;font-weight:800;font-size:17px;color:#0f172a}
+.pl-head span{font-size:11px;font-weight:700;letter-spacing:.1em;color:#94a3b8}
+.pl-line{display:flex;justify-content:space-between;font-size:13px;color:#475569;padding:6px 0;border-bottom:1px dashed rgba(15,23,42,.08)}
+.pl-tot{display:flex;justify-content:space-between;align-items:flex-end;margin-top:12px;padding-top:11px;border-top:2px solid #0f172a}
+.pl-k{font-weight:700;color:#0f172a}
+.pl-v{font-family:'Syne',sans-serif;font-weight:800;font-size:28px;letter-spacing:-.02em;color:#0f172a}
+.pl-nopreview{margin-top:14px;aspect-ratio:4/3;border:2px dashed rgba(15,23,42,.14);border-radius:8px;background:rgba(15,23,42,.03);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#94a3b8}
+.pl-nopreview span{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-align:center;line-height:1.35;padding:0 8px}
+.pl-stamp{position:absolute;left:50%;top:38%;border:3px solid #ea580c;color:#ea580c;font-family:'Syne',sans-serif;font-weight:800;font-size:19px;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;padding:5px 12px;border-radius:8px;background:rgba(255,255,255,.6);opacity:0;transform:translateX(-50%) rotate(-30deg) scale(1.7);transition:opacity .28s,transform .45s cubic-bezier(.34,1.56,.64,1)}
+.pl-stamp.pl-stamp-alt{font-size:15px;letter-spacing:.05em;top:34%;border-color:#e11d48;color:#e11d48}
+.pl-stamp.show{opacity:.92;transform:translateX(-50%) rotate(-12deg) scale(1)}
+@media(prefers-reduced-motion:reduce){.pl-sheet,.pl-stamp{transition:none}}
+
+/* frasi-obiezione nella parte bassa del preventivo (mobile + desktop) */
+.pl-stage{position:relative;isolation:isolate;width:320px;max-width:100%;margin:0 auto}
+.pl-excuses span:nth-child(1){bottom:118px;left:-38px;transform:rotate(-6deg)}
+.pl-excuses span:nth-child(2){bottom:58px;right:-30px;transform:rotate(5deg)}
+.pl-excuses span:nth-child(3){bottom:-12px;left:32%;transform:rotate(8deg)}
+@media(max-width:639px){
+  .pl-excuses span:nth-child(1){bottom:120px;left:-12px;transform:rotate(-5deg)}
+  .pl-excuses span:nth-child(2){bottom:30px;right:-12px;transform:rotate(6deg)}
+  .pl-excuses span:nth-child(3){bottom:-18px;left:30%;transform:rotate(8deg)}
+}
+
+
+/* ── EveryTreatment: placeholder anteprima prima/dopo (qui va l'immagine AI reale) ── */
+.ot-shot{position:relative;aspect-ratio:16/9;overflow:hidden;background:linear-gradient(115deg,#eceff3 0 50%,#e3f2fd 50% 100%)}
+.ot-shot::after{content:"";position:absolute;left:50%;top:0;bottom:0;width:2px;background:#fff;transform:translateX(-50%)}
+.ot-tag{position:absolute;top:10px;font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;padding:3px 7px;border-radius:6px}
+.ot-prima{left:10px;color:#7c8698;background:rgba(255,255,255,.7)}
+.ot-dopo{right:10px;color:#0284c7;background:rgba(255,255,255,.85)}
+.ot-handle{position:absolute;top:50%;left:50%;width:32px;height:32px;transform:translate(-50%,-50%);border-radius:50%;background:#fff;box-shadow:0 4px 14px rgba(0,0,0,.18);display:grid;place-items:center;color:#0284c7;font-weight:800;font-size:13px}
