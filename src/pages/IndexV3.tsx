@@ -488,9 +488,6 @@ const Hero = () => (
         animate="visible"
         className="space-y-8 relative z-10"
       >
-        <motion.span variants={fadeUp} className="inline-flex items-center rounded-full bg-sky-100/80 text-primary px-4 py-1.5 text-xs font-bold tracking-[0.15em] uppercase ring-1 ring-sky-200/60">
-          AI per studi dentistici
-        </motion.span>
         <motion.h1 variants={fadeUp} className="text-5xl md:text-6xl font-headline font-bold tracking-tight leading-[1.1] text-text-main">
           <span className="block">1 Foto. 1 Video.</span>
           <span className="block text-primary">10 Secondi.</span>
@@ -659,7 +656,7 @@ const Hero = () => (
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.3, type: "spring", stiffness: 180, damping: 18 }}
-            className="hero-badge transition-opacity duration-700 ease-out card-float-d absolute -left-8 sm:-left-36 bottom-[9%] w-[132px] sm:w-[168px] rounded-2xl overflow-hidden bg-white p-1.5 shadow-[0_18px_46px_-16px_rgba(2,132,199,0.5)] ring-1 ring-slate-100"
+            className="hero-badge transition-opacity duration-700 ease-out card-float-d absolute -left-10 sm:-left-[130px] bottom-[9%] w-[132px] sm:w-[168px] rounded-2xl overflow-hidden bg-white p-1.5 shadow-[0_18px_46px_-16px_rgba(2,132,199,0.5)] ring-1 ring-slate-100"
           >
             <div className="relative rounded-xl overflow-hidden aspect-[3/2] bg-slate-100">
               <img src={afterImg} alt="Denti dopo" className="absolute inset-0 w-full h-full object-cover origin-center" style={{ objectPosition: '51% 64%', transform: 'scale(3.95)' }} loading="lazy" />
@@ -778,6 +775,7 @@ const ReviewsSection = () => (
         <ShieldCheck size={16} weight="fill" className="text-primary" /> Nessuna carta. Setup in 10 minuti.
       </div>
     </div>
+    <SectionWave fill="#ffffff" flip />
   </section>
 );
 
@@ -1214,6 +1212,7 @@ const ManifestoBand = () => (
       </p>
       <p className="mt-8 font-headline font-bold text-2xl md:text-4xl text-orange-500">Chi prova, compra.</p>
     </motion.div>
+    <SectionWave fill="#ffffff" />
   </section>
 );
 
@@ -1638,6 +1637,7 @@ const WhatYouGet = () => {
           </motion.div>
         )}
       </AnimatePresence>
+      <SectionWave fill="#e8f3fb" flip />
     </section>
   );
 };
@@ -2307,18 +2307,17 @@ const Footer = () => (
   </footer>
 );
 
-// ─── WaveDivider (riprende la curva dell'Hero tra le sezioni) ───────────────────
-// `from` = colore della sezione sopra (sfondo sopra la curva), `to` = colore della
-// sezione sotto (riempie la curva). `flip` specchia la curva per variare il verso.
-const WaveDivider = ({ from, to, flip = false }: { from: string; to: string; flip?: boolean }) => (
-  <div className="leading-[0]" style={{ background: from }} aria-hidden="true">
-    <svg
-      viewBox="0 0 1440 260"
-      preserveAspectRatio="none"
-      className="block w-full h-[60px] md:h-[100px]"
-      style={flip ? { transform: "scaleX(-1)" } : undefined}
-    >
-      <path d="M0,150 C360,232 760,212 1080,120 C1250,71 1352,44 1440,30 L1440,260 L0,260 Z" fill={to} />
+// ─── SectionWave (curva dell'Hero come overlay in fondo a una sezione) ──────────
+// Va messa DENTRO la sezione (che deve essere `relative`): esce dallo sfondo reale
+// della sezione, `fill` = colore della sezione sotto. Nessun blocco extra, nessun seam.
+const SectionWave = ({ fill, flip = false }: { fill: string; flip?: boolean }) => (
+  <div
+    className="absolute inset-x-0 bottom-0 pointer-events-none leading-[0] z-[1]"
+    aria-hidden="true"
+    style={flip ? { transform: "scaleX(-1)" } : undefined}
+  >
+    <svg viewBox="0 0 1440 260" preserveAspectRatio="none" className="block w-full h-[60px] md:h-[100px]">
+      <path d="M0,150 C360,232 760,212 1080,120 C1250,71 1352,44 1440,30 L1440,260 L0,260 Z" fill={fill} />
       <path d="M0,150 C360,232 760,212 1080,120 C1250,71 1352,44 1440,30" fill="none" stroke="rgba(56,189,248,0.55)" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
     </svg>
   </div>
@@ -2333,17 +2332,14 @@ export default function IndexV3() {
       <Hero />                {/* Hook / dream outcome */}
       <WhyChoose />           {/* Perché scegliere: 4 icone (come screen) */}
       <ReviewsSection />      {/* Recensioni: heading + carosello attuale */}
-      <WaveDivider from="#eef2fc" to="#ffffff" flip />
       <ProblemSection />      {/* Dolore in €: costo dell'inazione (apre la ferita) */}
       <ManifestoBand />       {/* Reframe: "compra l'immagine di sé" */}
-      <WaveDivider from="#071830" to="#ffffff" />
       <EmotionalVideo />      {/* Effetto Wow + slider — la soluzione */}
       <AISimShowcase />       {/* "Non solo una foto": video realistico (assieme all'Effetto Wow) */}
       <EveryTreatment />     {/* Su ogni trattamento: crolla "il mio caso e' diverso" */}
       <IntermediateCTA />     {/* CTA contestuale + prova numerica: se vede il risultato, non esce indeciso */}
       <HowItWorks />          {/* Facilità: quanto è semplice */}
       <WhatYouGet />          {/* Value stack: cosa ottieni */}
-      <WaveDivider from="#07111f" to="#e8f3fb" flip />
       <Testimonials />        {/* Prova sociale prima del prezzo */}
       <ROICalculator />       {/* Ancora prezzo: il costo di aspettare */}
       <Pricing />             {/* L'offerta */}
