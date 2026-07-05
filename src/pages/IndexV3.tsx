@@ -428,7 +428,7 @@ const TopBar = () => {
       <a
         href="https://app.smilelive.it/"
         onClick={() => trackCta("inizia_ora", "announcement_bar")}
-        className="bg-primary text-white text-xs md:text-sm font-semibold text-center py-2 px-4 flex items-center justify-center gap-x-2 gap-y-0.5 flex-wrap hover:bg-sky-600 transition-colors"
+        className="bg-gradient-to-b from-sky-500 via-primary to-sky-700 text-white text-xs md:text-sm font-semibold text-center py-2 px-4 flex items-center justify-center gap-x-2 gap-y-0.5 flex-wrap shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_3px_12px_rgba(2,132,199,0.35)] hover:brightness-105 transition-all"
       >
         <Sparkle size={14} weight="fill" className="shrink-0" />
         <span>Inizia gratis: <strong className="font-bold">3 anteprime in omaggio</strong></span>
@@ -523,8 +523,8 @@ const Hero = () => (
         className="space-y-8 relative z-10"
       >
         <motion.div variants={fadeUp}>
-          <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 pl-2.5 pr-3.5 py-1.5 text-sm font-semibold text-primary">
-            <Sparkle size={16} weight="fill" className="text-primary" />
+          <span className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-white/95 shadow-[0_6px_20px_rgba(2,132,199,0.18)] backdrop-blur-sm pl-2.5 pr-4 py-2 text-sm font-bold text-primary">
+            <Sparkle size={16} weight="fill" className="text-gold" />
             Il miglior strumento AI per dentisti
           </span>
         </motion.div>
@@ -1415,10 +1415,10 @@ const WhatYouGet = () => {
       icon: Receipt,
       accent: "#d97706",
       span: "lg:col-span-5",
-      title: "Fatturazione TS ed export",
+      title: "Fatturazione self-service integrata TS",
       label: "Fisco",
-      body: "Il paziente inserisce i dati fiscali dal telefono. Lo studio prepara fatture, bollo virtuale ed export per il commercialista.",
-      states: ["Dati paziente", "Sistema TS", "File mese"],
+      body: "Fatturazione integrata col Sistema Tessera Sanitaria: prepari e invii le fatture al Sistema TS direttamente dal software, in autonomia. Senza gestionali esterni.",
+      states: ["Crea fattura", "Invio a Sistema TS", "Inviata"],
     },
     {
       icon: ChartLineUp,
