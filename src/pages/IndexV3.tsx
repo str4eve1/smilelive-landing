@@ -1196,8 +1196,8 @@ const EveryTreatment = () => {
 
 // ─── ManifestoBand (fascia scura di stacco tra le sezioni) ──────────────────────
 const ManifestoBand = () => (
-  <section className="py-20 md:py-28 relative overflow-hidden bg-gradient-to-b from-sky-50/60 via-white to-white">
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[620px] h-[620px] bg-primary/10 blur-[150px] rounded-full pointer-events-none" />
+  <section className="py-20 md:py-28 relative overflow-hidden bg-gradient-to-b from-[#020c1a] via-[#041020] to-[#071830]">
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[620px] h-[620px] bg-primary/20 blur-[150px] rounded-full pointer-events-none" />
     <motion.div
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -1205,14 +1205,14 @@ const ManifestoBand = () => (
       transition={{ duration: 0.6 }}
       className="max-w-3xl mx-auto px-6 text-center relative z-10"
     >
-      <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-primary mb-5">Ecco cosa succede davvero</span>
-      <h2 className="font-headline font-bold leading-[1.12] tracking-tight text-3xl md:text-5xl text-text-main">
-        Il paziente non compra un preventivo.<br className="hidden md:block" /> Prima lo <span className="font-serif font-normal italic text-primary">vede e lo prova</span>. Poi lo desidera.
+      <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-sky-300 mb-5">Ecco cosa succede davvero</span>
+      <h2 className="font-headline font-bold leading-[1.12] tracking-tight text-3xl md:text-5xl text-white">
+        Il paziente non compra un preventivo.<br className="hidden md:block" /> Prima lo <span className="font-serif font-normal italic text-sky-300">vede e lo prova</span>. Poi lo desidera.
       </h2>
-      <p className="mt-6 text-lg md:text-xl text-text-muted leading-relaxed">
+      <p className="mt-6 text-lg md:text-xl text-white/60 leading-relaxed">
         Come fanno le grandi aziende. Come in un Apple Store.
       </p>
-      <p className="mt-8 font-headline font-bold text-2xl md:text-4xl text-gold">Chi prova, compra.</p>
+      <p className="mt-8 font-headline font-bold text-2xl md:text-4xl text-orange-500">Chi prova, compra.</p>
     </motion.div>
   </section>
 );
