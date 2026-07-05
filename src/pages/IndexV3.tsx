@@ -1470,14 +1470,11 @@ const WhatYouGet = () => {
           className="grid grid-cols-1 lg:grid-cols-[minmax(0,700px)_1fr] gap-8 lg:gap-10 items-end mb-10"
         >
           <div>
-            <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-primary mb-4">Gestionale completo</span>
+            <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-orange-500 mb-4">Gestionale completo</span>
             <h2 className="text-3xl md:text-5xl font-headline font-bold tracking-tight leading-[1.05] text-balance">
               <span className="text-orange-500">Aspetta.</span><br className="sm:hidden" /> SmileLive non è solo l'anteprima del sorriso.
             </h2>
-            <span className="mt-5 inline-flex items-center rounded-full bg-orange-500/15 border border-orange-400/30 px-4 py-1.5 text-sm font-extrabold uppercase tracking-[0.14em] text-orange-400">
-              Gestionale completo
-            </span>
-            <p className="mt-3 text-base md:text-lg leading-relaxed text-slate-300 max-w-2xl">
+            <p className="mt-5 text-base md:text-lg leading-relaxed text-slate-300 max-w-2xl">
               Oltre all'anteprima, segue il resto del percorso: scheda paziente, preventivi, promemoria degli appuntamenti e adempimenti fiscali. Meno strumenti separati, meno tempo in segreteria, tutto in un unico posto.
             </p>
           </div>
@@ -2278,10 +2275,10 @@ const SOCIALS = [
 ];
 
 const FooterCol = ({ title, children }: { title: string; children: React.ReactNode }) => (
-  <div className="flex flex-col gap-3">
+  <motion.div variants={fadeUp} className="flex flex-col gap-3">
     <h4 className="text-[11px] font-semibold text-slate-500 uppercase tracking-widest">{title}</h4>
     <ul className="flex flex-col gap-2.5 text-sm text-slate-400">{children}</ul>
-  </div>
+  </motion.div>
 );
 
 const footerLink = "hover:text-white transition-colors";
@@ -2289,9 +2286,15 @@ const footerLink = "hover:text-white transition-colors";
 const Footer = () => (
   <footer className="bg-[#0b1220] text-white">
     <div className="max-w-7xl mx-auto px-6 py-16">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.8fr_1fr_1fr_1.3fr] gap-12 lg:gap-8">
+      <motion.div
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.8fr_1fr_1fr_1.3fr] gap-12 lg:gap-8"
+      >
         {/* Brand + social */}
-        <div className="flex flex-col gap-5">
+        <motion.div variants={fadeUp} className="flex flex-col gap-5">
           <img src={logoFinale} alt="SmileLive" className="h-11 w-auto object-contain object-left brightness-0 invert" width="120" height="44" loading="lazy" />
           <p className="text-sm text-slate-400 leading-relaxed max-w-[260px]">
             Il convertitore di pazienti indecisi: simulazioni del sorriso con l'AI che aumentano l'accettazione dei preventivi.
@@ -2311,7 +2314,7 @@ const Footer = () => (
               )
             )}
           </div>
-        </div>
+        </motion.div>
 
         {/* Naviga */}
         <FooterCol title="Naviga">
@@ -2350,11 +2353,17 @@ const Footer = () => (
             </span>
           </li>
         </FooterCol>
-      </div>
+      </motion.div>
     </div>
 
-    {/* Bottom bar */}
-    <div className="border-t border-white/10">
+    {/* Bottom bar — scende in posizione dopo le colonne */}
+    <motion.div
+      initial={{ opacity: 0, y: -24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+      className="border-t border-white/10"
+    >
       <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
         <p>© {new Date().getFullYear()} SmileLive. Tutti i diritti riservati.</p>
         <div className="flex items-center gap-4">
