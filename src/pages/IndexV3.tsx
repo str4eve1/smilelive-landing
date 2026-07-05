@@ -51,10 +51,15 @@ const staggerContainer = {
 const EmotionalVideo = () => {
   const [isMuted, setIsMuted] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [sliderPosition, setSliderPosition] = useState(50);
-  const [isDragging, setIsDragging] = useState(false);
   const [imgAlign, setImgAlign] = useState({ x: 0, y: 0, scale: 1 });
   const sliderRef = useRef<HTMLDivElement>(null);
+  const beforeRef = useRef<HTMLImageElement>(null);
+  const lineRef = useRef<HTMLDivElement>(null);
+  const primaLabelRef = useRef<HTMLDivElement>(null);
+  const dopoLabelRef = useRef<HTMLDivElement>(null);
+  const draggingRef = useRef(false);
+  const rafRef = useRef<number | null>(null);
+  const posRef = useRef(50);
   const showAlignmentControls = false;
   const [inView, setInView] = useState(false);
   const lastInteractRef = useRef(0);
@@ -62,12 +67,23 @@ const EmotionalVideo = () => {
 
   const markInteract = () => { lastInteractRef.current = Date.now(); };
 
+  // Aggiornamento imperativo dello slider: niente re-render React durante il drag → fluido su mobile.
+  const apply = (pct: number, animate = false) => {
+    const p = Math.max(0, Math.min(100, pct));
+    posRef.current = p;
+    if (beforeRef.current) { beforeRef.current.style.transition = animate ? "clip-path 0.45s ease" : "none"; beforeRef.current.style.clipPath = `inset(0 ${100 - p}% 0 0)`; }
+    if (lineRef.current) { lineRef.current.style.transition = animate ? "left 0.45s ease" : "none"; lineRef.current.style.left = `${p}%`; }
+    if (primaLabelRef.current) primaLabelRef.current.style.opacity = p > 20 ? "1" : "0";
+    if (dopoLabelRef.current) dopoLabelRef.current.style.opacity = p < 80 ? "1" : "0";
+    sliderRef.current?.setAttribute("aria-valuenow", String(Math.round(p)));
+  };
+
   // Demo: muove lo slider da solo per far capire che è trascinabile.
   // Parte a ogni ingresso in vista e si ripete ogni 10s se non viene toccato.
   const runNudge = () => {
     nudgeTimers.current.forEach(clearTimeout);
     nudgeTimers.current = ([[400, 72], [1100, 30], [1800, 55]] as const)
-      .map(([t, v]) => window.setTimeout(() => setSliderPosition(v), t));
+      .map(([t, v]) => window.setTimeout(() => apply(v, true), t));
   };
 
   // Rileva l'ingresso in vista (ogni volta, non una-tantum)
@@ -104,59 +120,29 @@ const EmotionalVideo = () => {
     }
   };
 
-  const pointerStartRef = useRef<{ x: number; y: number; id: number } | null>(null);
-
   const updateSliderPosition = (clientX: number) => {
     markInteract();
-    if (!sliderRef.current) return;
-    const rect = sliderRef.current.getBoundingClientRect();
+    const el = sliderRef.current; if (!el) return;
+    const rect = el.getBoundingClientRect();
     const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
-    setSliderPosition((x / rect.width) * 100);
+    const pct = (x / rect.width) * 100;
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(() => apply(pct, false));
   };
 
+  // Aggancia subito su qualsiasi input (mouse + touch): tap posiziona, drag segue il dito.
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     if ((e.target as HTMLElement).closest('.alignment-controls')) return;
-    markInteract();
-    pointerStartRef.current = { x: e.clientX, y: e.clientY, id: e.pointerId };
-    if (e.pointerType === "mouse") {
-      setIsDragging(true);
-      e.currentTarget.setPointerCapture(e.pointerId);
-      updateSliderPosition(e.clientX);
-    }
+    draggingRef.current = true;
+    updateSliderPosition(e.clientX);
+    try { e.currentTarget.setPointerCapture(e.pointerId); } catch { /* noop */ }
   };
-
-  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (isDragging) { updateSliderPosition(e.clientX); return; }
-    const start = pointerStartRef.current;
-    if (!start || start.id !== e.pointerId) return;
-    const dx = e.clientX - start.x;
-    const dy = e.clientY - start.y;
-    const adx = Math.abs(dx);
-    const ady = Math.abs(dy);
-    if (adx < 8 && ady < 8) return;
-    if (adx > ady) {
-      setIsDragging(true);
-      try { e.currentTarget.setPointerCapture(e.pointerId); } catch { /* noop */ }
-      updateSliderPosition(e.clientX);
-    } else {
-      pointerStartRef.current = null;
-    }
-  };
-
-  const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
-    const start = pointerStartRef.current;
-    if (!isDragging && start && start.id === e.pointerId && e.pointerType !== "mouse") {
-      const dx = Math.abs(e.clientX - start.x);
-      const dy = Math.abs(e.clientY - start.y);
-      if (dx < 8 && dy < 8) updateSliderPosition(e.clientX);
-    }
-    setIsDragging(false);
-    pointerStartRef.current = null;
-  };
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => { if (draggingRef.current) updateSliderPosition(e.clientX); };
+  const handlePointerUp = () => { draggingRef.current = false; };
 
   const handleSliderKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === "ArrowLeft") { markInteract(); setSliderPosition((v) => Math.max(0, v - 5)); }
-    if (e.key === "ArrowRight") { markInteract(); setSliderPosition((v) => Math.min(100, v + 5)); }
+    if (e.key === "ArrowLeft") { markInteract(); apply(posRef.current - 5, true); }
+    if (e.key === "ArrowRight") { markInteract(); apply(posRef.current + 5, true); }
   };
 
   return (
@@ -210,23 +196,23 @@ const EmotionalVideo = () => {
                 onPointerMove={handlePointerMove}
                 onPointerUp={handlePointerUp}
                 onPointerCancel={handlePointerUp}
-                onPointerLeave={handlePointerUp}
                 onKeyDown={handleSliderKeyDown}
                 role="slider"
                 tabIndex={0}
                 aria-label="Confronto prima e dopo"
                 aria-valuemin={0}
                 aria-valuemax={100}
-                aria-valuenow={Math.round(sliderPosition)}
-                style={{ touchAction: "pan-y" }}
+                aria-valuenow={50}
+                style={{ touchAction: "none" }}
               >
                 <img src={afterImg} alt="Sorriso Dopo" className="absolute inset-0 w-full h-full object-cover object-[center_62%]" draggable="false" />
                 <img
+                  ref={beforeRef}
                   src={beforeImg}
                   alt="Sorriso Prima"
                   className="absolute inset-0 w-full h-full object-cover object-[center_62%]"
                   draggable="false"
-                  style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)`, transition: isDragging ? "none" : "clip-path 0.5s ease" }}
+                  style={{ clipPath: "inset(0 50% 0 0)" }}
                 />
                 {showAlignmentControls && (
                   <div className="alignment-controls absolute top-4 right-4 flex flex-col gap-2 z-50 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -248,13 +234,13 @@ const EmotionalVideo = () => {
                     </div>
                   </div>
                 )}
-                <div className="pointer-events-none absolute top-0 bottom-0 -ml-[1.5px] w-[3px] bg-primary" style={{ left: `${sliderPosition}%`, transition: isDragging ? "none" : "left 0.5s ease" }}>
+                <div ref={lineRef} className="pointer-events-none absolute top-0 bottom-0 -ml-[1.5px] w-[3px] bg-primary" style={{ left: "50%" }}>
                   <div className="absolute top-1/2 left-1/2 h-10 w-10 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary flex items-center justify-center text-white transition-transform md:h-12 md:w-12 group-hover:scale-110">
                     <ArrowsHorizontal size={18} weight="bold" />
                   </div>
                 </div>
-                <div className="absolute bottom-6 left-6 px-4 py-2 bg-white/90 backdrop-blur-md rounded-full text-xs uppercase tracking-widest text-text-main font-bold shadow-sm border border-slate-200 pointer-events-none transition-opacity duration-300" style={{ opacity: sliderPosition > 20 ? 1 : 0 }}>Prima</div>
-                <div className="absolute bottom-6 right-6 px-4 py-2 bg-primary/90 backdrop-blur-md rounded-full text-xs uppercase tracking-widest text-white font-bold shadow-sm pointer-events-none transition-opacity duration-300" style={{ opacity: sliderPosition < 80 ? 1 : 0 }}>Dopo</div>
+                <div ref={primaLabelRef} className="absolute bottom-6 left-6 px-4 py-2 bg-white/90 backdrop-blur-md rounded-full text-xs uppercase tracking-widest text-text-main font-bold shadow-sm border border-slate-200 pointer-events-none transition-opacity duration-300">Prima</div>
+                <div ref={dopoLabelRef} className="absolute bottom-6 right-6 px-4 py-2 bg-primary/90 backdrop-blur-md rounded-full text-xs uppercase tracking-widest text-white font-bold shadow-sm pointer-events-none transition-opacity duration-300">Dopo</div>
               </div>
             </div>
           </div>
@@ -270,6 +256,38 @@ const EmotionalVideo = () => {
 const GridBg = () => (
   <div className="grid-bg absolute inset-0 -z-10 pointer-events-none" aria-hidden="true"></div>
 );
+
+// ─── WaveField (sfondo line-art: fascio di curve a ventaglio, motivo "wave") ───
+// Generato: N curve sinusoidali che convergono in un fuoco (angolo) e si aprono
+// creando l'effetto moiré. Tutti i parametri sono qui sopra per ritoccarlo.
+const WaveField = ({ className = "", style, focusX = -0.03, focusY = -0.05, spreadX = 1, opacity = 0.22 }:
+  { className?: string; style?: React.CSSProperties; focusX?: number; focusY?: number; spreadX?: number; opacity?: number }) => {
+  const W = 1440, H = 620, N = 60, SAMPLES = 44, TAU = Math.PI * 2;
+  const fx0 = focusX * W, fy0 = focusY * H, ex = spreadX * W;
+  const paths = Array.from({ length: N }, (_, i) => {
+    const t = i / (N - 1);
+    const targetY = H * (-0.1 + t * 1.14);     // dove la linea "punta" sul lato aperto
+    const amp = H * (0.055 + t * 0.16);
+    const freq = 1.8 + t * 0.85;
+    const phase = t * Math.PI * 1.7;
+    const pts = Array.from({ length: SAMPLES + 1 }, (_, s) => {
+      const p = s / SAMPLES;                   // 0 = fuoco, 1 = lato aperto
+      const x = fx0 + (ex - fx0) * p;
+      const base = fy0 + (targetY - fy0) * p;  // ventaglio dal fuoco
+      const grow = Math.pow(p, 1.12);          // ampiezza cresce allontanandosi
+      const y = base + amp * grow * Math.sin(freq * p * TAU + phase);
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    });
+    return "M" + pts.join(" L");
+  });
+  return (
+    <svg className={className} style={style} viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMin slice" fill="none" aria-hidden="true">
+      {paths.map((d, i) => (
+        <path key={i} d={d} stroke={`rgba(2,132,199,${opacity})`} strokeWidth="0.6" vectorEffect="non-scaling-stroke" />
+      ))}
+    </svg>
+  );
+};
 
 // ─── AISimShowcase ────────────────────────────────────────────────────────────
 const AISimShowcase = () => {
@@ -406,6 +424,16 @@ const TopBar = () => {
 
   return (
     <div ref={ref} className="fixed top-0 inset-x-0 z-50 flex flex-col">
+      {/* Announcement bar: invito alle 3 prove gratis */}
+      <a
+        href="https://app.smilelive.it/"
+        onClick={() => trackCta("inizia_ora", "announcement_bar")}
+        className="bg-primary text-white text-xs md:text-sm font-semibold text-center py-2 px-4 flex items-center justify-center gap-x-2 gap-y-0.5 flex-wrap hover:bg-sky-600 transition-colors"
+      >
+        <Sparkle size={14} weight="fill" className="shrink-0" />
+        <span>Inizia gratis: <strong className="font-bold">3 anteprime in omaggio</strong></span>
+        <span className="inline-flex items-center gap-1 underline underline-offset-2 font-bold">Inizia ora <CaretRight size={12} weight="bold" /></span>
+      </a>
       <motion.div
         initial={{ y: -100 }}
         animate={{ y: 0 }}
@@ -479,6 +507,12 @@ const Hero = () => (
     <div className="absolute top-[3%] right-[-12%] w-[560px] h-[560px] rounded-full bg-gradient-to-br from-sky-100/60 via-sky-50/40 to-indigo-100/25 pointer-events-none hidden lg:block" aria-hidden="true"></div>
     {/* Dot pattern a destra del telefono */}
     <div className="absolute top-[46%] right-[3%] w-28 h-28 pointer-events-none opacity-50 hidden lg:block" style={{ backgroundImage: 'radial-gradient(circle, rgba(2,132,199,0.22) 1.5px, transparent 1.5px)', backgroundSize: '15px 15px' }} aria-hidden="true"></div>
+    {/* Line-art a onde: fascio dall'alto (zona titolo), sfuma prima del divider */}
+    <WaveField
+      className="absolute top-0 inset-x-0 h-[78%] w-full pointer-events-none z-0"
+      style={{ WebkitMaskImage: 'linear-gradient(to bottom, #000 0%, #000 58%, transparent 92%)', maskImage: 'linear-gradient(to bottom, #000 0%, #000 58%, transparent 92%)' }}
+      focusX={-0.03} focusY={-0.05} spreadX={1} opacity={0.22}
+    />
 
     <div className="relative z-[1] max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-12 items-center">
       {/* Copy */}
@@ -488,6 +522,12 @@ const Hero = () => (
         animate="visible"
         className="space-y-8 relative z-10"
       >
+        <motion.div variants={fadeUp}>
+          <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 pl-2.5 pr-3.5 py-1.5 text-sm font-semibold text-primary">
+            <Sparkle size={16} weight="fill" className="text-primary" />
+            Il miglior strumento AI per dentisti
+          </span>
+        </motion.div>
         <motion.h1 variants={fadeUp} className="text-5xl md:text-6xl font-headline font-bold tracking-tight leading-[1.1] text-text-main">
           <span className="block">1 Foto. 1 Video.</span>
           <span className="block text-primary">10 Secondi.</span>
@@ -1054,19 +1094,18 @@ const ProblemSection = () => {
             transition={{ duration: 0.6 }}
           >
             <div className="mb-5">
-              <span className="text-xs font-bold tracking-[0.2em] uppercase text-red-600">Il Problema Nascosto</span>
+              <span className="text-xs font-bold tracking-[0.2em] uppercase text-orange-600">Il problema nascosto</span>
             </div>
             <h2 className="font-headline font-bold tracking-tight leading-[1.1] text-3xl md:text-4xl">
-              Ogni <span className="text-red-500 italic">"ci penso"</span> e' un preventivo da{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-400">€1.500–€6.000</span>{" "}
-              che esce dalla porta.
+              Ogni <span className="italic text-orange-500">"ci penso"</span> e' un preventivo da{" "}
+              <span className="text-orange-500">€1.500–€6.000</span>{" "}
+              che resta sul tavolo.
             </h2>
-            <span className="block font-serif italic text-red-500 text-2xl md:text-3xl mt-2">Ogni settimana.</span>
             <p className="mt-5 text-lg text-text-muted leading-relaxed">
-              Non una volta ogni tanto. <strong className="text-text-main">Ogni settimana.</strong> In Italia solo il 34% dei pazienti va dal dentista con regolarita'. Chi e' gia' entrato nel tuo studio ha gia' fatto il passo piu' difficile: e' a meta' strada verso il si'. Ma senza uno strumento che trasformi il desiderio in decisione, il preventivo rimane un foglio su un tavolo.
+              In Italia solo il 34% dei pazienti va dal dentista con regolarita'. Chi e' gia' entrato nel tuo studio ha fatto il passo piu' difficile: e' a meta' strada verso il si'. Ma senza uno strumento che trasformi il desiderio in decisione, il preventivo rimane un foglio su un tavolo.
             </p>
             <p className="mt-4 text-[17px] md:text-lg font-bold text-text-main leading-relaxed">
-              Anche solo 1 preventivo perso a settimana = <span className="text-red-500">€40.000–€80.000 all'anno</span>.
+              Anche solo 1 preventivo perso a settimana significa <span className="text-orange-600">€40.000–€80.000 all'anno</span>.
             </p>
             <p className="mt-4 text-text-muted leading-relaxed">
               E parliamo proprio dei trattamenti che pesano di piu': quelli che il paziente paga di tasca sua, dove ogni <strong className="text-text-main">"ci penso" vale migliaia di euro</strong>.
@@ -1106,48 +1145,60 @@ const ProblemSection = () => {
 
 // ─── OtSlider (mini prima/dopo trascinabile per le card trattamento) ──────────
 const OtSlider = ({ prima, dopo, alt, focus = "center" }: { prima: string; dopo: string; alt: string; focus?: string }) => {
-  const [pos, setPos] = useState(50);
-  const [dragging, setDragging] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const start = useRef<{ x: number; y: number; id: number } | null>(null);
+  const primaRef = useRef<HTMLImageElement>(null);
+  const lineRef = useRef<HTMLDivElement>(null);
+  const primaTagRef = useRef<HTMLSpanElement>(null);
+  const dopoTagRef = useRef<HTMLSpanElement>(null);
+  const draggingRef = useRef(false);
+  const rafRef = useRef<number | null>(null);
 
+  // Aggiornamento imperativo (niente re-render React durante il drag → fluido su mobile)
+  const apply = (pct: number) => {
+    const p = Math.max(0, Math.min(100, pct));
+    if (primaRef.current) primaRef.current.style.clipPath = `inset(0 ${100 - p}% 0 0)`;
+    if (lineRef.current) lineRef.current.style.left = `${p}%`;
+    if (primaTagRef.current) primaTagRef.current.style.opacity = p > 18 ? "1" : "0";
+    if (dopoTagRef.current) dopoTagRef.current.style.opacity = p < 82 ? "1" : "0";
+  };
   const update = (clientX: number) => {
     const el = ref.current; if (!el) return;
     const rect = el.getBoundingClientRect();
     const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
-    setPos((x / rect.width) * 100);
+    const pct = (x / rect.width) * 100;
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(() => apply(pct));
   };
+  const setTransition = (v: string) => {
+    if (primaRef.current) primaRef.current.style.transition = v;
+    if (lineRef.current) lineRef.current.style.transition = v;
+  };
+  // Aggancia subito su qualsiasi input (mouse + touch): tap posiziona, drag segue il dito.
   const onDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    start.current = { x: e.clientX, y: e.clientY, id: e.pointerId };
-    if (e.pointerType === "mouse") { setDragging(true); e.currentTarget.setPointerCapture(e.pointerId); update(e.clientX); }
+    draggingRef.current = true;
+    setTransition("none");
+    update(e.clientX);
+    try { e.currentTarget.setPointerCapture(e.pointerId); } catch { /* noop */ }
   };
-  const onMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (dragging) { update(e.clientX); return; }
-    const s = start.current; if (!s || s.id !== e.pointerId) return;
-    const dx = Math.abs(e.clientX - s.x), dy = Math.abs(e.clientY - s.y);
-    if (dx < 8 && dy < 8) return;
-    if (dx > dy) { setDragging(true); try { e.currentTarget.setPointerCapture(e.pointerId); } catch { /* noop */ } update(e.clientX); }
-    else start.current = null;
-  };
-  const onUp = () => { setDragging(false); start.current = null; };
+  const onMove = (e: React.PointerEvent<HTMLDivElement>) => { if (draggingRef.current) update(e.clientX); };
+  const onUp = () => { draggingRef.current = false; setTransition("clip-path 0.25s ease, left 0.25s ease"); };
 
   return (
     <div
       ref={ref}
-      className="group relative aspect-[16/9] overflow-hidden cursor-ew-resize select-none bg-slate-100"
+      className="group relative aspect-[16/9] overflow-hidden cursor-ew-resize select-none bg-slate-100 touch-none"
       onPointerDown={onDown}
       onPointerMove={onMove}
       onPointerUp={onUp}
       onPointerCancel={onUp}
-      onPointerLeave={onUp}
-      style={{ touchAction: "pan-y" }}
+      style={{ touchAction: "none", contain: "paint" }}
     >
-      <img src={dopo} alt={`${alt} dopo`} className="absolute inset-0 w-full h-full object-cover" draggable="false" style={{ objectPosition: focus }} />
-      <img src={prima} alt={`${alt} prima`} className="absolute inset-0 w-full h-full object-cover" draggable="false"
-        style={{ objectPosition: focus, clipPath: `inset(0 ${100 - pos}% 0 0)`, transition: dragging ? "none" : "clip-path 0.4s ease" }} />
-      <span className="ot-tag ot-prima" style={{ opacity: pos > 18 ? 1 : 0 }}>Prima</span>
-      <span className="ot-tag ot-dopo" style={{ opacity: pos < 82 ? 1 : 0 }}>Dopo</span>
-      <div className="pointer-events-none absolute top-0 bottom-0 -ml-px w-0.5 bg-white shadow" style={{ left: `${pos}%`, transition: dragging ? "none" : "left 0.4s ease" }}>
+      <img src={dopo} alt={`${alt} dopo`} className="absolute inset-0 w-full h-full object-cover" draggable="false" decoding="async" style={{ objectPosition: focus, transform: "translateZ(0)" }} />
+      <img ref={primaRef} src={prima} alt={`${alt} prima`} className="absolute inset-0 w-full h-full object-cover" draggable="false" decoding="async"
+        style={{ objectPosition: focus, clipPath: "inset(0 50% 0 0)", willChange: "clip-path", transform: "translateZ(0)", backfaceVisibility: "hidden" }} />
+      <span ref={primaTagRef} className="ot-tag ot-prima">Prima</span>
+      <span ref={dopoTagRef} className="ot-tag ot-dopo">Dopo</span>
+      <div ref={lineRef} className="pointer-events-none absolute top-0 bottom-0 -ml-px w-0.5 bg-white shadow" style={{ left: "50%" }}>
         <span className="ot-handle"><ArrowsHorizontal size={16} weight="bold" /></span>
       </div>
     </div>
@@ -1416,22 +1467,22 @@ const WhatYouGet = () => {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 lg:grid-cols-[minmax(0,700px)_360px] gap-8 lg:gap-10 items-end mb-10"
+          className="grid grid-cols-1 lg:grid-cols-[minmax(0,700px)_1fr] gap-8 lg:gap-10 items-end mb-10"
         >
           <div>
             <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-primary mb-4">Gestionale completo</span>
-            <h2 className="text-4xl md:text-6xl lg:text-7xl font-body font-black tracking-tight leading-[0.98] text-balance">
-              <span className="text-orange-500">Aspetta.</span><br className="sm:hidden" /> SmileLive non è solo la preview del sorriso.
+            <h2 className="text-3xl md:text-5xl font-headline font-bold tracking-tight leading-[1.05] text-balance">
+              <span className="text-orange-500">Aspetta.</span><br className="sm:hidden" /> SmileLive non è solo l'anteprima del sorriso.
             </h2>
-            <p className="mt-4 text-xl md:text-2xl font-body font-bold tracking-tight leading-snug text-orange-500 max-w-2xl">
+            <p className="mt-4 text-lg md:text-xl font-bold tracking-tight leading-snug text-orange-500 max-w-2xl">
               È un gestionale con tutto incluso.
             </p>
             <p className="mt-3 text-base md:text-lg leading-relaxed text-slate-300 max-w-2xl">
-              Mentre lo usavi per convertire i pazienti indecisi, lavorava già su tutto il resto: i tre modi silenziosi in cui ogni studio perde soldi. Pazienti che non firmano, appuntamenti dimenticati, burocrazia che mangia ore. Li risolve tutti e tre, in un unico posto.
+              Oltre all'anteprima, segue il resto del percorso: scheda paziente, preventivi, promemoria degli appuntamenti e adempimenti fiscali. Meno strumenti separati, meno tempo in segreteria, tutto in un unico posto.
             </p>
           </div>
-          <aside className="relative overflow-hidden rounded-[22px] border border-orange-300/50 bg-[linear-gradient(150deg,rgba(249,115,22,0.34),rgba(217,70,20,0.14))] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_30px_78px_-58px_rgba(0,0,0,0.88)] backdrop-blur">
-            <strong className="block text-3xl font-body font-black tracking-tight leading-none text-white">Sì, tutto incluso.</strong>
+          <aside className="relative overflow-hidden rounded-2xl border border-orange-300/50 bg-[linear-gradient(150deg,rgba(249,115,22,0.34),rgba(217,70,20,0.14))] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_30px_78px_-58px_rgba(0,0,0,0.88)] backdrop-blur">
+            <strong className="block text-2xl font-headline font-bold tracking-tight leading-none text-white">Sì, tutto incluso.</strong>
             <span className="block mt-3 text-sm leading-relaxed text-slate-200">
               CRM, preventivi, firma, reminder, fisco e prescrizione vocale nello stesso flusso commerciale.
             </span>
@@ -1451,7 +1502,7 @@ const WhatYouGet = () => {
             <motion.div
               key={feature.title}
               variants={fadeUp}
-              className={`relative min-h-[255px] overflow-hidden rounded-[22px] border border-white/10 bg-white/[0.065] p-6 shadow-[0_34px_86px_-58px_rgba(0,0,0,0.9)] backdrop-blur transition-all duration-300 hover:-translate-y-1 ${feature.span}`}
+              className={`relative min-h-[190px] overflow-hidden rounded-2xl border border-white/10 bg-white/[0.065] p-6 shadow-[0_34px_86px_-58px_rgba(0,0,0,0.9)] backdrop-blur transition-all duration-300 hover:-translate-y-1 ${feature.span}`}
               style={{
                 boxShadow: `0 34px 86px -58px rgba(0,0,0,.9), inset 0 1px 0 rgba(255,255,255,.11)`,
               }}
@@ -1464,10 +1515,10 @@ const WhatYouGet = () => {
               />
               <div className="relative flex items-start justify-between gap-4">
                 <div
-                  className="w-[54px] h-[54px] rounded-[17px] grid place-items-center text-white text-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.45)]"
+                  className="w-12 h-12 rounded-2xl grid place-items-center text-white text-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.45)]"
                   style={{ background: `linear-gradient(145deg, ${feature.accent}, #0f172a)` }}
                 >
-                  <Icon size={25} weight="regular" />
+                  <Icon size={22} weight="regular" />
                 </div>
                 <span
                   className="inline-flex items-center rounded-full px-3 py-1.5 text-[12px] font-extrabold"
@@ -1477,8 +1528,8 @@ const WhatYouGet = () => {
                 </span>
               </div>
               <div className="relative">
-                <h3 className="mt-6 text-2xl md:text-[34px] font-body font-black tracking-tight leading-[1.02] text-white">{feature.title}</h3>
-                <p className="mt-3 text-[15px] leading-relaxed text-slate-300">{feature.body}</p>
+                <h3 className="mt-6 text-lg md:text-xl font-bold tracking-tight leading-snug text-white">{feature.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-slate-300">{feature.body}</p>
                 <div className="mt-5 flex flex-wrap gap-2">
                   {feature.states.map((s) => (
                     <span key={s} className="rounded-full border border-white/10 bg-white/[0.065] px-3 py-1.5 text-xs font-bold text-slate-100">
@@ -1492,22 +1543,22 @@ const WhatYouGet = () => {
 
           <motion.div
             variants={fadeUp}
-            className="relative min-h-[255px] overflow-hidden rounded-[22px] border border-orange-300/35 bg-[linear-gradient(145deg,rgba(42,20,7,0.96),rgba(18,28,43,0.96))] p-6 shadow-[0_34px_86px_-58px_rgba(0,0,0,0.9)] lg:col-span-12"
+            className="relative min-h-[190px] overflow-hidden rounded-2xl border border-orange-300/35 bg-[linear-gradient(145deg,rgba(42,20,7,0.96),rgba(18,28,43,0.96))] p-6 shadow-[0_34px_86px_-58px_rgba(0,0,0,0.9)] lg:col-span-12"
           >
             <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(560px_300px_at_10%_8%,rgba(249,115,22,0.42),transparent_64%),radial-gradient(520px_300px_at_92%_100%,rgba(217,119,6,0.34),transparent_66%),radial-gradient(420px_240px_at_72%_10%,rgba(251,191,36,0.16),transparent_70%)]" />
             <div className="relative flex items-start justify-between gap-4">
-              <div className="w-[54px] h-[54px] rounded-[17px] grid place-items-center bg-gradient-to-br from-orange-400 to-amber-600 text-white shadow-[0_18px_48px_-24px_rgba(249,115,22,0.95)]">
-                <Microphone size={25} />
+              <div className="w-12 h-12 rounded-2xl grid place-items-center bg-gradient-to-br from-orange-400 to-amber-600 text-white shadow-[0_18px_48px_-24px_rgba(249,115,22,0.95)]">
+                <Microphone size={22} />
               </div>
               <span className="rounded-full border border-orange-300/35 bg-orange-500/20 px-3 py-1.5 text-[12px] font-extrabold text-orange-100">
                 Esclusiva
               </span>
             </div>
             <div className="relative">
-              <h3 className="mt-6 text-2xl md:text-[34px] font-body font-black tracking-tight leading-[1.02] text-white">
+              <h3 className="mt-6 text-lg md:text-xl font-bold tracking-tight leading-snug text-white">
                 Prescrizione vocale al laboratorio
               </h3>
-              <p className="mt-3 max-w-3xl text-[15px] leading-relaxed text-orange-50/80">
+              <p className="mt-3 max-w-3xl text-sm leading-relaxed text-orange-50/80">
                 Detti la lavorazione a voce: SmileLive struttura elemento, materiale, colore, consegna e laboratorio di riferimento. La prescrizione parte ordinata, senza messaggi dispersi.
               </p>
               <div className="mt-5 flex flex-wrap gap-2">
@@ -1570,7 +1621,7 @@ const WhatYouGet = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-6">
-                <div className="rounded-[22px] border border-white/10 bg-white/[0.06] p-5">
+                <div className="rounded-2xl border border-white/10 bg-white/[0.06] p-5">
                   <p className="text-xs font-extrabold text-amber-300">Dettatura</p>
                   <p className="mt-4 min-h-[124px] text-lg leading-relaxed text-slate-200">
                     {demoStage === "idle" ? '"Premi il microfono e guarda come viene strutturata."' : `"${transcript}"`}
@@ -1604,7 +1655,7 @@ const WhatYouGet = () => {
                   </div>
                 </div>
 
-                <div className="rounded-[22px] border border-white/10 bg-white/[0.06] p-5">
+                <div className="rounded-2xl border border-white/10 bg-white/[0.06] p-5">
                   <div className="flex items-center justify-between gap-4">
                     <p className="text-xs font-extrabold text-slate-400">Prescrizione strutturata</p>
                     <span className="text-xs font-extrabold text-sky-300">
@@ -1732,6 +1783,7 @@ const IntermediateCTA = () => {
 
   return (
     <section className="py-20 md:py-28 relative overflow-hidden bg-gradient-to-b from-sky-50/60 via-white to-white">
+      <WaveField className="absolute top-0 inset-x-0 h-[85%] -z-10" style={{ WebkitMaskImage: 'linear-gradient(to bottom, #000 0%, #000 52%, transparent 92%)', maskImage: 'linear-gradient(to bottom, #000 0%, #000 52%, transparent 92%)' }} focusX={1.03} focusY={-0.05} spreadX={0} opacity={0.16} />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[620px] h-[620px] bg-primary/10 blur-[150px] rounded-full pointer-events-none" />
       <motion.div
         initial={{ opacity: 0, y: 30 }}
@@ -1795,7 +1847,7 @@ const Pricing = () => {
 
   const freeTokens = { accent: "#64748b", grad: "linear-gradient(135deg,#94a3b8,#64748b)" };
   const Feat = ({ icon: Icon, grad, children }: { icon: React.ElementType; grad: string; children: React.ReactNode }) => (
-    <li className="flex items-center gap-3 text-[15px] text-text-muted text-left">
+    <li className="flex items-center gap-3 text-sm text-text-muted text-left">
       <span className="w-9 h-9 shrink-0 rounded-full flex items-center justify-center text-white" style={{ background: grad }}>
         <Icon size={18} weight="regular" />
       </span>
@@ -1820,6 +1872,7 @@ const Pricing = () => {
             <button onClick={() => setIsAnnual(false)} className={`px-5 py-2 rounded-full font-medium transition-colors duration-200 ${!isAnnual ? 'bg-white shadow-sm text-text-main' : 'text-text-muted hover:text-text-main'}`}>Mensile</button>
             <button onClick={() => setIsAnnual(true)} className={`px-5 py-2 rounded-full font-medium transition-colors duration-200 flex items-center gap-2 ${isAnnual ? 'bg-white shadow-sm text-text-main' : 'text-text-muted hover:text-text-main'}`}>
               Annuale
+              <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-gold/15 text-gold whitespace-nowrap">Fino a -17%</span>
             </button>
           </div>
         </motion.div>
@@ -2052,7 +2105,8 @@ const ForWho = () => (
 
 // ─── FutureVision ──────────────────────────────────────────────────────────────
 const FutureVision = () => (
-  <section id="future" className="py-16 md:py-28 bg-slate-50">
+  <section id="future" className="py-16 md:py-28 bg-slate-50 relative overflow-hidden">
+    <WaveField className="absolute bottom-0 inset-x-0 h-[85%] -z-10" style={{ WebkitMaskImage: 'linear-gradient(to top, #000 0%, #000 52%, transparent 92%)', maskImage: 'linear-gradient(to top, #000 0%, #000 52%, transparent 92%)' }} focusX={-0.03} focusY={1.05} spreadX={1} opacity={0.14} />
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -2164,6 +2218,7 @@ const FAQ = () => {
 // ─── FinalCTA ──────────────────────────────────────────────────────────────────
 const FinalCTA = () => (
   <section className="py-20 md:py-40 relative overflow-hidden text-center bg-gradient-to-b from-white via-sky-50/50 to-sky-50">
+    <WaveField className="absolute top-0 inset-x-0 h-[88%] -z-10" style={{ WebkitMaskImage: 'linear-gradient(to bottom, #000 0%, #000 55%, transparent 94%)', maskImage: 'linear-gradient(to bottom, #000 0%, #000 55%, transparent 94%)' }} focusX={-0.03} focusY={-0.05} spreadX={1} opacity={0.17} />
     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[500px] bg-primary/10 blur-[160px] rounded-full pointer-events-none"></div>
     <div className="absolute top-0 left-1/4 w-[400px] h-[300px] bg-primary/[0.06] blur-[120px] rounded-full pointer-events-none"></div>
     <motion.div
