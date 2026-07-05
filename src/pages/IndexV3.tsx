@@ -645,7 +645,7 @@ const Hero = () => (
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.3, type: "spring", stiffness: 180, damping: 18 }}
+            transition={{ delay: 1.5, type: "spring", stiffness: 180, damping: 18 }}
             className="hero-badge transition-opacity duration-700 ease-out card-float-c absolute flex left-1/2 -translate-x-1/2 -bottom-6 bg-white rounded-xl sm:rounded-2xl px-3 py-2 sm:px-4 sm:py-3 border border-slate-200 items-center gap-2 sm:gap-2.5 whitespace-nowrap"
           >
             <div className="flex gap-0.5">
@@ -658,13 +658,13 @@ const Hero = () => (
           <motion.div
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.5, type: "spring", stiffness: 180, damping: 18 }}
-            className="hero-badge transition-opacity duration-700 ease-out absolute -right-4 sm:-right-20 bottom-[9%] w-[132px] sm:w-[168px] rounded-2xl overflow-hidden bg-white p-1.5 shadow-[0_18px_46px_-16px_rgba(2,132,199,0.5)] ring-1 ring-slate-100"
+            transition={{ delay: 1.3, type: "spring", stiffness: 180, damping: 18 }}
+            className="hero-badge transition-opacity duration-700 ease-out card-float-d absolute -left-6 sm:-left-20 bottom-[9%] w-[132px] sm:w-[168px] rounded-2xl overflow-hidden bg-white p-1.5 shadow-[0_18px_46px_-16px_rgba(2,132,199,0.5)] ring-1 ring-slate-100"
           >
             <div className="relative rounded-xl overflow-hidden aspect-[3/2] bg-slate-100">
-              <img src={afterImg} alt="Denti dopo" className="absolute inset-0 w-full h-full object-cover origin-center" style={{ objectPosition: '50% 58%', transform: 'scale(4.15)' }} loading="lazy" />
+              <img src={afterImg} alt="Denti dopo" className="absolute inset-0 w-full h-full object-cover origin-center" style={{ objectPosition: '51% 64%', transform: 'scale(3.95)' }} loading="lazy" />
               <div className="absolute inset-0 overflow-hidden" style={{ clipPath: 'inset(0 50% 0 0)' }}>
-                <img src={beforeImg} alt="Denti prima" className="absolute inset-0 w-full h-full object-cover origin-center" style={{ objectPosition: '50% 58%', transform: 'scale(4.15)' }} loading="lazy" />
+                <img src={beforeImg} alt="Denti prima" className="absolute inset-0 w-full h-full object-cover origin-center" style={{ objectPosition: '51% 64%', transform: 'scale(3.95)' }} loading="lazy" />
               </div>
               <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-0.5 bg-white/95 shadow-[0_0_6px_rgba(0,0,0,0.35)]" />
               <span className="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded-full bg-black/45 text-white text-[8px] font-bold tracking-wide">PRIMA</span>
@@ -744,9 +744,9 @@ const WhyChoose = () => {
             Più anteprime. Più fiducia. <span className="text-primary">Più pazienti.</span>
           </h2>
         </motion.div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-12 lg:gap-y-0 lg:divide-x lg:divide-slate-100">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-10 sm:gap-y-12 lg:gap-y-0 lg:divide-x lg:divide-slate-100">
           {items.map(({ icon: Icon, title, desc }) => (
-            <div key={title} className="flex flex-col items-center text-center px-6">
+            <div key={title} className="flex flex-col items-center text-center px-3 sm:px-6">
               <div className="w-16 h-16 rounded-full bg-sky-100/70 flex items-center justify-center mb-6">
                 <Icon size={28} weight="regular" className="text-primary" />
               </div>

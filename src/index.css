@@ -151,8 +151,9 @@
 .card-float-a { animation: cardOrbit 8s linear infinite; }
 .card-float-b { animation: cardOrbit 10s linear infinite; }
 .card-float-c { animation: cardOrbit 9s linear infinite; }
+.card-float-d { animation: cardOrbit 11s linear infinite; }
 @media (prefers-reduced-motion: reduce) {
-  .card-float-a, .card-float-b, .card-float-c { animation: none !important; }
+  .card-float-a, .card-float-b, .card-float-c, .card-float-d { animation: none !important; }
 }
 
 /* ── ProblemSection Hormozi-cut: pila di preventivi rifiutati ── */
