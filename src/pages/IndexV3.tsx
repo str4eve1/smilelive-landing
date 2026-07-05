@@ -1162,7 +1162,7 @@ const EveryTreatment = () => {
     { name: "Implantologia", price: "Da €1.500 a €5.000", copy: "Il vuoto che lo blocca da mesi. Mostragli il sorriso completo e il preventivo si sblocca.", prima: implantologiaPrima, dopo: implantologiaDopo, focus: "center 60%" },
   ];
   return (
-    <section className="py-10 md:py-14 bg-slate-50">
+    <section className="relative overflow-hidden pt-10 md:pt-14 pb-24 md:pb-32 bg-slate-50">
       <div className="max-w-6xl mx-auto px-6">
         <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
           <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-primary mb-4">Su qualsiasi trattamento</span>
@@ -1187,6 +1187,7 @@ const EveryTreatment = () => {
           ))}
         </div>
       </div>
+      <SectionWave top="#f8fafc" fill="#f2f9ff" />
     </section>
   );
 };
@@ -1211,7 +1212,6 @@ const ManifestoBand = () => (
       </p>
       <p className="mt-8 font-headline font-bold text-2xl md:text-4xl text-orange-500">Chi prova, compra.</p>
     </motion.div>
-    <SectionWave top="#071830" fill="#ffffff" />
   </section>
 );
 
@@ -1419,6 +1419,7 @@ const WhatYouGet = () => {
           className="grid grid-cols-1 lg:grid-cols-[minmax(0,700px)_360px] gap-8 lg:gap-10 items-end mb-10"
         >
           <div>
+            <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-primary mb-4">Gestionale completo</span>
             <h2 className="text-4xl md:text-6xl lg:text-7xl font-body font-black tracking-tight leading-[0.98] text-balance">
               <span className="text-orange-500">Aspetta.</span><br className="sm:hidden" /> SmileLive non è solo la preview del sorriso.
             </h2>
@@ -1429,7 +1430,7 @@ const WhatYouGet = () => {
               Mentre lo usavi per convertire i pazienti indecisi, lavorava già su tutto il resto: i tre modi silenziosi in cui ogni studio perde soldi. Pazienti che non firmano, appuntamenti dimenticati, burocrazia che mangia ore. Li risolve tutti e tre, in un unico posto.
             </p>
           </div>
-          <aside className="relative overflow-hidden rounded-[22px] border border-orange-300/40 bg-[linear-gradient(150deg,rgba(249,115,22,0.16),rgba(18,28,43,0.6))] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_30px_78px_-58px_rgba(0,0,0,0.88)] backdrop-blur">
+          <aside className="relative overflow-hidden rounded-[22px] border border-orange-300/50 bg-[linear-gradient(150deg,rgba(249,115,22,0.34),rgba(217,70,20,0.14))] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_30px_78px_-58px_rgba(0,0,0,0.88)] backdrop-blur">
             <strong className="block text-3xl font-body font-black tracking-tight leading-none text-white">Sì, tutto incluso.</strong>
             <span className="block mt-3 text-sm leading-relaxed text-slate-200">
               CRM, preventivi, firma, reminder, fisco e prescrizione vocale nello stesso flusso commerciale.
