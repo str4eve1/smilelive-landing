@@ -991,7 +991,7 @@ const ProblemSection = () => {
       + '<div class="pl-tot"><span class="pl-k">Totale</span><span class="pl-v">' + d.total + '</span></div>'
       + '<div class="pl-nopreview">' + SVG + '<span>Nessuna preview del paziente</span></div>'
       + '</div><div class="pl-stamp' + (s.alt ? ' pl-stamp-alt' : '') + '">' + s.t + '</div></div>';
-    const spawn = () => {
+    const spawn = (instant = false) => {
       const d = pick(POOL), rot = rnd(-5, 5), tx = rnd(-16, 16);
       stampFlip = !stampFlip;
       const s = stampFlip ? STAMPS[0] : STAMPS[1];
@@ -1002,7 +1002,7 @@ const ProblemSection = () => {
       el.setAttribute("data-rot", String(rot));
       el.innerHTML = html(d, s);
       const rest = "translate(" + tx + "px,0) rotate(" + rot + "deg)";
-      if (reduce) {
+      if (reduce || instant) {
         el.style.transform = rest;
         el.style.opacity = "1";
         pile.appendChild(el);
@@ -1027,12 +1027,11 @@ const ProblemSection = () => {
     const start = () => {
       if (!started) {
         started = true;
-        spawn();
-        timeouts.push(window.setTimeout(spawn, 470));
-        timeouts.push(window.setTimeout(spawn, 940));
-        if (!reduce) timer = window.setInterval(spawn, 2300);
+        // 3 fogli gia' a riposo (nessuna entrata = niente burst iniziale)
+        spawn(true); spawn(true); spawn(true);
+        if (!reduce) timer = window.setInterval(() => spawn(), 2300);
       } else if (!reduce && !timer) {
-        timer = window.setInterval(spawn, 2300);
+        timer = window.setInterval(() => spawn(), 2300);
       }
     };
     const stop = () => { if (timer) { window.clearInterval(timer); timer = null; } };
