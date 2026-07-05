@@ -1474,9 +1474,9 @@ const WhatYouGet = () => {
             <h2 className="text-3xl md:text-5xl font-headline font-bold tracking-tight leading-[1.05] text-balance">
               <span className="text-orange-500">Aspetta.</span><br className="sm:hidden" /> SmileLive non è solo l'anteprima del sorriso.
             </h2>
-            <p className="mt-4 text-lg md:text-xl font-bold tracking-tight leading-snug text-orange-500 max-w-2xl">
-              È un gestionale con tutto incluso.
-            </p>
+            <span className="mt-5 inline-flex items-center rounded-full bg-orange-500/15 border border-orange-400/30 px-4 py-1.5 text-sm font-extrabold uppercase tracking-[0.14em] text-orange-400">
+              Gestionale completo
+            </span>
             <p className="mt-3 text-base md:text-lg leading-relaxed text-slate-300 max-w-2xl">
               Oltre all'anteprima, segue il resto del percorso: scheda paziente, preventivi, promemoria degli appuntamenti e adempimenti fiscali. Meno strumenti separati, meno tempo in segreteria, tutto in un unico posto.
             </p>
@@ -1783,7 +1783,7 @@ const IntermediateCTA = () => {
 
   return (
     <section className="py-20 md:py-28 relative overflow-hidden bg-gradient-to-b from-sky-50/60 via-white to-white">
-      <WaveField className="absolute top-0 inset-x-0 h-[85%] -z-10" style={{ WebkitMaskImage: 'linear-gradient(to bottom, #000 0%, #000 52%, transparent 92%)', maskImage: 'linear-gradient(to bottom, #000 0%, #000 52%, transparent 92%)' }} focusX={1.03} focusY={-0.05} spreadX={0} opacity={0.16} />
+      <WaveField className="absolute top-0 inset-x-0 h-full z-0" style={{ WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, #000 24%, #000 58%, transparent 90%)', maskImage: 'linear-gradient(to bottom, transparent 0%, #000 24%, #000 58%, transparent 90%)' }} focusX={1.03} focusY={-0.05} spreadX={0} opacity={0.22} />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[620px] h-[620px] bg-primary/10 blur-[150px] rounded-full pointer-events-none" />
       <motion.div
         initial={{ opacity: 0, y: 30 }}
@@ -1824,6 +1824,7 @@ const IntermediateCTA = () => {
           ))}
         </div>
       </motion.div>
+      <SectionWave top="#ffffff" fill="#ffffff" />
     </section>
   );
 };
@@ -1856,8 +1857,11 @@ const Pricing = () => {
   );
 
   return (
-    <section id="pricing" className="py-16 md:py-28 bg-white relative overflow-hidden" style={{ backgroundImage: 'radial-gradient(50% 55% at 12% 18%, rgba(56,189,248,0.20), transparent 70%), radial-gradient(48% 55% at 88% 22%, rgba(129,140,248,0.20), transparent 70%), radial-gradient(60% 60% at 50% 108%, rgba(59,130,246,0.14), transparent 68%)', scrollMarginTop: 'var(--header-h, 7rem)' }}>
-      <div className="max-w-7xl mx-auto px-6">
+    <section id="pricing" className="py-16 md:py-28 bg-white relative overflow-hidden" style={{ scrollMarginTop: 'var(--header-h, 7rem)' }}>
+      {/* Sfondo che cambia al toggle annuale/mensile (crossfade, dà senso di cambiamento) */}
+      <div aria-hidden="true" className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-500 ease-out" style={{ opacity: isAnnual ? 1 : 0, backgroundImage: 'radial-gradient(50% 55% at 12% 18%, rgba(56,189,248,0.20), transparent 70%), radial-gradient(48% 55% at 88% 22%, rgba(129,140,248,0.20), transparent 70%), radial-gradient(60% 60% at 50% 108%, rgba(59,130,246,0.14), transparent 68%)' }} />
+      <div aria-hidden="true" className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-500 ease-out" style={{ opacity: isAnnual ? 0 : 1, backgroundImage: 'radial-gradient(52% 55% at 85% 16%, rgba(251,191,36,0.16), transparent 70%), radial-gradient(48% 55% at 10% 26%, rgba(56,189,248,0.15), transparent 70%), radial-gradient(60% 62% at 50% 110%, rgba(129,140,248,0.10), transparent 68%)' }} />
+      <div className="relative z-10 max-w-7xl mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -2106,13 +2110,13 @@ const ForWho = () => (
 // ─── FutureVision ──────────────────────────────────────────────────────────────
 const FutureVision = () => (
   <section id="future" className="py-16 md:py-28 bg-slate-50 relative overflow-hidden">
-    <WaveField className="absolute bottom-0 inset-x-0 h-[85%] -z-10" style={{ WebkitMaskImage: 'linear-gradient(to top, #000 0%, #000 52%, transparent 92%)', maskImage: 'linear-gradient(to top, #000 0%, #000 52%, transparent 92%)' }} focusX={-0.03} focusY={1.05} spreadX={1} opacity={0.14} />
+    <WaveField className="absolute bottom-0 inset-x-0 h-full z-0" style={{ WebkitMaskImage: 'linear-gradient(to top, transparent 0%, #000 24%, #000 58%, transparent 90%)', maskImage: 'linear-gradient(to top, transparent 0%, #000 24%, #000 58%, transparent 90%)' }} focusX={-0.03} focusY={1.05} spreadX={1} opacity={0.2} />
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6 }}
-      className="max-w-4xl mx-auto px-6 text-center"
+      className="max-w-4xl mx-auto px-6 text-center relative z-10"
     >
       <div className="flex items-center justify-center gap-3 mb-6">
         <span className="text-xs font-bold tracking-[0.2em] uppercase text-secondary">La Visione</span>
@@ -2218,7 +2222,7 @@ const FAQ = () => {
 // ─── FinalCTA ──────────────────────────────────────────────────────────────────
 const FinalCTA = () => (
   <section className="py-20 md:py-40 relative overflow-hidden text-center bg-gradient-to-b from-white via-sky-50/50 to-sky-50">
-    <WaveField className="absolute top-0 inset-x-0 h-[88%] -z-10" style={{ WebkitMaskImage: 'linear-gradient(to bottom, #000 0%, #000 55%, transparent 94%)', maskImage: 'linear-gradient(to bottom, #000 0%, #000 55%, transparent 94%)' }} focusX={-0.03} focusY={-0.05} spreadX={1} opacity={0.17} />
+    <WaveField className="absolute top-0 inset-x-0 h-full z-0" style={{ WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, #000 24%, #000 60%, transparent 92%)', maskImage: 'linear-gradient(to bottom, transparent 0%, #000 24%, #000 60%, transparent 92%)' }} focusX={-0.03} focusY={-0.05} spreadX={1} opacity={0.2} />
     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[500px] bg-primary/10 blur-[160px] rounded-full pointer-events-none"></div>
     <div className="absolute top-0 left-1/4 w-[400px] h-[300px] bg-primary/[0.06] blur-[120px] rounded-full pointer-events-none"></div>
     <motion.div
