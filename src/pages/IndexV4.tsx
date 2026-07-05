@@ -59,23 +59,13 @@ const EmotionalVideo = () => {
   const [inView, setInView] = useState(false);
   const lastInteractRef = useRef(0);
   const nudgeTimers = useRef<number[]>([]);
-  const dragStateRef = useRef<"idle" | "pending" | "dragging">("idle");
-  const activePointerIdRef = useRef<number | null>(null);
 
-  const clearNudges = () => {
-    nudgeTimers.current.forEach(clearTimeout);
-    nudgeTimers.current = [];
-  };
-
-  const markInteract = () => {
-    lastInteractRef.current = Date.now();
-    clearNudges();
-  };
+  const markInteract = () => { lastInteractRef.current = Date.now(); };
 
   // Demo: muove lo slider da solo per far capire che è trascinabile.
   // Parte a ogni ingresso in vista e si ripete ogni 10s se non viene toccato.
   const runNudge = () => {
-    clearNudges();
+    nudgeTimers.current.forEach(clearTimeout);
     nudgeTimers.current = ([[400, 72], [1100, 30], [1800, 55]] as const)
       .map(([t, v]) => window.setTimeout(() => setSliderPosition(v), t));
   };
@@ -101,7 +91,8 @@ const EmotionalVideo = () => {
     }, 10000);
     return () => {
       window.clearInterval(id);
-      clearNudges();
+      nudgeTimers.current.forEach(clearTimeout);
+      nudgeTimers.current = [];
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inView]);
@@ -126,11 +117,8 @@ const EmotionalVideo = () => {
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     if ((e.target as HTMLElement).closest('.alignment-controls')) return;
     markInteract();
-    activePointerIdRef.current = e.pointerId;
     pointerStartRef.current = { x: e.clientX, y: e.clientY, id: e.pointerId };
-    dragStateRef.current = "pending";
     if (e.pointerType === "mouse") {
-      dragStateRef.current = "dragging";
       setIsDragging(true);
       e.currentTarget.setPointerCapture(e.pointerId);
       updateSliderPosition(e.clientX);
@@ -138,11 +126,7 @@ const EmotionalVideo = () => {
   };
 
   const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (activePointerIdRef.current !== e.pointerId) return;
-    if (dragStateRef.current === "dragging") {
-      updateSliderPosition(e.clientX);
-      return;
-    }
+    if (isDragging) { updateSliderPosition(e.clientX); return; }
     const start = pointerStartRef.current;
     if (!start || start.id !== e.pointerId) return;
     const dx = e.clientX - start.x;
@@ -151,31 +135,22 @@ const EmotionalVideo = () => {
     const ady = Math.abs(dy);
     if (adx < 8 && ady < 8) return;
     if (adx > ady) {
-      dragStateRef.current = "dragging";
       setIsDragging(true);
       try { e.currentTarget.setPointerCapture(e.pointerId); } catch { /* noop */ }
       updateSliderPosition(e.clientX);
     } else {
-      dragStateRef.current = "idle";
-      activePointerIdRef.current = null;
       pointerStartRef.current = null;
     }
   };
 
   const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (activePointerIdRef.current !== null && activePointerIdRef.current !== e.pointerId) return;
     const start = pointerStartRef.current;
-    if (dragStateRef.current !== "dragging" && start && start.id === e.pointerId && e.pointerType !== "mouse") {
+    if (!isDragging && start && start.id === e.pointerId && e.pointerType !== "mouse") {
       const dx = Math.abs(e.clientX - start.x);
       const dy = Math.abs(e.clientY - start.y);
       if (dx < 8 && dy < 8) updateSliderPosition(e.clientX);
     }
-    try {
-      if (e.currentTarget.hasPointerCapture(e.pointerId)) e.currentTarget.releasePointerCapture(e.pointerId);
-    } catch { /* noop */ }
     setIsDragging(false);
-    dragStateRef.current = "idle";
-    activePointerIdRef.current = null;
     pointerStartRef.current = null;
   };
 
@@ -497,11 +472,15 @@ const TopBar = () => {
 
 // ─── Hero ────────────────────────────────────────────────────────────────────
 const Hero = () => (
-  <section className="relative overflow-hidden bg-white pt-[calc(var(--header-h,7rem)+2.5rem)] pb-16 md:pb-20">
-    {/* Background — solo texture a crocette su bianco pulito (glow rimosso) */}
-    <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'linear-gradient(rgba(2,132,199,0.12) 2px, transparent 2px), linear-gradient(90deg, rgba(2,132,199,0.12) 2px, transparent 2px)', backgroundSize: '40px 40px', backgroundPosition: 'center var(--header-h, 0px)' }}></div>
+  <section className="relative overflow-hidden bg-gradient-to-b from-white via-white to-sky-50/50 pt-[calc(var(--header-h,7rem)+2.5rem)] pb-20 md:pb-28">
+    {/* Background — glow azzurro morbido e diffuso su base bianca (niente griglia) */}
+    <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(72% 62% at 86% 44%, rgba(56,189,248,0.16), transparent 72%), radial-gradient(64% 58% at 18% 92%, rgba(99,179,237,0.08), transparent 76%)' }}></div>
+    {/* Cerchio morbido dietro al telefono (come nello screen) */}
+    <div className="absolute top-[3%] right-[-12%] w-[560px] h-[560px] rounded-full bg-gradient-to-br from-sky-100/60 via-sky-50/40 to-indigo-100/25 pointer-events-none hidden lg:block" aria-hidden="true"></div>
+    {/* Dot pattern a destra del telefono */}
+    <div className="absolute top-[46%] right-[3%] w-28 h-28 pointer-events-none opacity-50 hidden lg:block" style={{ backgroundImage: 'radial-gradient(circle, rgba(2,132,199,0.22) 1.5px, transparent 1.5px)', backgroundSize: '15px 15px' }} aria-hidden="true"></div>
 
-    <div className="max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-12 items-center">
+    <div className="relative z-[1] max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-12 items-center">
       {/* Copy */}
       <motion.div
         variants={staggerContainer}
@@ -509,17 +488,20 @@ const Hero = () => (
         animate="visible"
         className="space-y-8 relative z-10"
       >
+        <motion.span variants={fadeUp} className="inline-flex items-center rounded-full bg-sky-100/80 text-primary px-4 py-1.5 text-xs font-bold tracking-[0.15em] uppercase ring-1 ring-sky-200/60">
+          AI per studi dentistici
+        </motion.span>
         <motion.h1 variants={fadeUp} className="text-5xl md:text-6xl font-headline font-bold tracking-tight leading-[1.1] text-text-main">
-          <span className="block">1 Foto. 1 Video.</span>
-          <span className="block text-primary">10 Secondi.</span>
-          <span className="block text-gold">Il tuo staff converte.</span>
+          <span className="block">Il paziente vede</span>
+          <span className="block text-primary">il suo nuovo sorriso.</span>
+          <span className="block">Prima di decidere.</span>
         </motion.h1>
 
         <motion.p variants={fadeUp} className="text-lg text-text-muted leading-relaxed max-w-lg">
-          Ogni giorno escono dallo studio pazienti che volevano cambiare il loro sorriso. Non li hai persi perche' il prezzo era troppo alto. Li hai persi perche'{" "}
-          <strong className="text-text-main font-semibold">non riuscivano a immaginarlo.</strong>
+          Molti pazienti rinviano un trattamento estetico non per il costo, ma perche'{" "}
+          <strong className="text-text-main font-semibold">non riescono a immaginare il risultato.</strong>
           <br /><br />
-          SmileLive mostra loro il risultato. Prima che escano dalla porta. Inizi gratis: 3 anteprime in omaggio.
+          SmileLive genera un'anteprima realistica del nuovo sorriso a partire da una foto: la decisione parte da qualcosa che il paziente puo' vedere. Prova gratuita, 3 anteprime incluse.
         </motion.p>
 
         <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-5 pt-1">
@@ -567,7 +549,7 @@ const Hero = () => (
         className="relative z-10 flex justify-center pb-16 lg:pb-0"
       >
         <div className="phone-wrap relative w-[240px] sm:w-[290px] md:w-[310px]">
-          <div className="relative rounded-[3.5rem] bg-[#080810] p-[10px] shadow-[0_0_0_1px_rgba(255,255,255,0.07),inset_0_1px_0_rgba(255,255,255,0.05)] overflow-hidden">
+          <div className="phone-frame relative rounded-[3.5rem] bg-[#080810] p-[10px] shadow-[0_0_0_1px_rgba(255,255,255,0.07),inset_0_1px_0_rgba(255,255,255,0.05)] overflow-hidden rotate-[5deg] origin-center transition-transform duration-500 ease-out">
             <div className="absolute top-[10px] left-1/2 -translate-x-1/2 w-[88px] h-[26px] bg-[#080810] rounded-full z-20 flex items-center justify-center gap-2">
               <div className="w-1.5 h-1.5 rounded-full bg-[#1c1c2e]"></div>
               <div className="w-11 h-1.5 rounded-full bg-[#1c1c2e]"></div>
@@ -590,17 +572,27 @@ const Hero = () => (
                 preload="none"
                 className="w-full h-full object-cover"
                 onPlay={(e) => {
+                  const wrap = e.currentTarget.closest('.phone-wrap');
                   e.currentTarget.parentElement?.querySelector('.play-button')?.classList.add('opacity-0', 'pointer-events-none');
-                  e.currentTarget.closest('.phone-wrap')?.querySelectorAll('.hero-badge').forEach((el) => { (el as HTMLElement).style.opacity = '0'; (el as HTMLElement).style.pointerEvents = 'none'; });
+                  wrap?.querySelectorAll('.hero-badge').forEach((el) => { (el as HTMLElement).style.opacity = '0'; (el as HTMLElement).style.pointerEvents = 'none'; });
+                  const frame = wrap?.querySelector('.phone-frame') as HTMLElement | null;
+                  if (frame) frame.style.transform = 'rotate(0deg)';
                 }}
                 onPause={(e) => {
+                  const wrap = e.currentTarget.closest('.phone-wrap');
                   e.currentTarget.parentElement?.querySelector('.play-button')?.classList.remove('opacity-0', 'pointer-events-none');
-                  e.currentTarget.closest('.phone-wrap')?.querySelectorAll('.hero-badge').forEach((el) => { (el as HTMLElement).style.opacity = '1'; (el as HTMLElement).style.pointerEvents = ''; });
+                  wrap?.querySelectorAll('.hero-badge').forEach((el) => { (el as HTMLElement).style.opacity = '1'; (el as HTMLElement).style.pointerEvents = ''; });
+                  const frame = wrap?.querySelector('.phone-frame') as HTMLElement | null;
+                  if (frame) frame.style.transform = 'rotate(5deg)';
                 }}
                 onEnded={(e) => {
-                  e.currentTarget.currentTime = 0;
-                  e.currentTarget.parentElement?.querySelector('.play-button')?.classList.remove('opacity-0', 'pointer-events-none');
-                  e.currentTarget.closest('.phone-wrap')?.querySelectorAll('.hero-badge').forEach((el) => { (el as HTMLElement).style.opacity = '1'; (el as HTMLElement).style.pointerEvents = ''; });
+                  const video = e.currentTarget;
+                  const wrap = video.closest('.phone-wrap');
+                  video.parentElement?.querySelector('.play-button')?.classList.remove('opacity-0', 'pointer-events-none');
+                  wrap?.querySelectorAll('.hero-badge').forEach((el) => { (el as HTMLElement).style.opacity = '1'; (el as HTMLElement).style.pointerEvents = ''; });
+                  const frame = wrap?.querySelector('.phone-frame') as HTMLElement | null;
+                  if (frame) frame.style.transform = 'rotate(5deg)';
+                  video.load(); // torna al poster (viso della ragazza), niente schermo nero
                 }}
               />
               <div className="play-button absolute inset-0 flex items-center justify-center bg-black/40 transition-opacity duration-300 pt-8">
@@ -630,7 +622,7 @@ const Hero = () => (
             </div>
             <div>
               <div className="text-xs sm:text-sm font-bold text-text-main num-tabular leading-none">+67%</div>
-              <div className="text-[9px] sm:text-[10px] text-text-muted font-medium mt-0.5">conversione</div>
+              <div className="text-[9px] sm:text-[10px] text-text-muted font-medium mt-0.5">accettazione</div>
             </div>
           </motion.div>
 
@@ -661,8 +653,40 @@ const Hero = () => (
             </div>
             <div className="text-xs font-bold text-text-main">50+ studi in Italia</div>
           </motion.div>
+
+          {/* Mini slider prima/dopo denti (statico, linea al centro) */}
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.5, type: "spring", stiffness: 180, damping: 18 }}
+            className="hero-badge transition-opacity duration-700 ease-out absolute -right-4 sm:-right-20 bottom-[9%] w-[132px] sm:w-[168px] rounded-2xl overflow-hidden bg-white p-1.5 shadow-[0_18px_46px_-16px_rgba(2,132,199,0.5)] ring-1 ring-slate-100"
+          >
+            <div className="relative rounded-xl overflow-hidden aspect-[3/2] bg-slate-100">
+              <img src={afterImg} alt="Denti dopo" className="absolute inset-0 w-full h-full object-cover origin-center" style={{ objectPosition: '56% 57%', transform: 'scale(4.4)' }} loading="lazy" />
+              <div className="absolute inset-0 overflow-hidden" style={{ clipPath: 'inset(0 50% 0 0)' }}>
+                <img src={beforeImg} alt="Denti prima" className="absolute inset-0 w-full h-full object-cover origin-center" style={{ objectPosition: '56% 57%', transform: 'scale(4.4)' }} loading="lazy" />
+              </div>
+              <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-0.5 bg-white/95 shadow-[0_0_6px_rgba(0,0,0,0.35)]" />
+              <span className="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded-full bg-black/45 text-white text-[8px] font-bold tracking-wide">PRIMA</span>
+              <span className="absolute top-1.5 right-1.5 px-1.5 py-0.5 rounded-full bg-primary text-white text-[8px] font-bold tracking-wide">DOPO</span>
+            </div>
+          </motion.div>
         </div>
       </motion.div>
+    </div>
+
+    {/* Wave divider: linea elegante che sale a destra + sfumatura morbida (non banda piatta) */}
+    <div className="absolute inset-x-0 bottom-0 pointer-events-none leading-[0]" aria-hidden="true">
+      <svg viewBox="0 0 1440 260" className="w-full h-[80px] md:h-[130px]" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="v3heroWave" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor="#ffffff" stopOpacity="0" />
+            <stop offset="1" stopColor="#ffffff" stopOpacity="1" />
+          </linearGradient>
+        </defs>
+        <path d="M0,150 C360,232 760,212 1080,120 C1250,71 1352,44 1440,30 L1440,260 L0,260 Z" fill="url(#v3heroWave)" />
+        <path d="M0,150 C360,232 760,212 1080,120 C1250,71 1352,44 1440,30" fill="none" stroke="rgba(56,189,248,0.55)" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
+      </svg>
     </div>
   </section>
 );
@@ -678,9 +702,9 @@ const TrustMarquee = () => {
   const items = [...reviews, ...reviews];
 
   return (
-    <div className="w-full py-10 border-y border-slate-100 bg-[#e8f3fb] overflow-hidden relative flex">
-      <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#e8f3fb] to-transparent z-10 pointer-events-none"></div>
-      <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#e8f3fb] to-transparent z-10 pointer-events-none"></div>
+    <div className="w-full py-6 bg-transparent overflow-hidden relative flex">
+      <div className="absolute inset-y-0 left-0 w-16 md:w-40 bg-gradient-to-r from-[#e9f2fb] to-transparent z-10 pointer-events-none"></div>
+      <div className="absolute inset-y-0 right-0 w-16 md:w-40 bg-gradient-to-l from-[#e9f2fb] to-transparent z-10 pointer-events-none"></div>
       <div className="flex animate-marquee min-w-max items-center gap-6 px-4" style={{ animationDuration: '60s' }}>
         {items.map((item, i) => (
           <div key={i} className="flex flex-col gap-3 bg-white p-6 rounded-2xl w-[380px] md:w-[420px] border border-slate-200 shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-300">
@@ -700,6 +724,62 @@ const TrustMarquee = () => {
     </div>
   );
 };
+
+// ─── WhyChoose (PERCHÉ SCEGLIERE SMILELIVE) ──────────────────────────────────────
+const WhyChoose = () => {
+  const items = [
+    { icon: Camera, title: "1 Foto, 1 Video", desc: "Basta uno scatto. Il sistema genera anteprime realistiche in pochi secondi." },
+    { icon: Sparkle, title: "Risultati realistici", desc: "Visualizzazioni AI avanzate che mostrano al paziente il suo nuovo sorriso." },
+    { icon: Users, title: "Comunicazione più chiara", desc: "Uno strumento semplice per spiegare il piano di cura e far capire il risultato." },
+    { icon: TrendUp, title: "Decisioni più consapevoli", desc: "Più chiarezza per il paziente e piani di cura compresi e accettati con serenità." },
+  ];
+  return (
+    <section className="relative pt-4 md:pt-8 pb-16 md:pb-24 bg-white overflow-hidden">
+      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-28 h-28 pointer-events-none opacity-50 hidden md:block" style={{ backgroundImage: 'radial-gradient(circle, rgba(2,132,199,0.20) 1.5px, transparent 1.5px)', backgroundSize: '15px 15px' }} aria-hidden="true"></div>
+      <div className="absolute right-0 top-1/2 -translate-y-1/2 w-28 h-28 pointer-events-none opacity-50 hidden md:block" style={{ backgroundImage: 'radial-gradient(circle, rgba(2,132,199,0.20) 1.5px, transparent 1.5px)', backgroundSize: '15px 15px' }} aria-hidden="true"></div>
+      <div className="max-w-7xl mx-auto px-6 relative">
+        <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="text-center mb-14">
+          <span className="text-xs font-bold tracking-[0.18em] uppercase text-primary">Perché scegliere SmileLive</span>
+          <h2 className="mt-3 text-3xl md:text-5xl font-headline font-bold tracking-tight text-text-main">
+            Più chiarezza. Più fiducia. <span className="text-primary">Decisioni consapevoli.</span>
+          </h2>
+        </motion.div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-12 lg:gap-y-0 lg:divide-x lg:divide-slate-100">
+          {items.map(({ icon: Icon, title, desc }) => (
+            <div key={title} className="flex flex-col items-center text-center px-6">
+              <div className="w-16 h-16 rounded-full bg-sky-100/70 flex items-center justify-center mb-6">
+                <Icon size={28} weight="regular" className="text-primary" />
+              </div>
+              <h3 className="text-lg font-bold text-text-main mb-3">{title}</h3>
+              <p className="text-sm text-text-muted leading-relaxed max-w-[220px]">{desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// ─── ReviewsSection (STUDI CHE GIÀ USANO SMILELIVE + carosello attuale) ──────────
+const ReviewsSection = () => (
+  <section className="relative py-16 md:py-24 bg-gradient-to-b from-[#eaf3fb] via-[#e9f1fb] to-[#eef2fc] rounded-t-[2.5rem] overflow-hidden">
+    <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="max-w-7xl mx-auto px-6 text-center mb-10">
+      <span className="text-xs font-bold tracking-[0.18em] uppercase text-primary">Studi che già usano SmileLive</span>
+      <h2 className="mt-3 text-3xl md:text-5xl font-headline font-bold tracking-tight text-text-main">
+        Loro lo usano. <span className="text-primary">E funziona.</span>
+      </h2>
+    </motion.div>
+    <TrustMarquee />
+    <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 px-6">
+      <a href="https://app.smilelive.it/" onClick={() => trackCta("inizia_gratis", "reviews")} className="bg-primary text-white font-bold px-8 py-3.5 rounded-full inline-flex items-center gap-2 shadow-[0_8px_32px_rgba(2,132,199,0.4)] hover:shadow-[0_8px_48px_rgba(2,132,199,0.6)] transition-shadow duration-300">
+        Inizia gratis <CaretRight size={16} weight="bold" />
+      </a>
+      <div className="flex items-center gap-2 text-sm text-text-muted font-medium">
+        <ShieldCheck size={16} weight="fill" className="text-primary" /> Nessuna carta. Setup in 10 minuti.
+      </div>
+    </div>
+  </section>
+);
 
 // ─── TreatmentComparison (SALVATA: casistica + ricevute Senza/Con) ───────────────
 // Non renderizzata ora: da riusare in una sezione "payoff" dedicata a tutti i
@@ -977,24 +1057,18 @@ const ProblemSection = () => {
             transition={{ duration: 0.6 }}
           >
             <div className="mb-5">
-              <span className="text-xs font-bold tracking-[0.2em] uppercase text-red-600">Il Problema Nascosto</span>
+              <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">Il punto critico</span>
             </div>
-            <h2 className="font-headline font-bold tracking-tight leading-[1.1] text-3xl md:text-4xl">
-              Ogni <span className="text-red-500 italic">"ci penso"</span> e' un preventivo da{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-400">€1.500–€6.000</span>{" "}
-              che esce dalla porta.
+            <h2 className="font-headline font-bold tracking-tight leading-[1.1] text-3xl md:text-4xl text-text-main">
+              Dietro ogni <span className="text-primary italic">"ci penso"</span> c'e' un paziente che non riesce a immaginare il risultato.
             </h2>
-            <span className="block font-serif italic text-red-500 text-2xl md:text-3xl mt-2">Ogni settimana.</span>
-            <p className="mt-5 text-lg text-text-muted leading-relaxed">
-              Non una volta ogni tanto. <strong className="text-text-main">Ogni settimana.</strong> In Italia solo il 34% dei pazienti va dal dentista con regolarita'. Chi e' gia' entrato nel tuo studio ha gia' fatto il passo piu' difficile: e' a meta' strada verso il si'. Ma senza uno strumento che trasformi il desiderio in decisione, il preventivo rimane un foglio su un tavolo.
-            </p>
-            <p className="mt-4 text-[17px] md:text-lg font-bold text-text-main leading-relaxed">
-              Anche solo 1 preventivo perso a settimana = <span className="text-red-500">€40.000–€80.000 all'anno</span>.
+            <p className="mt-6 text-lg text-text-muted leading-relaxed">
+              In Italia solo il 34% dei pazienti va dal dentista con regolarita': chi e' gia' nel tuo studio ha fatto il passo piu' difficile. Spesso il trattamento estetico lo vorrebbe davvero, ma se non riesce a vedere come apparira', tende a rimandare.
             </p>
             <p className="mt-4 text-text-muted leading-relaxed">
-              E parliamo proprio dei trattamenti che pesano di piu': quelli che il paziente paga di tasca sua, dove ogni <strong className="text-text-main">"ci penso" vale migliaia di euro</strong>.
+              E' un'esitazione comprensibile: sta valutando qualcosa che riguarda il suo viso, e non ha modo di anticiparne l'effetto. Il preventivo resta un foglio di numeri, senza un'immagine a cui appoggiare la decisione.
             </p>
-            <p className="mt-5 font-serif italic text-text-main text-xl md:text-[22px] leading-snug">
+            <p className="mt-6 font-serif italic text-text-main text-xl md:text-[22px] leading-snug">
               Non e' che non voleva il trattamento.<br />E' che non riusciva a vedersi.
             </p>
           </motion.div>
@@ -1093,7 +1167,7 @@ const EveryTreatment = () => {
             Non funziona su un trattamento. <span className="font-serif font-normal italic text-primary">Funziona su tutti quelli che si vedono.</span>
           </h2>
           <p className="mt-4 text-base text-text-muted leading-relaxed max-w-[58ch]">
-            Sbiancamento, faccette, ortodonzia, impianti, protesi, zirconio. Se il risultato cambia il sorriso, SmileLive lo fa <strong className="text-text-main">vedere al paziente prima</strong> che dica “ci penso”. E chi si vede, firma.
+            Sbiancamento, faccette, ortodonzia, impianti, protesi, zirconio. Se il risultato cambia il sorriso, SmileLive lo fa <strong className="text-text-main">vedere al paziente prima di decidere</strong>, cosi' puo' valutarlo con consapevolezza.
           </p>
         </motion.div>
 
@@ -1109,14 +1183,6 @@ const EveryTreatment = () => {
             </div>
           ))}
         </div>
-
-        <div className="mt-3 md:mt-4 rounded-[20px] p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-5 bg-gradient-to-br from-sky-50 to-white border border-primary/15">
-          <div>
-            <h3 className="text-xl md:text-2xl font-bold leading-tight text-text-main">E il tuo prossimo caso?</h3>
-            <p className="text-sm text-text-muted leading-relaxed mt-1.5">Se il risultato si vede sul viso, SmileLive lo puo' mostrare.</p>
-          </div>
-          <a href="#pricing" className="shrink-0 self-start md:self-auto inline-flex items-center gap-2 bg-primary text-white font-bold px-7 py-3.5 rounded-full hover:bg-sky-600 active:scale-95 transition-all whitespace-nowrap">Provalo sul tuo caso <CaretRight size={16} weight="bold" /></a>
-        </div>
       </div>
     </section>
   );
@@ -1124,8 +1190,8 @@ const EveryTreatment = () => {
 
 // ─── ManifestoBand (fascia scura di stacco tra le sezioni) ──────────────────────
 const ManifestoBand = () => (
-  <section className="py-20 md:py-28 relative overflow-hidden bg-gradient-to-b from-[#020c1a] via-[#041020] to-[#071830]">
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[620px] h-[620px] bg-primary/20 blur-[150px] rounded-full pointer-events-none" />
+  <section className="py-20 md:py-28 relative overflow-hidden bg-gradient-to-b from-sky-50/60 via-white to-white">
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[620px] h-[620px] bg-primary/10 blur-[150px] rounded-full pointer-events-none" />
     <motion.div
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -1133,14 +1199,14 @@ const ManifestoBand = () => (
       transition={{ duration: 0.6 }}
       className="max-w-3xl mx-auto px-6 text-center relative z-10"
     >
-      <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-sky-300 mb-5">Ecco cosa succede davvero</span>
-      <h2 className="font-headline font-bold leading-[1.12] tracking-tight text-3xl md:text-5xl text-white">
-        Il paziente non compra un preventivo.<br className="hidden md:block" /> Prima lo <span className="font-serif font-normal italic text-sky-300">vede e lo prova</span>. Poi lo desidera.
+      <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-primary mb-5">Il principio</span>
+      <h2 className="font-headline font-bold leading-[1.12] tracking-tight text-3xl md:text-5xl text-text-main">
+        Il paziente non decide su un preventivo.<br className="hidden md:block" /> Decide su qualcosa che <span className="font-serif font-normal italic text-primary">ha potuto vedere</span>.
       </h2>
-      <p className="mt-6 text-lg md:text-xl text-white/60 leading-relaxed">
-        Come fanno le grandi aziende. Come in un Apple Store.
+      <p className="mt-6 text-lg md:text-xl text-text-muted leading-relaxed">
+        Un'immagine chiara del risultato rende la conversazione piu' semplice: per il paziente e per lo studio.
       </p>
-      <p className="mt-8 font-headline font-bold text-2xl md:text-4xl text-orange-500">Chi prova, compra.</p>
+      <p className="mt-8 font-headline font-bold text-2xl md:text-4xl text-gold">Chi vede, capisce.</p>
     </motion.div>
   </section>
 );
@@ -1339,7 +1405,6 @@ const WhatYouGet = () => {
 
   return (
     <section className="py-20 md:py-32 relative overflow-hidden isolate bg-[#07111f] text-white font-body">
-      <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(2,132,199,0.075)_1px,transparent_1px),linear-gradient(90deg,rgba(2,132,199,0.075)_1px,transparent_1px),linear-gradient(rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[length:44px_44px] [mask-image:radial-gradient(ellipse_90%_74%_at_50%_30%,#000_44%,transparent_100%)]" />
       <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(900px_520px_at_82%_10%,rgba(38,167,198,0.22),transparent_64%),radial-gradient(760px_420px_at_9%_82%,rgba(2,132,199,0.16),transparent_68%),radial-gradient(620px_420px_at_78%_86%,rgba(217,119,6,0.10),transparent_70%)]" />
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
@@ -1580,9 +1645,8 @@ const ROICalculator = () => {
   const extraRevenue = monthlyPatients * ticket;
 
   return (
-    <section className="py-16 md:py-28 relative overflow-hidden bg-gradient-to-br from-[#fb923c] via-[#f97316] to-[#ea580c]">
-      <div className="absolute inset-0 opacity-[0.08]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, #7c2d12 1px, transparent 0)', backgroundSize: '30px 30px' }}></div>
-      <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-[760px] h-[220px] bg-white/25 blur-[130px] rounded-full pointer-events-none"></div>
+    <section className="py-16 md:py-28 relative overflow-hidden bg-gradient-to-b from-sky-50/60 via-white to-white">
+      <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-[760px] h-[220px] bg-gold/15 blur-[130px] rounded-full pointer-events-none"></div>
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -1591,56 +1655,56 @@ const ROICalculator = () => {
         className="max-w-5xl mx-auto px-6 relative z-10"
       >
         <div className="text-center mb-14">
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 border border-white/30 backdrop-blur-sm mb-6">
-            <ChartLineUp size={16} weight="fill" className="text-white" />
-            <span className="text-xs font-bold tracking-widest uppercase text-white">Calcolatore ROI</span>
+          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gold/10 border border-gold/25 mb-6">
+            <ChartLineUp size={16} weight="fill" className="text-gold" />
+            <span className="text-xs font-bold tracking-widest uppercase text-gold">Calcolatore ROI</span>
           </span>
-          <h2 className="text-4xl md:text-6xl font-headline font-black mb-4 tracking-tight text-white">
-            Simula il tuo <span className="italic font-serif font-normal">flusso di cassa</span>
+          <h2 className="text-4xl md:text-6xl font-headline font-black mb-4 tracking-tight text-text-main">
+            Simula il tuo <span className="italic font-serif font-normal text-primary">flusso di cassa</span>
           </h2>
-          <p className="text-xl text-white/90 max-w-2xl mx-auto">Gli studi che usano SmileLive chiudono in media 2–3 trattamenti estetici in piu' al mese nei primi 60 giorni.</p>
+          <p className="text-xl text-text-muted max-w-2xl mx-auto">Gli studi che usano SmileLive chiudono in media 2–3 trattamenti estetici in piu' al mese nei primi 60 giorni.</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
-          <div className="bg-white rounded-3xl shadow-[0_24px_70px_rgba(124,45,18,0.3)] p-8 space-y-7">
+          <div className="bg-white rounded-3xl border border-slate-200 shadow-[0_18px_50px_-28px_rgba(15,23,42,0.35)] p-8 space-y-7">
             <div className="space-y-3">
               <div className="flex justify-between items-end">
-                <label htmlFor="previews-range" className="text-sm font-semibold text-text-main flex items-center gap-2"><Camera size={17} weight="fill" className="text-[#ea580c]" /> Preview generate al mese</label>
-                <span className="text-2xl font-headline font-bold text-[#ea580c] num-tabular">{previews}</span>
+                <label htmlFor="previews-range" className="text-sm font-semibold text-text-main flex items-center gap-2"><Camera size={17} weight="fill" className="text-gold" /> Preview generate al mese</label>
+                <span className="text-2xl font-headline font-bold text-gold num-tabular">{previews}</span>
               </div>
-              <input id="previews-range" type="range" aria-label="Numero di preview mensili" min="10" max="200" step="10" value={previews} onChange={(e) => setPreviews(Number(e.target.value))} className="w-full h-2 bg-orange-100 rounded-lg appearance-none cursor-pointer accent-[#f97316]" />
+              <input id="previews-range" type="range" aria-label="Numero di preview mensili" min="10" max="200" step="10" value={previews} onChange={(e) => setPreviews(Number(e.target.value))} className="w-full h-2 bg-gold/15 rounded-lg appearance-none cursor-pointer accent-gold" />
             </div>
             <div className="space-y-3">
               <div className="flex justify-between items-end">
-                <label htmlFor="conversion-range" className="text-sm font-semibold text-text-main flex items-center gap-2"><TrendUp size={17} weight="fill" className="text-[#ea580c]" /> Tasso di conversione stimato</label>
-                <span className="text-2xl font-headline font-bold text-[#ea580c] num-tabular">{conversion}%</span>
+                <label htmlFor="conversion-range" className="text-sm font-semibold text-text-main flex items-center gap-2"><TrendUp size={17} weight="fill" className="text-gold" /> Tasso di conversione stimato</label>
+                <span className="text-2xl font-headline font-bold text-gold num-tabular">{conversion}%</span>
               </div>
-              <input id="conversion-range" type="range" aria-label="Tasso di conversione" min="1" max="50" step="1" value={conversion} onChange={(e) => setConversion(Number(e.target.value))} className="w-full h-2 bg-orange-100 rounded-lg appearance-none cursor-pointer accent-[#f97316]" />
+              <input id="conversion-range" type="range" aria-label="Tasso di conversione" min="1" max="50" step="1" value={conversion} onChange={(e) => setConversion(Number(e.target.value))} className="w-full h-2 bg-gold/15 rounded-lg appearance-none cursor-pointer accent-gold" />
             </div>
             <div className="space-y-3">
               <div className="flex justify-between items-end">
-                <label htmlFor="ticket-range" className="text-sm font-semibold text-text-main flex items-center gap-2"><Receipt size={17} weight="fill" className="text-[#ea580c]" /> Ticket medio del trattamento</label>
-                <span className="text-2xl font-headline font-bold text-[#ea580c] num-tabular">€{ticket}</span>
+                <label htmlFor="ticket-range" className="text-sm font-semibold text-text-main flex items-center gap-2"><Receipt size={17} weight="fill" className="text-gold" /> Ticket medio del trattamento</label>
+                <span className="text-2xl font-headline font-bold text-gold num-tabular">€{ticket}</span>
               </div>
-              <input id="ticket-range" type="range" aria-label="Valore ticket medio" min="300" max="12000" step="100" value={ticket} onChange={(e) => setTicket(Number(e.target.value))} className="w-full h-2 bg-orange-100 rounded-lg appearance-none cursor-pointer accent-[#f97316]" />
+              <input id="ticket-range" type="range" aria-label="Valore ticket medio" min="300" max="12000" step="100" value={ticket} onChange={(e) => setTicket(Number(e.target.value))} className="w-full h-2 bg-gold/15 rounded-lg appearance-none cursor-pointer accent-gold" />
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-[#1c1206] to-[#3a1c08] rounded-3xl p-6 md:p-10 flex flex-col justify-center relative overflow-hidden text-center shadow-[0_24px_70px_rgba(124,45,18,0.4)] border border-white/10">
-            <div className="absolute top-0 right-0 w-56 h-56 bg-[#fb923c]/25 blur-[80px] rounded-full pointer-events-none"></div>
+          <div className="bg-gradient-to-br from-gold/[0.10] via-white to-white rounded-3xl p-6 md:p-10 flex flex-col justify-center relative overflow-hidden text-center shadow-[0_18px_50px_-28px_rgba(15,23,42,0.35)] border border-gold/25">
+            <div className="absolute top-0 right-0 w-56 h-56 bg-gold/15 blur-[80px] rounded-full pointer-events-none"></div>
             <div className="relative z-10 space-y-7">
               <div>
-                <p className="text-white/50 mb-2 font-medium text-sm uppercase tracking-widest">Nuovi pazienti al mese</p>
-                <div className="text-5xl font-headline font-black text-white num-tabular">+{monthlyPatients}</div>
+                <p className="text-text-muted mb-2 font-medium text-sm uppercase tracking-widest">Nuovi pazienti al mese</p>
+                <div className="text-5xl font-headline font-black text-text-main num-tabular">+{monthlyPatients}</div>
               </div>
               <div>
-                <p className="text-white/50 mb-2 font-medium text-sm uppercase tracking-widest">Fatturato extra stimato</p>
-                <div className="text-[clamp(1.9rem,8vw,3.5rem)] font-headline font-black text-[#fb923c] num-tabular leading-none tracking-tight whitespace-nowrap">€{extraRevenue.toLocaleString('it-IT')}</div>
-                <p className="text-white/40 text-sm mt-1">al mese</p>
+                <p className="text-text-muted mb-2 font-medium text-sm uppercase tracking-widest">Fatturato extra stimato</p>
+                <div className="text-[clamp(1.9rem,8vw,3.5rem)] font-headline font-black text-gold num-tabular leading-none tracking-tight whitespace-nowrap">€{extraRevenue.toLocaleString('it-IT')}</div>
+                <p className="text-text-muted/70 text-sm mt-1">al mese</p>
               </div>
-              <div className="pt-6 border-t border-white/10">
-                <p className="text-sm text-white/50 leading-relaxed">
-                  SmileLive Studio Piccolo: <strong className="text-[#fb923c]">€47/mese</strong> annuale.<br />Un solo trattamento in piu' lo ripaga in meno di un'ora di lavoro.
+              <div className="pt-6 border-t border-slate-200">
+                <p className="text-sm text-text-muted leading-relaxed">
+                  SmileLive Studio Piccolo: <strong className="text-gold">€47/mese</strong> annuale.<br />Un solo trattamento in piu' lo ripaga in meno di un'ora di lavoro.
                 </p>
               </div>
             </div>
@@ -1661,8 +1725,8 @@ const IntermediateCTA = () => {
   ];
 
   return (
-    <section className="py-20 md:py-28 relative overflow-hidden bg-gradient-to-b from-[#020c1a] via-[#041020] to-[#071830]">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[620px] h-[620px] bg-primary/20 blur-[150px] rounded-full pointer-events-none" />
+    <section className="py-20 md:py-28 relative overflow-hidden bg-gradient-to-b from-sky-50/60 via-white to-white">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[620px] h-[620px] bg-primary/10 blur-[150px] rounded-full pointer-events-none" />
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -1670,9 +1734,9 @@ const IntermediateCTA = () => {
         transition={{ duration: 0.6 }}
         className="max-w-5xl mx-auto px-6 text-center relative z-10"
       >
-        <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-sky-300 mb-5">Non lasciarlo uscire indeciso</span>
-        <h2 className="font-headline font-bold leading-[1.12] tracking-tight text-3xl md:text-5xl text-white max-w-3xl mx-auto">
-          Chi ti dice <span className="font-serif font-normal italic text-sky-300">"ci penso"</span> potrebbe dirti di sì.<br className="hidden md:block" /> Se gli mostri il risultato.
+        <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-primary mb-5">Non lasciarlo uscire indeciso</span>
+        <h2 className="font-headline font-bold leading-[1.12] tracking-tight text-3xl md:text-5xl text-text-main max-w-3xl mx-auto">
+          Chi ti dice <span className="font-serif font-normal italic text-primary">"ci penso"</span> potrebbe dirti di sì.<br className="hidden md:block" /> Se gli mostri il risultato.
         </h2>
         <div className="mt-10 flex flex-col items-center gap-3">
           <motion.a
@@ -1688,9 +1752,9 @@ const IntermediateCTA = () => {
               <CaretRight size={14} weight="bold" />
             </span>
           </motion.a>
-          <span className="text-sm text-white/55">3 anteprime in omaggio · senza carta richiesta</span>
+          <span className="text-sm text-text-muted">3 anteprime in omaggio · senza carta richiesta</span>
         </div>
-        <div className="mt-14 bg-white rounded-[2.5rem] shadow-[0_20px_60px_rgba(0,0,0,0.06)] border border-slate-100 grid grid-cols-2 md:grid-cols-4 gap-y-8 py-8 px-6 md:divide-x md:divide-slate-100">
+        <div className="mt-14 bg-white rounded-[2.5rem] shadow-[0_20px_60px_-30px_rgba(15,23,42,0.25)] border border-slate-200 grid grid-cols-2 md:grid-cols-4 gap-y-8 py-8 px-6 md:divide-x md:divide-slate-100">
           {stats.map((s, i) => (
             <div key={i} className="flex flex-col items-center gap-1.5 text-center px-4">
               <div className="flex items-center gap-2">
@@ -1941,7 +2005,6 @@ const Testimonials = () => {
 // ─── ForWho ────────────────────────────────────────────────────────────────────
 const ForWho = () => (
   <section className="py-16 md:py-28 bg-white relative overflow-hidden isolate">
-    <GridBg />
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -2039,7 +2102,6 @@ const FAQ = () => {
 
   return (
     <section id="faq" className="py-16 md:py-28 bg-white relative overflow-hidden isolate">
-      <GridBg />
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -2095,9 +2157,9 @@ const FAQ = () => {
 
 // ─── FinalCTA ──────────────────────────────────────────────────────────────────
 const FinalCTA = () => (
-  <section className="py-20 md:py-40 relative overflow-hidden text-center bg-gradient-to-b from-[#030e20] via-[#051628] to-[#0a2340]">
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[500px] bg-primary/20 blur-[160px] rounded-full pointer-events-none"></div>
-    <div className="absolute top-0 left-1/4 w-[400px] h-[300px] bg-primary/10 blur-[120px] rounded-full pointer-events-none"></div>
+  <section className="py-20 md:py-40 relative overflow-hidden text-center bg-gradient-to-b from-white via-sky-50/50 to-sky-50">
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[500px] bg-primary/10 blur-[160px] rounded-full pointer-events-none"></div>
+    <div className="absolute top-0 left-1/4 w-[400px] h-[300px] bg-primary/[0.06] blur-[120px] rounded-full pointer-events-none"></div>
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       whileInView={{ opacity: 1, scale: 1 }}
@@ -2105,14 +2167,14 @@ const FinalCTA = () => (
       transition={{ duration: 0.8 }}
       className="max-w-4xl mx-auto px-6 relative z-10"
     >
-      <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-sky-300 mb-5">Pronto a partire</span>
-      <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-headline font-bold mb-6 leading-tight text-white tracking-tight text-balance">
+      <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-primary mb-5">Pronto a partire</span>
+      <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-headline font-bold mb-6 leading-tight text-text-main tracking-tight text-balance">
         Il tuo prossimo paziente <span className="text-gold">indeciso</span> e' gia' in sala d'attesa.
       </h2>
-      <p className="text-lg md:text-xl text-white/60 leading-relaxed max-w-2xl mx-auto">
+      <p className="text-lg md:text-xl text-text-muted leading-relaxed max-w-2xl mx-auto">
         Ogni "ci penso" che senti oggi e' un trattamento che potrebbe diventare un si' domani.
       </p>
-      <p className="mt-3 text-base md:text-lg text-white font-semibold">
+      <p className="mt-3 text-base md:text-lg text-text-main font-semibold">
         Il primo risultato potrebbe arrivare questa settimana.
       </p>
       <div className="mt-10 flex flex-col items-center gap-3">
@@ -2129,14 +2191,14 @@ const FinalCTA = () => (
             <CaretRight size={16} weight="bold" />
           </span>
         </motion.a>
-        <span className="text-sm text-white/55">3 foto + 1 video in omaggio · senza carta richiesta</span>
+        <span className="text-sm text-text-muted">3 foto + 1 video in omaggio · senza carta richiesta</span>
       </div>
-      <p className="mt-6 text-sm text-white/30">Setup in 10 minuti. Il tuo staff e' operativo oggi.</p>
-      <div className="mt-6 flex flex-wrap justify-center gap-4 text-sm text-white/40 font-medium">
+      <p className="mt-6 text-sm text-text-muted/70">Setup in 10 minuti. Il tuo staff e' operativo oggi.</p>
+      <div className="mt-6 flex flex-wrap justify-center gap-4 text-sm text-text-muted font-medium">
         <span className="flex items-center gap-1"><ShieldCheck size={15} weight="light" className="text-primary" /> Accesso immediato</span>
-        <span className="hidden md:inline text-white/20">·</span>
+        <span className="hidden md:inline text-slate-300">·</span>
         <span>GDPR Compliant</span>
-        <span className="hidden md:inline text-white/20">·</span>
+        <span className="hidden md:inline text-slate-300">·</span>
         <span>Made in Italy</span>
       </div>
     </motion.div>
@@ -2240,13 +2302,14 @@ const Footer = () => (
 );
 
 // ─── Page ──────────────────────────────────────────────────────────────────────
-export default function Index() {
+export default function IndexV4() {
   return (
     <main className="min-h-screen w-full overflow-x-clip bg-white text-text-main selection:bg-primary/20 selection:text-text-main font-['Inter']">
       <TopBar />
       {/* ── Hormozi spine: Hook → Dolore (€ poi emotivo) → Reframe → Meccanismo → Prova → Facilità → CTA → Value stack → Prova → Ancora prezzo → Offerta → Qualifica → Urgenza → Obiezioni → Chiusura ── */}
       <Hero />                {/* Hook / dream outcome */}
-      <TrustMarquee />        {/* Credibilità istantanea */}
+      <WhyChoose />           {/* Perché scegliere: 4 icone (come screen) */}
+      <ReviewsSection />      {/* Recensioni: heading + carosello attuale */}
       <ProblemSection />      {/* Dolore in €: costo dell'inazione (apre la ferita) */}
       <ManifestoBand />       {/* Reframe: "compra l'immagine di sé" */}
       <EmotionalVideo />      {/* Effetto Wow + slider — la soluzione */}
