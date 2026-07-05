@@ -775,7 +775,7 @@ const ReviewsSection = () => (
         <ShieldCheck size={16} weight="fill" className="text-primary" /> Nessuna carta. Setup in 10 minuti.
       </div>
     </div>
-    <SectionWave fill="#ffffff" flip />
+    <SectionWave top="#eef2fc" fill="#ffffff" flip />
   </section>
 );
 
@@ -1149,7 +1149,7 @@ const OtSlider = ({ prima, dopo, alt, focus = "center" }: { prima: string; dopo:
       <span className="ot-tag ot-prima" style={{ opacity: pos > 18 ? 1 : 0 }}>Prima</span>
       <span className="ot-tag ot-dopo" style={{ opacity: pos < 82 ? 1 : 0 }}>Dopo</span>
       <div className="pointer-events-none absolute top-0 bottom-0 -ml-px w-0.5 bg-white shadow" style={{ left: `${pos}%`, transition: dragging ? "none" : "left 0.4s ease" }}>
-        <span className="ot-handle">⇆</span>
+        <span className="ot-handle"><ArrowsHorizontal size={16} weight="bold" /></span>
       </div>
     </div>
   );
@@ -1212,7 +1212,7 @@ const ManifestoBand = () => (
       </p>
       <p className="mt-8 font-headline font-bold text-2xl md:text-4xl text-orange-500">Chi prova, compra.</p>
     </motion.div>
-    <SectionWave fill="#ffffff" />
+    <SectionWave top="#071830" fill="#ffffff" />
   </section>
 );
 
@@ -1637,7 +1637,7 @@ const WhatYouGet = () => {
           </motion.div>
         )}
       </AnimatePresence>
-      <SectionWave fill="#e8f3fb" flip />
+      <SectionWave top="#07111f" fill="#e8f3fb" flip />
     </section>
   );
 };
@@ -2308,16 +2308,17 @@ const Footer = () => (
 );
 
 // ─── SectionWave (curva dell'Hero come overlay in fondo a una sezione) ──────────
-// Va messa DENTRO la sezione (che deve essere `relative`): esce dallo sfondo reale
-// della sezione, `fill` = colore della sezione sotto. Nessun blocco extra, nessun seam.
-const SectionWave = ({ fill, flip = false }: { fill: string; flip?: boolean }) => (
+// Va messa DENTRO la sezione (che deve essere `relative`). Lo sfondo del div è il
+// colore della sezione SOTTO (`fill`), l'SVG disegna la forma della sezione SOPRA
+// (`top`) fino alla curva. Così il bordo inferiore è tinta piena → nessun hairline.
+const SectionWave = ({ top, fill, flip = false }: { top: string; fill: string; flip?: boolean }) => (
   <div
     className="absolute inset-x-0 bottom-0 pointer-events-none leading-[0] z-[1]"
     aria-hidden="true"
-    style={flip ? { transform: "scaleX(-1)" } : undefined}
+    style={{ background: fill, ...(flip ? { transform: "scaleX(-1)" } : {}) }}
   >
     <svg viewBox="0 0 1440 260" preserveAspectRatio="none" className="block w-full h-[60px] md:h-[100px]">
-      <path d="M0,150 C360,232 760,212 1080,120 C1250,71 1352,44 1440,30 L1440,260 L0,260 Z" fill={fill} />
+      <path d="M0,0 L1440,0 L1440,30 C1352,44 1250,71 1080,120 C760,212 360,232 0,150 Z" fill={top} />
       <path d="M0,150 C360,232 760,212 1080,120 C1250,71 1352,44 1440,30" fill="none" stroke="rgba(56,189,248,0.55)" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
     </svg>
   </div>
