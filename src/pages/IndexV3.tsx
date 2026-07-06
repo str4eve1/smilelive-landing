@@ -2371,7 +2371,7 @@ const Footer = () => (
           <a href="/terms" className="hover:text-slate-300 transition-colors">Termini</a>
         </div>
       </div>
-    </div>
+    </motion.div>
   </footer>
 );
 
