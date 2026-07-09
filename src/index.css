@@ -9,6 +9,10 @@
 
   html {
     scroll-behavior: smooth;
+    /* le ancore (#pricing, #faq…) si fermano sotto l'header fisso invece che sotto */
+    scroll-padding-top: var(--header-h, 7rem);
+    /* footer scuro: l'overscroll in fondo mostra questo colore, non il bianco */
+    background-color: #0b1220;
   }
 
   * {
@@ -17,7 +21,11 @@
 
   body {
     @apply bg-background text-text-main font-body antialiased;
-    overflow-x: hidden;
+    /* clip (non hidden): blocca lo scroll orizzontale SENZA rendere il body uno
+       scroll-container, così le ancore #sezione funzionano anche su mobile */
+    overflow-x: clip;
+    /* niente rubber-band: il fondo resta fisso, nessuna barra */
+    overscroll-behavior-y: none;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -200,3 +208,24 @@
 .ot-prima{left:10px;color:#7c8698;background:rgba(255,255,255,.7)}
 .ot-dopo{right:10px;color:#0284c7;background:rgba(255,255,255,.85)}
 .ot-handle{position:absolute;top:50%;left:50%;width:32px;height:32px;transform:translate(-50%,-50%);border-radius:50%;background:#fff;box-shadow:0 4px 14px rgba(0,0,0,.18);display:grid;place-items:center;color:#0284c7;font-weight:800;font-size:13px}
+/* ── WHATSAPP WIDGET ─────────────────────────────────────── */
+.wa-widget{position:fixed;bottom:24px;right:20px;z-index:60;display:flex;flex-direction:column;align-items:flex-end;opacity:0;pointer-events:none;transform:translateY(12px);transition:opacity .4s ease,transform .4s ease}
+.wa-widget.visible{opacity:1;pointer-events:auto;transform:translateY(0)}
+.wa-button{display:flex;align-items:center;justify-content:center;width:58px;height:58px;border:none;border-radius:50%;cursor:pointer;position:relative;z-index:2;flex-shrink:0;overflow:hidden;background:radial-gradient(circle at 35% 30%,#5aeea0,#25D366 40%,#1a9e4a 70%,#0a5e2a 100%);box-shadow:0 0 20px rgba(37,211,102,.3),0 0 40px rgba(37,211,102,.1),inset -8px -8px 18px rgba(0,0,0,.45),inset 2px 2px 6px rgba(255,255,255,.08);transition:transform .3s ease,box-shadow .3s ease;animation:waFloat 3.5s ease-in-out infinite,waGlow 3s ease-in-out infinite}
+.wa-button:hover{transform:scale(1.12);box-shadow:0 0 30px rgba(37,211,102,.45),0 0 60px rgba(37,211,102,.15),inset -8px -8px 18px rgba(0,0,0,.45),inset 2px 2px 6px rgba(255,255,255,.1)}
+.wa-icon{width:28px;height:28px;fill:rgba(255,255,255,.92);filter:drop-shadow(0 1px 3px rgba(0,0,0,.4))}
+@keyframes waFloat{0%,100%{transform:translateY(0) rotate(-2deg)}25%{transform:translateY(-8px) rotate(0)}50%{transform:translateY(-12px) rotate(2deg)}75%{transform:translateY(-6px) rotate(0)}}
+@keyframes waGlow{0%,100%{box-shadow:0 0 20px rgba(37,211,102,.3),0 0 40px rgba(37,211,102,.1),inset -8px -8px 18px rgba(0,0,0,.45),inset 2px 2px 6px rgba(255,255,255,.08)}50%{box-shadow:0 0 28px rgba(37,211,102,.4),0 0 55px rgba(37,211,102,.12),0 0 0 5px rgba(37,211,102,.04),inset -8px -8px 18px rgba(0,0,0,.45),inset 2px 2px 6px rgba(255,255,255,.1)}}
+.wa-bubbles{display:flex;flex-direction:column;align-items:flex-end;gap:8px;padding-bottom:12px;opacity:0;visibility:hidden;transition:opacity .25s ease,visibility .25s ease}
+.wa-widget.open .wa-bubbles{opacity:1;visibility:visible}
+.wa-bubble{position:relative;background:#dcf8c6;border-radius:18px 18px 4px 18px;padding:12px 16px;max-width:280px;text-decoration:none;color:#1a1a1a;font-size:13px;line-height:1.5;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.18);transition:transform .2s ease,box-shadow .2s ease;opacity:0;transform:translateY(8px) scale(.95)}
+.wa-widget.open .wa-bubble{animation:waBubbleIn .35s cubic-bezier(.34,1.56,.64,1) forwards;animation-delay:calc(.08s * var(--i,0))}
+.wa-bubble:hover{background:#c8f0ae;transform:translateX(-3px);box-shadow:0 4px 14px rgba(0,0,0,.22);color:#111}
+.wa-bubble-header{background:#0284c7;cursor:default;font-weight:700;letter-spacing:.2px;color:#fff}
+.wa-bubble-header:hover{background:#0284c7;transform:none;box-shadow:0 2px 8px rgba(0,0,0,.18)}
+.wa-tail{position:absolute;bottom:-6px;right:16px;width:12px;height:12px;background:inherit;transform:rotate(45deg);clip-path:polygon(100% 0,0 100%,100% 100%);display:none}
+.wa-bubbles > .wa-bubble:last-child .wa-tail{display:block}
+@keyframes waBubbleIn{0%{opacity:0;transform:translateY(8px) scale(.92)}100%{opacity:1;transform:translateY(0) scale(1)}}
+@media (max-width:768px){.wa-widget{bottom:78px}.wa-button{width:50px;height:50px}.wa-icon{width:26px;height:26px}.wa-bubble{max-width:260px;font-size:12px;padding:10px 14px}}
+@media (max-width:480px){.wa-bubble{max-width:calc(100vw - 80px)}}
+@media (prefers-reduced-motion:reduce){.wa-button{animation:none}.wa-widget.open .wa-bubble{animation:none;opacity:1;transform:none}}

@@ -35,6 +35,7 @@ import stepSorriso from '../assets/steps/step-3-sorriso.webp';
 import stepDentista from '../assets/steps/step-4-dentista.webp';
 import logoFinale from '../assets/WEBP/SmileLive FINALE senza sfondo COLORI CORRETTI (1).webp';
 import { trackCta } from "@/lib/analytics";
+import WhatsAppWidget from "../components/WhatsAppWidget";
 import { openCookieBanner } from "@/lib/consent";
 
 // ─── Motion Variants ───────────────────────────────────────────────────────
@@ -2417,6 +2418,7 @@ export default function IndexV3() {
       <FAQ />                 {/* Gestione obiezioni */}
       <FinalCTA />            {/* Chiusura */}
       <Footer />
+      <WhatsAppWidget />
     </main>
   );
 }
