@@ -3,10 +3,12 @@ import { trackCta } from "@/lib/analytics";
 
 const PHONE = "393289598557";
 const HEADER = "Come possiamo aiutarti?";
+// emoji = solo nella bolla mostrata; text = quello inviato a WhatsApp (senza emoji:
+// l'unicode esce sballato nel link wa.me)
 const MESSAGES = [
-  "ℹ️ Ciao, vorrei maggiori informazioni su SmileLive.",
-  "🎬 Ciao, vorrei vedere una demo di SmileLive per il mio studio.",
-  "💳 Ciao, vorrei sapere di più su piani e prezzi.",
+  { emoji: "ℹ️", text: "Ciao, vorrei maggiori informazioni su SmileLive." },
+  { emoji: "🎬", text: "Ciao, vorrei vedere una demo di SmileLive per il mio studio." },
+  { emoji: "💳", text: "Ciao, vorrei sapere di più su piani e prezzi." },
 ];
 
 export default function WhatsAppWidget() {
@@ -33,7 +35,7 @@ export default function WhatsAppWidget() {
         <div className="wa-bubble wa-bubble-header" style={{ "--i": 0 } as React.CSSProperties}>
           <span>{HEADER}</span>
         </div>
-        {MESSAGES.map((text, i) => (
+        {MESSAGES.map(({ emoji, text }, i) => (
           <a
             key={i}
             href={`https://wa.me/${PHONE}?text=${encodeURIComponent(text)}`}
@@ -43,7 +45,7 @@ export default function WhatsAppWidget() {
             style={{ "--i": i + 1 } as React.CSSProperties}
             onClick={() => trackCta("whatsapp", "floating_widget")}
           >
-            <span>{text}</span>
+            <span>{emoji} {text}</span>
             <span className="wa-tail" />
           </a>
         ))}
