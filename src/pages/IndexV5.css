@@ -1,0 +1,415 @@
+.smilelive-v5 {
+  --v5-blue: #0277b5;
+  --v5-blue-deep: #075985;
+  --v5-ink: #0b1f33;
+  --v5-copy: #40556a;
+  --v5-canvas: #f7fbfd;
+  --v5-soft: #eaf5fa;
+  --v5-line: rgba(2, 119, 181, 0.14);
+  --v5-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  background: var(--v5-canvas);
+  color: var(--v5-ink);
+}
+
+.smilelive-v5 .site-header > a {
+  min-height: 36px;
+  padding-block: 7px;
+  background: linear-gradient(180deg, #0ea5e9 0%, var(--v5-blue) 58%, #0369a1 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 -1px 0 rgba(3, 105, 161, 0.72),
+    0 4px 12px rgba(2, 119, 181, 0.28);
+}
+
+.smilelive-v5 .site-header > div {
+  min-height: 88px;
+  padding-block: 15px !important;
+  background: rgba(255, 255, 255, 0.94) !important;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.07);
+  backdrop-filter: blur(18px);
+}
+
+.smilelive-v5 .site-header img[alt="SmileLive Logo"] {
+  width: 172px;
+  height: 56px !important;
+  object-fit: cover;
+  object-position: center 55%;
+}
+
+.smilelive-v5 [data-v5-section="hero"] {
+  min-height: min(860px, 100dvh);
+  padding-top: calc(var(--header-h, 96px) + clamp(16px, 1.75vw, 24px)) !important;
+  padding-bottom: clamp(64px, 7vw, 96px) !important;
+  background:
+    radial-gradient(75% 78% at 86% 38%, rgba(14, 165, 233, 0.18), transparent 66%),
+    radial-gradient(55% 55% at 6% 95%, rgba(217, 119, 6, 0.06), transparent 74%),
+    linear-gradient(180deg, #fff 0%, #fbfdff 72%, #f4fafe 100%) !important;
+}
+
+.smilelive-v5 [data-v5-section="hero"] > .relative {
+  grid-template-columns: minmax(0, 1.04fr) minmax(340px, 0.96fr);
+  column-gap: clamp(32px, 5vw, 72px);
+  row-gap: 16px;
+}
+
+.smilelive-v5 .hero-kicker span {
+  border-radius: 10px;
+  border-color: rgba(2, 119, 181, 0.2);
+  box-shadow: 0 10px 32px -24px rgba(2, 119, 181, 0.5);
+  letter-spacing: 0.01em;
+}
+
+.smilelive-v5 .hero-title h1 {
+  max-width: 12.5ch;
+  font-size: clamp(2.75rem, 5.2vw, 4.75rem) !important;
+  line-height: 1.01 !important;
+  letter-spacing: -0.05em;
+}
+
+.smilelive-v5 .hero-title {
+  margin-top: 0 !important;
+}
+
+.smilelive-v5 .hero-copy {
+  margin-top: 0 !important;
+}
+
+.smilelive-v5 .hero-copy > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 20px !important;
+  margin-bottom: 0 !important;
+}
+
+.smilelive-v5 .hero-copy > div:first-of-type,
+.smilelive-v5 .hero-proof {
+  padding-top: 0 !important;
+}
+
+.smilelive-v5 .hero-copy > p {
+  max-width: 31rem;
+  color: var(--v5-copy);
+  font-size: clamp(1rem, 1.3vw, 1.125rem);
+}
+
+.smilelive-v5 .hero-copy a[href="https://app.smilelive.it/"] {
+  min-width: 220px;
+  min-height: 56px;
+  justify-content: space-between;
+  padding-inline: 28px;
+  background: var(--v5-blue);
+  box-shadow: 0 18px 42px -20px rgba(2, 119, 181, 0.65);
+}
+
+.smilelive-v5 .v5-secondary-cta {
+  min-height: 48px;
+  padding: 0 8px;
+  border-bottom: 1px solid rgba(2, 119, 181, 0.28);
+  transition: color 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+.smilelive-v5 .v5-secondary-cta:hover {
+  color: var(--v5-blue);
+  border-color: var(--v5-blue);
+  transform: translateY(-1px);
+}
+
+.smilelive-v5 .hero-proof {
+  padding-top: 4px;
+}
+
+.smilelive-v5 .phone-frame {
+  border-radius: 46px;
+  transform: rotate(2deg) !important;
+  box-shadow: 0 42px 90px -42px rgba(7, 17, 31, 0.72);
+}
+
+.smilelive-v5 .hero-badge {
+  border-color: rgba(2, 119, 181, 0.12);
+  box-shadow: 0 18px 45px -30px rgba(7, 17, 31, 0.5);
+}
+
+.smilelive-v5 > section:not([data-v5-section="hero"]) {
+  padding-top: clamp(72px, 8vw, 116px) !important;
+  padding-bottom: clamp(80px, 9vw, 132px) !important;
+}
+
+.smilelive-v5 > section:nth-of-type(12) {
+  padding-top: 56px !important;
+}
+
+.smilelive-v5 .section-wave path:last-child {
+  stroke: rgba(56, 189, 248, 0.34);
+}
+
+.smilelive-v5 > section:nth-of-type(7),
+.smilelive-v5 > section:nth-of-type(13),
+.smilelive-v5 > section:nth-of-type(16) {
+  background: var(--v5-canvas) !important;
+}
+
+.smilelive-v5 > section:nth-of-type(2) {
+  padding-top: 32px !important;
+  padding-bottom: 96px !important;
+  background: #fff !important;
+}
+
+.smilelive-v5 > section:nth-of-type(3),
+.smilelive-v5 > section:nth-of-type(8),
+.smilelive-v5 > section:nth-of-type(12) {
+  background: var(--v5-soft) !important;
+}
+
+.smilelive-v5 > section:nth-of-type(9) {
+  background: linear-gradient(180deg, rgba(240, 249, 255, 0.68) 0%, #fff 55%, var(--v5-canvas) 100%) !important;
+}
+
+.smilelive-v5 > section:nth-of-type(5) {
+  color: #fff !important;
+  background:
+    radial-gradient(70% 140% at 12% 50%, rgba(2, 132, 199, 0.24), transparent 65%),
+    linear-gradient(180deg, #020c1a 0%, #041020 52%, #071830 100%) !important;
+}
+
+.smilelive-v5 > section:nth-of-type(5) h2 {
+  color: #fff !important;
+}
+
+.smilelive-v5 > section:nth-of-type(5) h2 span,
+.smilelive-v5 > section:nth-of-type(5) .max-w-3xl > span {
+  color: #7dd3fc !important;
+}
+
+.smilelive-v5 > section:nth-of-type(5) .max-w-3xl > p {
+  color: rgba(255, 255, 255, 0.68) !important;
+}
+
+.smilelive-v5 > section:nth-of-type(5) .max-w-3xl > p:last-child {
+  color: #f97316 !important;
+}
+
+.smilelive-v5 > section:nth-of-type(6) {
+  padding-top: clamp(96px, 11vw, 160px) !important;
+  padding-bottom: clamp(96px, 11vw, 160px) !important;
+}
+
+.smilelive-v5 > section:nth-of-type(11) {
+  background: #071623 !important;
+}
+
+.smilelive-v5 > section:nth-of-type(18) {
+  padding-top: clamp(112px, 13vw, 184px) !important;
+  padding-bottom: clamp(112px, 13vw, 184px) !important;
+}
+
+.smilelive-v5 section h2 {
+  letter-spacing: -0.045em;
+  line-height: 1.04;
+}
+
+.smilelive-v5 section p {
+  color: var(--v5-copy);
+}
+
+.smilelive-v5 section [class*="uppercase"][class*="tracking-"] {
+  letter-spacing: 0.08em !important;
+}
+
+.smilelive-v5 section :is(.rounded-2xl, .rounded-3xl)[class*="shadow"] {
+  box-shadow: 0 24px 60px -44px rgba(7, 17, 31, 0.42) !important;
+}
+
+.smilelive-v5 > section:nth-of-type(10) .grid > *,
+.smilelive-v5 > section:nth-of-type(15) .grid > * {
+  border-color: rgba(2, 119, 181, 0.12) !important;
+  box-shadow: none !important;
+}
+
+.smilelive-v5 > section:nth-of-type(14) [class*="rounded-3xl"] {
+  border-color: rgba(2, 119, 181, 0.14) !important;
+}
+
+.smilelive-v5 a:focus-visible,
+.smilelive-v5 button:focus-visible,
+.smilelive-v5 [role="slider"]:focus-visible {
+  outline: 3px solid rgba(2, 119, 181, 0.42);
+  outline-offset: 4px;
+}
+
+@media (max-width: 1023px) {
+  .smilelive-v5 [data-v5-section="hero"] {
+    min-height: auto;
+  }
+
+  .smilelive-v5 [data-v5-section="hero"] > .relative {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .smilelive-v5 .hero-kicker { order: 1; }
+  .smilelive-v5 .hero-title { order: 2; }
+  .smilelive-v5 .hero-copy { order: 3; }
+  .smilelive-v5 .hero-visual { order: 4; margin-top: 8px; }
+
+  .smilelive-v5 .hero-title h1 {
+    max-width: 13ch;
+  }
+
+  .smilelive-v5 .hero-proof {
+    display: none;
+  }
+}
+
+@media (max-width: 639px) {
+  .smilelive-v5 .site-header img[alt="SmileLive Logo"] {
+    width: clamp(104px, 30vw, 128px);
+    height: clamp(34px, 9.77vw, 42px) !important;
+  }
+
+  .smilelive-v5 .site-header > div {
+    min-height: 72px;
+    padding-block: 14px !important;
+  }
+
+  .smilelive-v5 .site-header a[href="https://app.smilelive.it/"]:not(:first-child),
+  .smilelive-v5 .site-header button[aria-label="Apri menu"] {
+    min-height: 44px;
+  }
+
+  .smilelive-v5 .site-header button[aria-label="Apri menu"] {
+    width: 44px;
+    height: 44px;
+  }
+
+  .smilelive-v5 [data-v5-section="hero"] {
+    padding-inline: 0;
+    padding-top: calc(var(--header-h, 88px) + 16px) !important;
+  }
+
+  .smilelive-v5 [data-v5-section="hero"] > .relative {
+    padding-inline: 20px;
+    row-gap: 16px;
+  }
+
+  .smilelive-v5 .hero-title h1 {
+    max-width: none;
+    font-size: clamp(2.35rem, 11.5vw, 3.25rem) !important;
+  }
+
+  .smilelive-v5 .hero-copy {
+    gap: 22px;
+  }
+
+  .smilelive-v5 .hero-copy > div:first-of-type {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+
+  .smilelive-v5 .hero-copy a[href="https://app.smilelive.it/"] {
+    width: min(260px, 78vw);
+    min-height: 56px;
+    align-self: flex-start;
+    justify-content: center;
+    gap: 14px;
+    padding-inline: 24px;
+    font-size: 1rem;
+  }
+
+  .smilelive-v5 .hero-copy .v5-secondary-cta {
+    align-self: flex-start;
+    min-height: 40px;
+    padding-inline: 4px;
+    border-bottom: 0;
+    color: var(--v5-copy);
+    font-size: 0.875rem;
+    font-weight: 600;
+    opacity: 0.78;
+  }
+
+  .smilelive-v5 .hero-visual .phone-wrap {
+    width: min(236px, 72vw);
+  }
+
+  .smilelive-v5 .hero-badge-conversion {
+    left: -26px !important;
+    top: 20% !important;
+  }
+
+  .smilelive-v5 .hero-badge-time {
+    right: -24px !important;
+    top: 49% !important;
+  }
+
+  .smilelive-v5 .hero-badge-studios {
+    bottom: -24px !important;
+  }
+
+  .smilelive-v5 .hero-badge-preview {
+    left: -30px !important;
+    bottom: 7% !important;
+    width: 124px !important;
+  }
+
+  .smilelive-v5 > section:not([data-v5-section="hero"]) {
+    padding-top: 72px !important;
+    padding-bottom: 84px !important;
+  }
+
+  .smilelive-v5 > section:nth-of-type(12) {
+    padding-top: 32px !important;
+  }
+
+  .smilelive-v5 > section:nth-of-type(2) {
+    padding-top: 24px !important;
+    padding-bottom: 72px !important;
+  }
+
+  .smilelive-v5 > section:nth-of-type(2) .whychoose-dot {
+    display: block !important;
+    width: 72px;
+    height: 108px;
+    opacity: 0.28;
+  }
+
+  .smilelive-v5 > section:nth-of-type(2) .grid {
+    gap: 36px 12px;
+  }
+
+  .smilelive-v5 > section:nth-of-type(2) .grid > * {
+    padding-inline: 4px;
+  }
+
+  .smilelive-v5 > section:nth-of-type(2) .grid h3 {
+    font-size: 1rem;
+  }
+
+  .smilelive-v5 > section:nth-of-type(2) .grid p {
+    font-size: 0.8125rem;
+  }
+
+  .smilelive-v5 > section:nth-of-type(5) h2 {
+    font-size: clamp(1.85rem, 8.7vw, 2.25rem) !important;
+    line-height: 1.12 !important;
+    overflow-wrap: anywhere;
+  }
+
+  .smilelive-v5 > section:nth-of-type(5) p {
+    max-width: 30ch;
+    margin-inline: auto;
+  }
+
+  .smilelive-v5 .section-wave svg {
+    margin-bottom: -1px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .smilelive-v5 *,
+  .smilelive-v5 *::before,
+  .smilelive-v5 *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

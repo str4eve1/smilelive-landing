@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { createContext, useContext, useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence, MotionConfig, useMotionValueEvent, useReducedMotion, useScroll } from "framer-motion";
 import {
   CaretRight, Sparkle, Pulse, ShieldCheck,
   Star, TrendUp, Users, Target, CheckCircle, Medal, Lightning, Camera, Check,
@@ -38,6 +38,10 @@ import { trackCta } from "@/lib/analytics";
 import WhatsAppWidget from "../components/WhatsAppWidget";
 import { openCookieBanner } from "@/lib/consent";
 
+export type SmileLiveLandingVariant = "v3" | "v5";
+const LandingVariantContext = createContext<SmileLiveLandingVariant>("v3");
+const useIsV5 = () => useContext(LandingVariantContext) === "v5";
+
 // ─── Motion Variants ───────────────────────────────────────────────────────
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
@@ -50,6 +54,8 @@ const staggerContainer = {
 
 // ─── EmotionalVideo (preserved exactly) ────────────────────────────────────
 const EmotionalVideo = () => {
+  const isV5 = useIsV5();
+  const reduceMotion = useReducedMotion();
   const [isMuted, setIsMuted] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [imgAlign, setImgAlign] = useState({ x: 0, y: 0, scale: 1 });
@@ -82,6 +88,7 @@ const EmotionalVideo = () => {
   // Demo: muove lo slider da solo per far capire che è trascinabile.
   // Parte a ogni ingresso in vista e si ripete ogni 10s se non viene toccato.
   const runNudge = () => {
+    if (reduceMotion) return;
     nudgeTimers.current.forEach(clearTimeout);
     nudgeTimers.current = ([[400, 72], [1100, 30], [1800, 55]] as const)
       .map(([t, v]) => window.setTimeout(() => apply(v, true), t));
@@ -112,7 +119,7 @@ const EmotionalVideo = () => {
       nudgeTimers.current = [];
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inView]);
+  }, [inView, reduceMotion]);
 
   const toggleMute = () => {
     if (videoRef.current) {
@@ -157,26 +164,23 @@ const EmotionalVideo = () => {
           className="space-y-6"
         >
           <div className="flex items-center gap-3">
-            <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">L'Effetto Wow</span>
+            <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">{isV5 ? "La preview personale" : "L'Effetto Wow"}</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-headline font-bold leading-tight tracking-tight text-text-main">
-            "Non ci credo...<br />
-            <span className="italic font-serif font-normal text-transparent bg-clip-text bg-gradient-to-r from-primary to-sky-400">sono io!"</span>
+            {isV5 ? <>Un possibile risultato,<br /><span className="italic font-serif font-normal text-transparent bg-clip-text bg-gradient-to-r from-primary to-sky-400">sul volto del paziente.</span></> : <>"Non ci credo...<br /><span className="italic font-serif font-normal text-transparent bg-clip-text bg-gradient-to-r from-primary to-sky-400">sono io!"</span></>}
           </h2>
           <p className="text-xl text-text-muted leading-relaxed">
-            È la prima cosa che dicono quando si vedono col nuovo sorriso. Non devono più <em className="text-text-main">immaginare</em> il risultato: ce l'hanno davanti.
+            {isV5 ? <>La preview porta la conversazione da un esempio generico a una visualizzazione <em className="text-text-main">personale</em>, che il clinico può spiegare e contestualizzare.</> : <>È la prima cosa che dicono quando si vedono col nuovo sorriso. Non devono più <em className="text-text-main">immaginare</em> il risultato: ce l'hanno davanti.</>}
           </p>
           <p className="text-lg text-text-muted leading-relaxed">
-            Trascina il cursore e guarda il cambiamento, da com'è oggi a come potrebbe essere. È lo stesso istante che vive il paziente in poltrona. E quando si vede, il preventivo non è più una spesa al buio: è{" "}
-            <strong className="text-text-main">qualcosa che vuole</strong>.
+            {isV5 ? <>Trascina il cursore per confrontare la situazione iniziale con una possibile evoluzione estetica. La preview resta uno strumento di comunicazione e <strong className="text-text-main">non sostituisce la valutazione clinica</strong>.</> : <>Trascina il cursore e guarda il cambiamento, da com'è oggi a come potrebbe essere. È lo stesso istante che vive il paziente in poltrona. E quando si vede, il preventivo non è più una spesa al buio: è{" "}<strong className="text-text-main">qualcosa che vuole</strong>.</>}
           </p>
           <div className="pt-4 flex items-center gap-4">
             <div className="w-12 h-12 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center shrink-0">
               <Lightning size={20} weight="fill" className="text-gold" />
             </div>
             <p className="text-sm text-text-muted font-medium">
-              L'emozione abbassa le barriere razionali<br />
-              <strong className="text-text-main">e chiude il preventivo.</strong>
+              {isV5 ? <>Più chiarezza nella consulenza<br /><strong className="text-text-main">e aspettative meglio condivise.</strong></> : <>L'emozione abbassa le barriere razionali<br /><strong className="text-text-main">e chiude il preventivo.</strong></>}
             </p>
           </div>
         </motion.div>
@@ -292,7 +296,12 @@ const WaveField = ({ className = "", style, focusX = -0.03, focusY = -0.05, spre
 
 // ─── AISimShowcase ────────────────────────────────────────────────────────────
 const AISimShowcase = () => {
-  const benefits = [
+  const isV5 = useIsV5();
+  const benefits = isV5 ? [
+    "Il paziente osserva il possibile cambiamento anche in movimento",
+    "Il video rende più semplice discutere aspettative e limiti",
+    "La consulenza parte da un riferimento personale, non generico",
+  ] : [
     "Non se lo immagina: si vede davvero, in movimento",
     "L'emozione del video abbatte l'obiezione sul prezzo",
     "Accetta e paga subito, senza «ci penso»",
@@ -306,7 +315,7 @@ const AISimShowcase = () => {
             {/* Titolo — su mobile va sopra le immagini (ponytail: duplicato del titolo desktop, nascosto da lg in su) */}
             <h2 className="lg:hidden text-center text-2xl sm:text-3xl font-headline font-bold tracking-tight leading-snug text-text-main mb-2">
               <VideoCamera weight="fill" size="1em" className="inline-block align-[-0.12em] mr-2 text-gold" />
-              Non solo una <span className="text-primary">foto</span>.<br />Un <span className="text-gold whitespace-nowrap">video realistico</span> che favorisce il sì.
+              {isV5 ? <>Dalla <span className="text-primary">foto</span> a un <span className="text-gold whitespace-nowrap">video personale</span> del sorriso.</> : <>Non solo una <span className="text-primary">foto</span>.<br />Un <span className="text-gold whitespace-nowrap">video realistico</span> che favorisce il sì.</>}
             </h2>
 
             {/* ── Illustrazione Prima → Dopo → Video (cerchi) ── */}
@@ -369,13 +378,17 @@ const AISimShowcase = () => {
             <div>
               <h2 className="hidden lg:block text-4xl md:text-5xl font-headline font-bold tracking-tight leading-tight text-text-main">
                 <VideoCamera weight="fill" size="1em" className="inline-block align-[-0.12em] mr-2.5 text-gold" />
-                Non solo una <span className="text-primary">foto</span>. Un <span className="text-gold">video realistico</span> che favorisce il sì.
+                {isV5 ? <>Dalla <span className="text-primary">foto</span> a un <span className="text-gold">video personale</span> del sorriso.</> : <>Non solo una <span className="text-primary">foto</span>. Un <span className="text-gold">video realistico</span> che favorisce il sì.</>}
               </h2>
               <p className="mt-5 text-xl text-text-muted leading-relaxed">
-                SmileLive non si limita a trasformare un'immagine: genera un <strong className="text-text-main font-semibold">video realistico</strong> del paziente con il suo nuovo sorriso. Vedersi, non doverlo solo immaginare, fa crollare l'esitazione e porta l'accettazione dei preventivi <strong className="text-text-main font-semibold">oltre il 67%</strong>.
+                {isV5 ? <>
+                  SmileLive genera una <strong className="text-text-main font-semibold">sequenza video personale</strong> a partire dalla preview. Il paziente può osservare il possibile cambiamento in modo più naturale; nei dati raccolti dagli studi attivi, l'accettazione dei preventivi arriva <strong className="text-text-main font-semibold">oltre il 67%</strong>.
+                </> : <>
+                  SmileLive non si limita a trasformare un'immagine: genera un <strong className="text-text-main font-semibold">video realistico</strong> del paziente con il suo nuovo sorriso. Vedersi, non doverlo solo immaginare, fa crollare l'esitazione e porta l'accettazione dei preventivi <strong className="text-text-main font-semibold">oltre il 67%</strong>.
+                </>}
               </p>
               <p className="mt-6 font-bold text-text-main">
-                Quando il paziente si vede in video:
+                {isV5 ? "Il video supporta la consulenza perché:" : "Quando il paziente si vede in video:"}
               </p>
               <ul className="mt-4 space-y-3.5">
                 {benefits.map((t, i) => (
@@ -402,15 +415,13 @@ const AISimShowcase = () => {
 
 // ─── TopBar ─────────────────────────────────────────────────────────────────
 const TopBar = () => {
+  const isV5 = useIsV5();
   const ref = useRef<HTMLDivElement>(null);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const { scrollY } = useScroll();
+  useMotionValueEvent(scrollY, "change", (latest) => setScrolled(latest > 50));
 
   useEffect(() => {
     const el = ref.current;
@@ -424,7 +435,7 @@ const TopBar = () => {
   }, []);
 
   return (
-    <div ref={ref} className="fixed top-0 inset-x-0 z-50 flex flex-col">
+    <div ref={ref} className="site-header fixed top-0 inset-x-0 z-50 flex flex-col">
       {/* Announcement bar: invito alle 3 prove gratis */}
       <a
         href="https://app.smilelive.it/"
@@ -432,7 +443,7 @@ const TopBar = () => {
         className="bg-gradient-to-b from-sky-500 via-primary to-sky-700 text-white text-xs md:text-sm font-semibold text-center py-2 px-4 flex items-center justify-center gap-x-2 gap-y-0.5 flex-wrap shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_3px_12px_rgba(2,132,199,0.35)] hover:brightness-105 transition-all"
       >
         <Sparkle size={14} weight="fill" className="shrink-0" />
-        <span>Inizia gratis: <strong className="font-bold">3 anteprime in omaggio</strong></span>
+        <span>Inizia gratis: <strong className="font-bold">{isV5 ? "3 foto + 1 video gratis" : "3 anteprime in omaggio"}</strong></span>
         <span className="inline-flex items-center gap-1 underline underline-offset-2 font-bold">Inizia ora <CaretRight size={12} weight="bold" /></span>
       </a>
       <motion.div
@@ -442,7 +453,7 @@ const TopBar = () => {
         className={`transition-all duration-300 ${scrolled ? 'bg-white/90 backdrop-blur-xl border-b border-slate-200 py-4' : 'bg-transparent py-5'}`}
       >
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-          <img src={logoFinale} alt="SmileLive Logo" className="h-20 w-auto md:h-24" fetchPriority="high" width="180" height="130" />
+          <img src={logoFinale} alt="SmileLive Logo" className="h-28 w-auto md:h-32" fetchPriority="high" width="180" height="130" />
           <div className="hidden md:flex items-center gap-8 text-base text-text-muted font-medium">
             <a href="#come-funziona" className="hover:text-primary transition-colors duration-200 relative after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:bg-primary after:transition-all after:duration-200 hover:after:w-full">Come funziona</a>
             <a href="#pricing" className="hover:text-primary transition-colors duration-200 relative after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:bg-primary after:transition-all after:duration-200 hover:after:w-full">Prezzi</a>
@@ -459,7 +470,7 @@ const TopBar = () => {
             <a
               href="https://app.smilelive.it/"
               onClick={() => trackCta("inizia_gratis", "topbar_nav")}
-              className="bg-sky-50 text-primary border border-sky-200 px-5 py-2.5 md:px-7 rounded-full font-bold text-sm md:text-base hover:bg-sky-100 active:scale-95 transition-all duration-200"
+              className={`border px-5 py-2.5 md:px-7 rounded-full font-bold text-sm md:text-base active:scale-95 transition-all duration-300 ${scrolled ? 'bg-primary text-white border-primary shadow-[0_6px_20px_rgba(2,132,199,0.4)] hover:bg-sky-700' : 'bg-sky-50 text-primary border-sky-200 hover:bg-sky-100'}`}
             >
               Inizia gratis
             </a>
@@ -500,8 +511,10 @@ const TopBar = () => {
 };
 
 // ─── Hero ────────────────────────────────────────────────────────────────────
-const Hero = () => (
-  <section className="relative overflow-hidden bg-gradient-to-b from-white via-white to-sky-50/50 pt-[calc(var(--header-h,7rem)+2.5rem)] pb-20 md:pb-28">
+const Hero = () => {
+  const isV5 = useIsV5();
+  return (
+  <section data-v5-section="hero" className="relative overflow-hidden bg-gradient-to-b from-white via-white to-sky-50/50 pt-[calc(var(--header-h,7rem)+0.5rem)] md:pt-[calc(var(--header-h,7rem)+2.5rem)] pb-20 md:pb-28">
     {/* Background — glow azzurro morbido e diffuso su base bianca (niente griglia) */}
     <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(72% 62% at 86% 44%, rgba(56,189,248,0.16), transparent 72%), radial-gradient(64% 58% at 18% 92%, rgba(99,179,237,0.08), transparent 76%)' }}></div>
     {/* Cerchio morbido dietro al telefono (come nello screen) */}
@@ -515,31 +528,58 @@ const Hero = () => (
       focusX={-0.03} focusY={-0.05} spreadX={1} opacity={0.22}
     />
 
-    <div className="relative z-[1] max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-12 items-center">
-      {/* Copy */}
+    <div className="relative z-[1] max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-5 lg:gap-12 items-center">
+      {/* Pillola — mobile: order-1 (in alto) */}
       <motion.div
         variants={staggerContainer}
         initial="hidden"
         animate="visible"
-        className="space-y-8 relative z-10"
+        className="hero-kicker order-1 lg:order-none lg:col-start-1 lg:row-start-1 relative z-10"
       >
         <motion.div variants={fadeUp}>
-          <span className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-white/95 shadow-[0_6px_20px_rgba(2,132,199,0.18)] backdrop-blur-sm pl-2.5 pr-4 py-2 text-sm font-bold text-primary">
+          <span className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-primary/25 bg-white/95 shadow-[0_6px_20px_rgba(2,132,199,0.18)] backdrop-blur-sm pl-2 sm:pl-2.5 pr-3 sm:pr-4 py-1.5 sm:py-2 text-xs sm:text-sm font-bold text-primary">
             <Sparkle size={16} weight="fill" className="text-gold" />
-            Il miglior strumento AI per dentisti
+            {isV5 ? "Preview AI e gestionale per studi dentistici" : "Il miglior strumento AI per dentisti"}
           </span>
         </motion.div>
-        <motion.h1 variants={fadeUp} className="text-5xl md:text-6xl font-headline font-bold tracking-tight leading-[1.1] text-text-main">
-          <span className="block">1 Foto. 1 Video.</span>
-          <span className="block text-primary">10 Secondi.</span>
-          <span className="block text-gold">Il tuo staff converte.</span>
-        </motion.h1>
+      </motion.div>
 
+      {/* Titolo — mobile: order-4 (in fondo, sotto la descrizione) */}
+      <motion.div
+        variants={staggerContainer}
+        initial="hidden"
+        animate="visible"
+        className="hero-title order-2 lg:order-none lg:col-start-1 lg:row-start-2 lg:-mt-4 relative z-10"
+      >
+        <motion.h1 variants={fadeUp} className="text-2xl sm:text-5xl md:text-6xl font-headline font-bold tracking-tight leading-[1.15] sm:leading-[1.1] text-text-main">
+          {isV5 ? (
+            <>
+              <span className="block">1 foto. 1 video.</span>
+              <span className="block text-primary">Il paziente vede il possibile risultato.</span>
+            </>
+          ) : (
+            <>
+              <span className="block">1 Foto. 1 Video.</span>
+              <span className="block text-primary">10 Secondi.</span>
+              <span className="block text-gold">Il tuo staff converte.</span>
+            </>
+          )}
+        </motion.h1>
+      </motion.div>
+
+      {/* Descrizione + CTA + social proof — mobile: order-3 (sopra il titolo) */}
+      <motion.div
+        variants={staggerContainer}
+        initial="hidden"
+        animate="visible"
+        className="hero-copy order-4 lg:order-none lg:col-start-1 lg:row-start-3 lg:-mt-4 space-y-8 relative z-10"
+      >
         <motion.p variants={fadeUp} className="text-lg text-text-muted leading-relaxed max-w-lg">
-          Ogni giorno escono dallo studio pazienti che volevano cambiare il loro sorriso. Non li hai persi perche' il prezzo era troppo alto. Li hai persi perche'{" "}
-          <strong className="text-text-main font-semibold">non riuscivano a immaginarlo.</strong>
-          <br /><br />
-          SmileLive mostra loro il risultato. Prima che escano dalla porta. Inizi gratis: 3 anteprime in omaggio.
+          {isV5 ? (
+            <>In circa 10 secondi crei una preview personale da discutere durante la consulenza. Poi preventivo, firma, reminder e gestione dello studio nello stesso software.</>
+          ) : (
+            <>Ogni giorno escono dallo studio pazienti che volevano cambiare il loro sorriso. Non li hai persi perche' il prezzo era troppo alto. Li hai persi perche' <strong className="text-text-main font-semibold">non riuscivano a immaginarlo.</strong><br /><br />SmileLive mostra loro il risultato. Prima che escano dalla porta. Inizi gratis: 3 anteprime in omaggio.</>
+          )}
         </motion.p>
 
         <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-5 pt-1">
@@ -556,13 +596,14 @@ const Hero = () => (
               <CaretRight size={14} weight="bold" />
             </span>
           </motion.a>
-          <div className="flex items-center gap-2 text-sm font-medium text-text-muted">
-            <ShieldCheck size={16} weight="fill" className="text-primary shrink-0" />
-            <span>Nessuna carta. Setup in 10 minuti.</span>
-          </div>
+          {isV5 ? (
+            <a href="#come-funziona" className="v5-secondary-cta inline-flex items-center gap-2 font-bold text-text-main">Guarda come funziona <CaretRight size={15} weight="bold" /></a>
+          ) : (
+            <div className="flex items-center gap-2 text-sm font-medium text-text-muted"><ShieldCheck size={16} weight="fill" className="text-primary shrink-0" /><span>Nessuna carta. Setup in 10 minuti.</span></div>
+          )}
         </motion.div>
 
-        <motion.div variants={fadeUp} className="pt-3 flex items-center gap-5">
+        <motion.div variants={fadeUp} className="hero-proof pt-3 flex items-center gap-5">
           <div className="flex -space-x-2.5">
             {[logoBerlinesi, logoFerretti, logoLaterza, logoRanieri].map((logo, i) => (
               <div key={i} className="w-9 h-9 rounded-full border-2 border-white bg-white flex items-center justify-center overflow-hidden shadow-sm ring-1 ring-slate-200">
@@ -579,15 +620,15 @@ const Hero = () => (
         </motion.div>
       </motion.div>
 
-      {/* Phone mockup */}
+      {/* Phone mockup — mobile: order-2 (tra titolo e descrizione) */}
       <motion.div
         initial={{ opacity: 0, y: 60 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-        className="relative z-10 flex justify-center pb-16 lg:pb-0"
+        className="hero-visual order-3 lg:order-none lg:col-start-2 lg:row-start-1 lg:row-span-3 lg:self-center relative z-10 flex justify-center pb-6 lg:pb-0"
       >
         <div className="phone-wrap relative w-[240px] sm:w-[290px] md:w-[310px]">
-          <div className="phone-frame relative rounded-[3.5rem] bg-[#080810] p-[10px] shadow-[0_0_0_1px_rgba(255,255,255,0.07),inset_0_1px_0_rgba(255,255,255,0.05)] overflow-hidden rotate-[5deg] origin-center transition-transform duration-500 ease-out">
+          <div className="phone-frame relative rounded-[3.5rem] bg-[#080810] p-[10px] shadow-[0_0_0_1px_rgba(255,255,255,0.07),inset_0_1px_0_rgba(255,255,255,0.05)] overflow-hidden -rotate-[5deg] lg:rotate-[5deg] origin-center transition-transform duration-500 ease-out">
             <div className="absolute top-[10px] left-1/2 -translate-x-1/2 w-[88px] h-[26px] bg-[#080810] rounded-full z-20 flex items-center justify-center gap-2">
               <div className="w-1.5 h-1.5 rounded-full bg-[#1c1c2e]"></div>
               <div className="w-11 h-1.5 rounded-full bg-[#1c1c2e]"></div>
@@ -652,7 +693,7 @@ const Hero = () => (
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.9, type: "spring", stiffness: 180, damping: 18 }}
-            className="hero-badge transition-opacity duration-700 ease-out card-float-a absolute flex -left-8 sm:-left-[6.5rem] top-[22%] bg-white rounded-xl sm:rounded-2xl px-2.5 py-1.5 sm:px-4 sm:py-3 border border-slate-200 items-center gap-1.5 sm:gap-3 min-w-[104px] sm:min-w-[130px]"
+            className="hero-badge hero-badge-conversion transition-opacity duration-700 ease-out card-float-a absolute flex -left-8 sm:-left-[6.5rem] top-[22%] bg-white rounded-xl sm:rounded-2xl px-2.5 py-1.5 sm:px-4 sm:py-3 border border-slate-200 items-center gap-1.5 sm:gap-3 min-w-[104px] sm:min-w-[130px]"
           >
             <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
               <TrendUp size={14} weight="fill" className="text-primary sm:hidden" />
@@ -668,7 +709,7 @@ const Hero = () => (
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 1.1, type: "spring", stiffness: 180, damping: 18 }}
-            className="hero-badge transition-opacity duration-700 ease-out card-float-b absolute flex -right-8 sm:-right-[6rem] top-[48%] bg-white rounded-xl sm:rounded-2xl px-2.5 py-1.5 sm:px-4 sm:py-3 border border-slate-200 items-center gap-1.5 sm:gap-3 min-w-[100px] sm:min-w-[120px]"
+            className="hero-badge hero-badge-time transition-opacity duration-700 ease-out card-float-b absolute flex -right-8 sm:-right-[6rem] top-[48%] bg-white rounded-xl sm:rounded-2xl px-2.5 py-1.5 sm:px-4 sm:py-3 border border-slate-200 items-center gap-1.5 sm:gap-3 min-w-[100px] sm:min-w-[120px]"
           >
             <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-gold/10 flex items-center justify-center shrink-0">
               <Lightning size={14} weight="fill" className="text-gold sm:hidden" />
@@ -684,7 +725,7 @@ const Hero = () => (
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.5, type: "spring", stiffness: 180, damping: 18 }}
-            className="hero-badge transition-opacity duration-700 ease-out card-float-c absolute flex left-1/2 -translate-x-1/2 -bottom-6 bg-white rounded-xl sm:rounded-2xl px-3 py-2 sm:px-4 sm:py-3 border border-slate-200 items-center gap-2 sm:gap-2.5 whitespace-nowrap"
+            className="hero-badge hero-badge-studios transition-opacity duration-700 ease-out card-float-c absolute flex left-1/2 -translate-x-1/2 -bottom-6 bg-white rounded-xl sm:rounded-2xl px-3 py-2 sm:px-4 sm:py-3 border border-slate-200 items-center gap-2 sm:gap-2.5 whitespace-nowrap"
           >
             <div className="flex gap-0.5">
               {[1, 2, 3].map(i => <Star key={i} size={11} weight="fill" className="text-gold" />)}
@@ -697,7 +738,7 @@ const Hero = () => (
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.3, type: "spring", stiffness: 180, damping: 18 }}
-            className="hero-badge transition-opacity duration-700 ease-out card-float-d absolute -left-10 sm:-left-[130px] bottom-[9%] w-[132px] sm:w-[168px] rounded-2xl overflow-hidden bg-white p-1.5 shadow-[0_18px_46px_-16px_rgba(2,132,199,0.5)] ring-1 ring-slate-100"
+            className="hero-badge hero-badge-preview transition-opacity duration-700 ease-out card-float-d absolute -left-10 sm:-left-[130px] bottom-[9%] w-[132px] sm:w-[168px] rounded-2xl overflow-hidden bg-white p-1.5 shadow-[0_18px_46px_-16px_rgba(2,132,199,0.5)] ring-1 ring-slate-100"
           >
             <div className="relative rounded-xl overflow-hidden aspect-[3/2] bg-slate-100">
               <img src={afterImg} alt="Denti dopo" className="absolute inset-0 w-full h-full object-cover origin-center" style={{ objectPosition: '51% 64%', transform: 'scale(3.95)' }} loading="lazy" />
@@ -727,7 +768,8 @@ const Hero = () => (
       </svg>
     </div>
   </section>
-);
+  );
+};
 
 // ─── TrustMarquee ─────────────────────────────────────────────────────────────
 const TrustMarquee = () => {
@@ -765,7 +807,13 @@ const TrustMarquee = () => {
 
 // ─── WhyChoose (PERCHÉ SCEGLIERE SMILELIVE) ──────────────────────────────────────
 const WhyChoose = () => {
-  const items = [
+  const isV5 = useIsV5();
+  const items = isV5 ? [
+    { icon: Camera, title: "Foto e video in pochi secondi", desc: "Da uno scatto, lo studio ottiene una preview personale da utilizzare durante la consulenza." },
+    { icon: Sparkle, title: "Una visualizzazione credibile", desc: "Il paziente osserva un possibile cambiamento sul proprio volto, con aspettative spiegate dal professionista." },
+    { icon: Users, title: "Un protocollo per tutto il team", desc: "Segreteria, ASO e clinico lavorano nello stesso flusso, senza rallentare l'attività." },
+    { icon: TrendUp, title: "Più chiarezza nella decisione", desc: "Una proposta compresa meglio facilita il confronto e aumenta l'accettazione del piano." },
+  ] : [
     { icon: Camera, title: "1 Foto, 1 Video", desc: "Basta uno scatto. Il sistema genera anteprime realistiche in pochi secondi." },
     { icon: Sparkle, title: "Risultati realistici", desc: "Visualizzazioni AI avanzate che mostrano al paziente il suo nuovo sorriso." },
     { icon: Users, title: "Il tuo staff converte", desc: "Uno strumento semplice che aumenta fiducia, valore e accettazione." },
@@ -773,8 +821,8 @@ const WhyChoose = () => {
   ];
   return (
     <section className="relative pt-4 md:pt-8 pb-16 md:pb-24 bg-white overflow-hidden">
-      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-28 h-28 pointer-events-none opacity-50 hidden md:block" style={{ backgroundImage: 'radial-gradient(circle, rgba(2,132,199,0.20) 1.5px, transparent 1.5px)', backgroundSize: '15px 15px' }} aria-hidden="true"></div>
-      <div className="absolute right-0 top-1/2 -translate-y-1/2 w-28 h-28 pointer-events-none opacity-50 hidden md:block" style={{ backgroundImage: 'radial-gradient(circle, rgba(2,132,199,0.20) 1.5px, transparent 1.5px)', backgroundSize: '15px 15px' }} aria-hidden="true"></div>
+      <div className="whychoose-dot absolute left-0 top-1/2 -translate-y-1/2 w-28 h-28 pointer-events-none opacity-50 hidden md:block" style={{ backgroundImage: 'radial-gradient(circle, rgba(2,132,199,0.20) 1.5px, transparent 1.5px)', backgroundSize: '15px 15px' }} aria-hidden="true"></div>
+      <div className="whychoose-dot absolute right-0 top-1/2 -translate-y-1/2 w-28 h-28 pointer-events-none opacity-50 hidden md:block" style={{ backgroundImage: 'radial-gradient(circle, rgba(2,132,199,0.20) 1.5px, transparent 1.5px)', backgroundSize: '15px 15px' }} aria-hidden="true"></div>
       <div className="max-w-7xl mx-auto px-6 relative">
         <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="text-center mb-14">
           <span className="text-xs font-bold tracking-[0.18em] uppercase text-primary">Perché scegliere SmileLive</span>
@@ -799,12 +847,14 @@ const WhyChoose = () => {
 };
 
 // ─── ReviewsSection (STUDI CHE GIÀ USANO SMILELIVE + carosello attuale) ──────────
-const ReviewsSection = () => (
+const ReviewsSection = () => {
+  const isV5 = useIsV5();
+  return (
   <section className="relative py-16 md:py-24 bg-gradient-to-b from-[#eaf3fb] via-[#e9f1fb] to-[#eef2fc] rounded-t-[2.5rem] overflow-hidden">
     <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="max-w-7xl mx-auto px-6 text-center mb-10">
       <span className="text-xs font-bold tracking-[0.18em] uppercase text-primary">Studi che già usano SmileLive</span>
       <h2 className="mt-3 text-3xl md:text-5xl font-headline font-bold tracking-tight text-text-main">
-        Loro lo usano. <span className="text-primary">E funziona.</span>
+        {isV5 ? <>Esperienze concrete, <span className="text-primary">nella pratica quotidiana.</span></> : <>Loro lo usano. <span className="text-primary">E funziona.</span></>}
       </h2>
     </motion.div>
     <TrustMarquee />
@@ -818,7 +868,8 @@ const ReviewsSection = () => (
     </div>
     <SectionWave top="#eef2fc" fill="#ffffff" flip />
   </section>
-);
+  );
+};
 
 // ─── TreatmentComparison (SALVATA: casistica + ricevute Senza/Con) ───────────────
 // Non renderizzata ora: da riusare in una sezione "payoff" dedicata a tutti i
@@ -999,6 +1050,7 @@ const TreatmentComparison = () => {
 
 // ─── ProblemSection (Hormozi-cut: dolore puro + pila di preventivi rifiutati) ──
 const ProblemSection = () => {
+  const isV5 = useIsV5();
   const pileRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -1098,21 +1150,40 @@ const ProblemSection = () => {
               <span className="text-xs font-bold tracking-[0.2em] uppercase text-orange-600">Il problema nascosto</span>
             </div>
             <h2 className="font-headline font-bold tracking-tight leading-[1.1] text-3xl md:text-4xl">
-              Ogni <span className="italic text-orange-500">"ci penso"</span> e' un preventivo da{" "}
-              <span className="text-orange-500">€1.500–€6.000</span>{" "}
-              che resta sul tavolo.
+              {isV5 ? <>
+                Ogni <span className="italic text-orange-500">"ci penso"</span> lascia in sospeso un piano di cura{" "}
+                <span className="text-orange-500">tra €1.500 e €6.000</span>.
+              </> : <>
+                Ogni <span className="italic text-orange-500">"ci penso"</span> e' un preventivo da{" "}
+                <span className="text-orange-500">€1.500–€6.000</span>{" "}
+                che resta sul tavolo.
+              </>}
             </h2>
             <p className="mt-5 text-lg text-text-muted leading-relaxed">
-              In Italia solo il 34% dei pazienti va dal dentista con regolarita'. Chi e' gia' entrato nel tuo studio ha fatto il passo piu' difficile: e' a meta' strada verso il si'. Ma senza uno strumento che trasformi il desiderio in decisione, il preventivo rimane un foglio su un tavolo.
+              {isV5
+                ? "Il paziente è già entrato in studio e sta valutando un cambiamento importante. Quando il risultato resta difficile da immaginare, anche una proposta clinicamente corretta può essere rimandata."
+                : "In Italia solo il 34% dei pazienti va dal dentista con regolarita'. Chi e' gia' entrato nel tuo studio ha fatto il passo piu' difficile: e' a meta' strada verso il si'. Ma senza uno strumento che trasformi il desiderio in decisione, il preventivo rimane un foglio su un tavolo."}
             </p>
             <p className="mt-4 text-[17px] md:text-lg font-bold text-text-main leading-relaxed">
-              Anche solo 1 preventivo perso a settimana significa <span className="text-orange-600">€40.000–€80.000 all'anno</span>.
+              {isV5 ? <>
+                Un solo piano di cura rinviato ogni settimana può valere <span className="text-orange-600">decine di migliaia di euro in un anno</span>.
+              </> : <>
+                Anche solo 1 preventivo perso a settimana significa <span className="text-orange-600">€40.000–€80.000 all'anno</span>.
+              </>}
             </p>
             <p className="mt-4 text-text-muted leading-relaxed">
-              E parliamo proprio dei trattamenti che pesano di piu': quelli che il paziente paga di tasca sua, dove ogni <strong className="text-text-main">"ci penso" vale migliaia di euro</strong>.
+              {isV5 ? <>
+                È particolarmente rilevante nei trattamenti estetici, ortodontici e protesici, dove il paziente sostiene direttamente una parte importante dell'investimento.
+              </> : <>
+                E parliamo proprio dei trattamenti che pesano di piu': quelli che il paziente paga di tasca sua, dove ogni <strong className="text-text-main">"ci penso" vale migliaia di euro</strong>.
+              </>}
             </p>
             <p className="mt-5 font-serif italic text-text-main text-xl md:text-[22px] leading-snug">
-              Non e' che non voleva il trattamento.<br />E' che non riusciva a vedersi.
+              {isV5 ? <>
+                Non sempre manca l'interesse.<br />Spesso manca una rappresentazione chiara del possibile risultato.
+              </> : <>
+                Non e' che non voleva il trattamento.<br />E' che non riusciva a vedersi.
+              </>}
             </p>
           </motion.div>
 
@@ -1208,7 +1279,12 @@ const OtSlider = ({ prima, dopo, alt, focus = "center" }: { prima: string; dopo:
 
 // ─── EveryTreatment (Hormozi: su ogni trattamento, crolla "il mio caso e' diverso") ──
 const EveryTreatment = () => {
-  const treatments = [
+  const isV5 = useIsV5();
+  const treatments = isV5 ? [
+    { name: "Sbiancamento", price: "Indicativamente €200-€800", copy: "La preview aiuta a discutere tonalità e aspettative prima di definire il percorso con il paziente.", prima: sbiancamentoPrima, dopo: sbiancamentoDopo },
+    { name: "Faccette", price: "Indicativamente €700-€1.500 / elemento", copy: "Una visualizzazione personale rende più chiaro un trattamento che coinvolge forma, proporzioni e armonia del sorriso.", prima: faccettePrima, dopo: faccetteDopo },
+    { name: "Implantologia", price: "Indicativamente €2.300-€4.800", copy: "Nei casi con un cambiamento visibile, la preview supporta la spiegazione del piano senza sostituire diagnosi e progettazione clinica.", prima: implantologiaPrima, dopo: implantologiaDopo, focus: "center 60%" },
+  ] : [
     { name: "Sbiancamento", price: "Da €300 a €800", copy: "Il “ci penso” piu' comune. Mostragli i denti gia' bianchi e diventa un appuntamento.", prima: sbiancamentoPrima, dopo: sbiancamentoDopo },
     { name: "Faccette", price: "Da €800 a €2.500 / elemento", copy: "Il caso da migliaia di euro che non parte per paura. Qui lo vede finito, prima di iniziare.", prima: faccettePrima, dopo: faccetteDopo },
     { name: "Implantologia", price: "Da €1.500 a €5.000", copy: "Il vuoto che lo blocca da mesi. Mostragli il sorriso completo e il preventivo si sblocca.", prima: implantologiaPrima, dopo: implantologiaDopo, focus: "center 60%" },
@@ -1219,10 +1295,18 @@ const EveryTreatment = () => {
         <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
           <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-primary mb-4">Su qualsiasi trattamento</span>
           <h2 className="font-headline font-bold tracking-tight leading-[1.08] text-3xl md:text-4xl max-w-[18ch]">
-            Non funziona su un trattamento. <span className="font-serif font-normal italic text-primary">Funziona su tutti quelli che si vedono.</span>
+            {isV5 ? <>
+              Una preview utile <span className="font-serif font-normal italic text-primary">in ogni trattamento visibile.</span>
+            </> : <>
+              Non funziona su un trattamento. <span className="font-serif font-normal italic text-primary">Funziona su tutti quelli che si vedono.</span>
+            </>}
           </h2>
           <p className="mt-4 text-base text-text-muted leading-relaxed max-w-[58ch]">
-            Sbiancamento, faccette, ortodonzia, impianti, protesi, zirconio. Se il risultato cambia il sorriso, SmileLive lo fa <strong className="text-text-main">vedere al paziente prima</strong> che dica “ci penso”. E chi si vede, firma.
+            {isV5 ? <>
+              Sbiancamento, faccette, ortodonzia, impianti e protesi. La preview non sostituisce diagnosi o piano clinico: <strong className="text-text-main">aiuta il paziente a comprendere</strong> il cambiamento che state valutando insieme.
+            </> : <>
+              Sbiancamento, faccette, ortodonzia, impianti, protesi, zirconio. Se il risultato cambia il sorriso, SmileLive lo fa <strong className="text-text-main">vedere al paziente prima</strong> che dica “ci penso”. E chi si vede, firma.
+            </>}
           </p>
         </motion.div>
 
@@ -1245,7 +1329,9 @@ const EveryTreatment = () => {
 };
 
 // ─── ManifestoBand (fascia scura di stacco tra le sezioni) ──────────────────────
-const ManifestoBand = () => (
+const ManifestoBand = () => {
+  const isV5 = useIsV5();
+  return (
   <section className="py-20 md:py-28 relative overflow-hidden bg-gradient-to-b from-[#020c1a] via-[#041020] to-[#071830]">
     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[620px] h-[620px] bg-primary/20 blur-[150px] rounded-full pointer-events-none" />
     <motion.div
@@ -1255,21 +1341,63 @@ const ManifestoBand = () => (
       transition={{ duration: 0.6 }}
       className="max-w-3xl mx-auto px-6 text-center relative z-10"
     >
-      <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-sky-300 mb-5">Ecco cosa succede davvero</span>
+      <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-sky-300 mb-5">
+        {isV5 ? "Quando la proposta diventa comprensibile" : "Ecco cosa succede davvero"}
+      </span>
       <h2 className="font-headline font-bold leading-[1.12] tracking-tight text-3xl md:text-5xl text-white">
-        Il paziente non compra un preventivo.<br className="hidden md:block" /> Prima lo <span className="font-serif font-normal italic text-sky-300">vede e lo prova</span>. Poi lo desidera.
+        {isV5 ? <>
+          Il paziente non accetta un'immagine astratta. Accetta un percorso che <span className="font-serif font-normal italic text-sky-300">riesce a comprendere.</span>
+        </> : <>
+          Il paziente non compra un preventivo.<br className="hidden md:block" /> Prima lo <span className="font-serif font-normal italic text-sky-300">vede e lo prova</span>. Poi lo desidera.
+        </>}
       </h2>
       <p className="mt-6 text-lg md:text-xl text-white/60 leading-relaxed">
-        Come fanno le grandi aziende. Come in un Apple Store.
+        {isV5
+          ? "La preview rende il possibile risultato più concreto e apre una conversazione clinica più consapevole."
+          : "Come fanno le grandi aziende. Come in un Apple Store."}
       </p>
-      <p className="mt-8 font-headline font-bold text-2xl md:text-4xl text-orange-500">Chi prova, compra.</p>
+      <p className="mt-8 font-headline font-bold text-2xl md:text-4xl text-orange-500">
+        {isV5 ? "Più comprensione. Più fiducia nella decisione." : "Chi prova, compra."}
+      </p>
     </motion.div>
   </section>
-);
+  );
+};
 
 // ─── HowItWorks ────────────────────────────────────────────────────────────────
 const HowItWorks = () => {
-  const steps = [
+  const isV5 = useIsV5();
+  const steps = isV5 ? [
+    {
+      num: "01",
+      icon: <Users size={20} weight="light" className="text-primary" />,
+      title: "Il paziente scopre la preview",
+      desc: "Il materiale in sala d'attesa introduce il servizio prima della consulenza, senza interrompere il lavoro clinico.",
+      image: stepPoster,
+    },
+    {
+      num: "02",
+      icon: <Camera size={20} weight="light" className="text-primary" />,
+      title: "Lo staff acquisisce il contenuto",
+      desc: "Segreteria o ASO caricano foto e video seguendo un flusso semplice e replicabile.",
+      image: stepPreview,
+      highlight: true,
+    },
+    {
+      num: "03",
+      icon: <Sparkle size={20} weight="light" className="text-primary" />,
+      title: "La preview entra in consulenza",
+      desc: "Il possibile cambiamento viene mostrato sul volto del paziente e discusso insieme al professionista.",
+      image: stepSorriso,
+    },
+    {
+      num: "04",
+      icon: <CheckCircle size={20} weight="light" className="text-primary" />,
+      title: "Il percorso continua nel gestionale",
+      desc: "Preventivo, firma, reminder e stato del trattamento restano collegati alla stessa scheda paziente.",
+      image: stepDentista,
+    },
+  ] : [
     {
       num: "01",
       icon: <Users size={20} weight="light" className="text-primary" />,
@@ -1312,11 +1440,10 @@ const HowItWorks = () => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-headline font-bold mb-6 tracking-tight">
-            Non stai installando un software.<br />
-            <span className="italic font-serif font-normal text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Stai attivando un protocollo.</span>
+            {isV5 ? <>Un protocollo semplice,<br /><span className="italic font-serif font-normal text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">dalla sala d'attesa al follow-up.</span></> : <>Non stai installando un software.<br /><span className="italic font-serif font-normal text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Stai attivando un protocollo.</span></>}
           </h2>
           <p className="text-xl text-text-muted max-w-2xl mx-auto">
-            Uno studio a Bologna lo usa cosi': il poster in sala d'attesa dice una cosa sola. La segretaria apre SmileLive. 30 secondi. La paziente vede. Poi: <strong className="text-primary">"Quando possiamo iniziare?"</strong>
+            {isV5 ? "Ogni ruolo ha un passaggio definito. Lo staff prepara la preview, il clinico la contestualizza e il gestionale accompagna ciò che viene dopo." : <>Uno studio a Bologna lo usa cosi': il poster in sala d'attesa dice una cosa sola. La segretaria apre SmileLive. 30 secondi. La paziente vede. Poi: <strong className="text-primary">"Quando possiamo iniziare?"</strong></>}
           </p>
         </motion.div>
 
@@ -1369,7 +1496,11 @@ const HowItWorks = () => {
             <div>
               <h3 className="text-lg font-bold text-text-main mb-2">Sulla precisione della simulazione</h3>
               <p className="text-text-muted leading-relaxed">
-                SmileLive non e' uno strumento diagnostico: e' uno <strong className="text-text-main">strumento di desiderio</strong>. Il suo compito non e' garantire il risultato clinico. Il suo compito e' far nascere nel paziente la voglia di iniziare. Per i casi riproducibili, la preview e' molto accurata. Per i casi complessi, sblocca la conversazione. <strong className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-orange-600 font-bold">Funziona in entrambi i casi.</strong>
+                {isV5 ? <>
+                  SmileLive è uno strumento di comunicazione, non di diagnosi. La preview non rappresenta una promessa di risultato e va sempre contestualizzata dal professionista rispetto al caso clinico, alle alternative terapeutiche e ai limiti del trattamento.
+                </> : <>
+                  SmileLive non e' uno strumento diagnostico: e' uno <strong className="text-text-main">strumento di desiderio</strong>. Il suo compito non e' garantire il risultato clinico. Il suo compito e' far nascere nel paziente la voglia di iniziare. Per i casi riproducibili, la preview e' molto accurata. Per i casi complessi, sblocca la conversazione. <strong className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-orange-600 font-bold">Funziona in entrambi i casi.</strong>
+                </>}
               </p>
             </div>
           </div>
@@ -1381,6 +1512,7 @@ const HowItWorks = () => {
 
 // ─── WhatYouGet ───────────────────────────────────────────────────────────────
 const WhatYouGet = () => {
+  const isV5 = useIsV5();
   const [isDemoOpen, setIsDemoOpen] = useState(false);
   const [demoStage, setDemoStage] = useState<"idle" | "listening" | "processing" | "ready" | "sent">("idle");
 
@@ -1473,16 +1605,24 @@ const WhatYouGet = () => {
           <div>
             <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-orange-500 mb-4">Gestionale completo</span>
             <h2 className="text-3xl md:text-5xl font-headline font-bold tracking-tight leading-[1.05] text-balance">
-              <span className="text-orange-500">Aspetta.</span><br className="sm:hidden" /> SmileLive non è solo l'anteprima del sorriso.
+              {isV5 ? <>
+                La preview è solo l'inizio. <span className="text-orange-500">Il gestionale è già incluso.</span>
+              </> : <>
+                <span className="text-orange-500">Aspetta.</span><br className="sm:hidden" /> SmileLive non è solo l'anteprima del sorriso.
+              </>}
             </h2>
             <p className="mt-5 text-base md:text-lg leading-relaxed text-slate-300 max-w-2xl">
-              Oltre all'anteprima, segue il resto del percorso: scheda paziente, preventivi, promemoria degli appuntamenti e adempimenti fiscali. Meno strumenti separati, meno tempo in segreteria, tutto in un unico posto.
+              {isV5
+                ? "Dopo la consulenza, SmileLive accompagna il lavoro dello studio con scheda paziente, preventivi, firma, reminder e adempimenti fiscali nello stesso ambiente operativo."
+                : "Oltre all'anteprima, segue il resto del percorso: scheda paziente, preventivi, promemoria degli appuntamenti e adempimenti fiscali. Meno strumenti separati, meno tempo in segreteria, tutto in un unico posto."}
             </p>
           </div>
           <aside className="relative overflow-hidden rounded-2xl border border-orange-300/50 bg-[linear-gradient(150deg,rgba(249,115,22,0.34),rgba(217,70,20,0.14))] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_30px_78px_-58px_rgba(0,0,0,0.88)] backdrop-blur">
-            <strong className="block text-2xl font-headline font-bold tracking-tight leading-none text-white">Sì, tutto incluso.</strong>
+            <strong className="block text-2xl font-headline font-bold tracking-tight leading-none text-white">{isV5 ? "Un unico ambiente operativo." : "Sì, tutto incluso."}</strong>
             <span className="block mt-3 text-sm leading-relaxed text-slate-200">
-              CRM, preventivi, firma, reminder, fisco e prescrizione vocale nello stesso flusso commerciale.
+              {isV5
+                ? "Pazienti, preventivi, firma, reminder, fisco e prescrizione vocale raccolti nello stesso flusso."
+                : "CRM, preventivi, firma, reminder, fisco e prescrizione vocale nello stesso flusso commerciale."}
             </span>
           </aside>
         </motion.div>
@@ -1692,6 +1832,7 @@ const WhatYouGet = () => {
 };
 // ─── ROICalculator ─────────────────────────────────────────────────────────────
 const ROICalculator = () => {
+  const isV5 = useIsV5();
   const [previews, setPreviews] = useState(100);
   const [conversion, setConversion] = useState(4);
   const [ticket, setTicket] = useState(1200);
@@ -1715,9 +1856,9 @@ const ROICalculator = () => {
             <span className="text-xs font-bold tracking-widest uppercase text-gold">Calcolatore ROI</span>
           </span>
           <h2 className="text-4xl md:text-6xl font-headline font-black mb-4 tracking-tight text-text-main">
-            Simula il tuo <span className="italic font-serif font-normal text-primary">flusso di cassa</span>
+            {isV5 ? <>Valuta l'impatto <span className="italic font-serif font-normal text-primary">sul tuo studio</span></> : <>Simula il tuo <span className="italic font-serif font-normal text-primary">flusso di cassa</span></>}
           </h2>
-          <p className="text-xl text-text-muted max-w-2xl mx-auto">Gli studi che usano SmileLive chiudono in media 2–3 trattamenti estetici in piu' al mese nei primi 60 giorni.</p>
+          <p className="text-xl text-text-muted max-w-2xl mx-auto">{isV5 ? "Imposta il volume di preview, il tasso di accettazione stimato e il valore medio dei piani di cura." : "Gli studi che usano SmileLive chiudono in media 2–3 trattamenti estetici in piu' al mese nei primi 60 giorni."}</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
@@ -1749,17 +1890,21 @@ const ROICalculator = () => {
             <div className="absolute top-0 right-0 w-56 h-56 bg-gold/15 blur-[80px] rounded-full pointer-events-none"></div>
             <div className="relative z-10 space-y-7">
               <div>
-                <p className="text-text-muted mb-2 font-medium text-sm uppercase tracking-widest">Nuovi pazienti al mese</p>
+                <p className="text-text-muted mb-2 font-medium text-sm uppercase tracking-widest">{isV5 ? "Piani di cura aggiuntivi stimati" : "Nuovi pazienti al mese"}</p>
                 <div className="text-5xl font-headline font-black text-text-main num-tabular">+{monthlyPatients}</div>
               </div>
               <div>
-                <p className="text-text-muted mb-2 font-medium text-sm uppercase tracking-widest">Fatturato extra stimato</p>
+                <p className="text-text-muted mb-2 font-medium text-sm uppercase tracking-widest">{isV5 ? "Valore economico stimato" : "Fatturato extra stimato"}</p>
                 <div className="text-[clamp(1.9rem,8vw,3.5rem)] font-headline font-black text-gold num-tabular leading-none tracking-tight whitespace-nowrap">€{extraRevenue.toLocaleString('it-IT')}</div>
                 <p className="text-text-muted/70 text-sm mt-1">al mese</p>
               </div>
               <div className="pt-6 border-t border-slate-200">
                 <p className="text-sm text-text-muted leading-relaxed">
-                  SmileLive Studio Piccolo: <strong className="text-gold">€47/mese</strong> annuale.<br />Un solo trattamento in piu' lo ripaga in meno di un'ora di lavoro.
+                  {isV5 ? <>
+                    Simulazione indicativa basata sui valori inseriti. <strong className="text-gold">Non costituisce una garanzia di risultato.</strong>
+                  </> : <>
+                    SmileLive Studio Piccolo: <strong className="text-gold">€47/mese</strong> annuale.<br />Un solo trattamento in piu' lo ripaga in meno di un'ora di lavoro.
+                  </>}
                 </p>
               </div>
             </div>
@@ -1772,7 +1917,13 @@ const ROICalculator = () => {
 
 // ─── IntermediateCTA (CTA + prova numerica, uniti) ───────────────────────────────
 const IntermediateCTA = () => {
-  const stats = [
+  const isV5 = useIsV5();
+  const stats = isV5 ? [
+    { icon: <Users size={22} weight="fill" className="text-gold" />, value: "50+", label: "Studi attivi in Italia" },
+    { icon: <TrendUp size={22} weight="fill" className="text-primary" />, value: "+67%", label: "Conversione media" },
+    { icon: <Pulse size={22} weight="fill" className="text-text-main" />, value: "2-3", label: "Casi extra al mese" },
+    { icon: <Lightning size={22} weight="fill" className="text-text-main" />, value: "10s", label: "Per preview" },
+  ] : [
     { icon: <Users size={22} weight="fill" className="text-gold" />, value: "50+", label: "Studi Attivi in Italia" },
     { icon: <TrendUp size={22} weight="fill" className="text-primary" />, value: "+67%", label: "Conversione Media" },
     { icon: <Pulse size={22} weight="fill" className="text-text-main" />, value: "€700k+", label: "Generati in Extra" },
@@ -1790,9 +1941,13 @@ const IntermediateCTA = () => {
         transition={{ duration: 0.6 }}
         className="max-w-5xl mx-auto px-6 text-center relative z-10"
       >
-        <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-primary mb-5">Non lasciarlo uscire indeciso</span>
+        <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-primary mb-5">{isV5 ? "Dalla comprensione alla decisione" : "Non lasciarlo uscire indeciso"}</span>
         <h2 className="font-headline font-bold leading-[1.12] tracking-tight text-3xl md:text-5xl text-text-main max-w-3xl mx-auto">
-          Chi ti dice <span className="font-serif font-normal italic text-primary">"ci penso"</span> potrebbe dirti di sì.<br className="hidden md:block" /> Se gli mostri il risultato.
+          {isV5 ? <>
+            Una proposta chiara riduce l'incertezza e rende il <span className="font-serif font-normal italic text-primary">piano di cura più concreto.</span>
+          </> : <>
+            Chi ti dice <span className="font-serif font-normal italic text-primary">"ci penso"</span> potrebbe dirti di sì.<br className="hidden md:block" /> Se gli mostri il risultato.
+          </>}
         </h2>
         <div className="mt-10 flex flex-col items-center gap-3">
           <motion.a
@@ -1808,7 +1963,7 @@ const IntermediateCTA = () => {
               <CaretRight size={14} weight="bold" />
             </span>
           </motion.a>
-          <span className="text-sm text-text-muted">3 anteprime in omaggio · senza carta richiesta</span>
+          <span className="text-sm text-text-muted">{isV5 ? "3 foto + 1 video in omaggio, senza carta" : "3 anteprime in omaggio · senza carta richiesta"}</span>
         </div>
         <div className="mt-14 bg-white rounded-[2.5rem] shadow-[0_20px_60px_-30px_rgba(15,23,42,0.25)] border border-slate-200 grid grid-cols-2 md:grid-cols-4 gap-y-8 py-8 px-6 md:divide-x md:divide-slate-100">
           {stats.map((s, i) => (
@@ -1822,7 +1977,7 @@ const IntermediateCTA = () => {
           ))}
         </div>
       </motion.div>
-      <SectionWave top="#ffffff" fill="#ffffff" />
+      <SectionWave top={isV5 ? "#f7fbfd" : "#ffffff"} fill="#ffffff" />
     </section>
   );
 };
@@ -2064,7 +2219,22 @@ const Testimonials = () => {
 };
 
 // ─── ForWho ────────────────────────────────────────────────────────────────────
-const ForWho = () => (
+const ForWho = () => {
+  const isV5 = useIsV5();
+  const profiles = isV5 ? [
+    { icon: <Users size={28} weight="light" className="text-primary shrink-0" />, title: "Dentista generalista", desc: "Vuoi rendere più chiara la proposta dei trattamenti con un cambiamento visibile." },
+    { icon: <Star size={28} weight="light" className="text-gold shrink-0" />, title: "Odontoiatra estetico", desc: "Vuoi integrare una preview personale in una consulenza clinica strutturata." },
+    { icon: <Medal size={28} weight="light" className="text-secondary shrink-0" />, title: "Clinic manager", desc: "Cerchi un protocollo condiviso per preventivi, follow-up e gestione del paziente." },
+    { icon: <TrendUp size={28} weight="light" className="text-primary shrink-0" />, title: "Studio in crescita", desc: "Vuoi unire comunicazione del piano di cura e organizzazione dello studio." },
+    { icon: <Pulse size={28} weight="light" className="text-primary shrink-0" />, title: "Ortodontista o implantologo", desc: "Vuoi supportare la comprensione dei casi in cui il risultato modifica visibilmente il sorriso." },
+  ] : [
+    { icon: <Users size={28} weight="light" className="text-primary shrink-0" />, title: "Dentista generalista", desc: "Vuoi aumentare i casi estetici senza cambiare il tuo workflow." },
+    { icon: <Star size={28} weight="light" className="text-gold shrink-0" />, title: "Specialista estetica", desc: "Hai gia' i pazienti. Ti manca lo strumento che li fa decidere." },
+    { icon: <Medal size={28} weight="light" className="text-secondary shrink-0" />, title: "Clinic manager", desc: "Vuoi uno standard di consulenza che funzioni su tutto il team." },
+    { icon: <TrendUp size={28} weight="light" className="text-primary shrink-0" />, title: "Studio giovane", desc: "Stai costruendo la tua base pazienti e vuoi differenziarti subito." },
+    { icon: <Pulse size={28} weight="light" className="text-primary shrink-0" />, title: "Ortodontista / implantologo", desc: "Vuoi integrare la visualizzazione nel percorso di accettazione del piano." },
+  ];
+  return (
   <section className="py-16 md:py-28 bg-white relative overflow-hidden isolate">
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -2073,15 +2243,9 @@ const ForWho = () => (
       transition={{ duration: 0.6 }}
       className="max-w-4xl mx-auto px-6"
     >
-      <h2 className="text-4xl md:text-5xl font-headline font-bold mb-12 text-center tracking-tight">Sei uno di <span className="text-gold">loro?</span></h2>
+      <h2 className="text-4xl md:text-5xl font-headline font-bold mb-12 text-center tracking-tight">{isV5 ? <>Pensato per ogni ruolo <span className="text-gold">dello studio.</span></> : <>Sei uno di <span className="text-gold">loro?</span></>}</h2>
       <div className="space-y-4 mb-12">
-        {[
-          { icon: <Users size={28} weight="light" className="text-primary shrink-0" />, title: "Dentista generalista", desc: "Vuoi aumentare i casi estetici senza cambiare il tuo workflow." },
-          { icon: <Star size={28} weight="light" className="text-gold shrink-0" />, title: "Specialista estetica", desc: "Hai gia' i pazienti. Ti manca lo strumento che li fa decidere." },
-          { icon: <Medal size={28} weight="light" className="text-secondary shrink-0" />, title: "Clinic manager", desc: "Vuoi uno standard di consulenza che funzioni su tutto il team." },
-          { icon: <TrendUp size={28} weight="light" className="text-primary shrink-0" />, title: "Studio giovane", desc: "Stai costruendo la tua base pazienti e vuoi differenziarti subito." },
-          { icon: <Pulse size={28} weight="light" className="text-primary shrink-0" />, title: "Ortodontista / implantologo", desc: "Vuoi integrare la visualizzazione nel percorso di accettazione del piano." },
-        ].map((item, i) => (
+        {profiles.map((item, i) => (
           <motion.div
             key={i}
             whileHover={{ x: 4 }}
@@ -2098,15 +2262,18 @@ const ForWho = () => (
       </div>
       <div className="p-6 rounded-2xl bg-gradient-to-r from-amber-50 to-transparent border-l-4 border-gold">
         <p className="text-xl font-semibold text-gold italic">
-          Se ti riconosci anche in uno solo di questi, questo strumento e' stato costruito per te.
+          {isV5 ? "Un unico flusso, adattabile all'organizzazione e alle responsabilità del tuo team." : "Se ti riconosci anche in uno solo di questi, questo strumento e' stato costruito per te."}
         </p>
       </div>
     </motion.div>
   </section>
-);
+  );
+};
 
 // ─── FutureVision ──────────────────────────────────────────────────────────────
-const FutureVision = () => (
+const FutureVision = () => {
+  const isV5 = useIsV5();
+  return (
   <section id="future" className="py-16 md:py-28 bg-slate-50 relative overflow-hidden">
     <WaveField className="absolute bottom-0 inset-x-0 h-full z-0" style={{ WebkitMaskImage: 'linear-gradient(to top, transparent 0%, #000 24%, #000 58%, transparent 90%)', maskImage: 'linear-gradient(to top, transparent 0%, #000 24%, #000 58%, transparent 90%)' }} focusX={-0.03} focusY={1.05} spreadX={1} opacity={0.2} />
     <motion.div
@@ -2120,11 +2287,10 @@ const FutureVision = () => (
         <span className="text-xs font-bold tracking-[0.2em] uppercase text-secondary">La Visione</span>
       </div>
       <h2 className="text-4xl md:text-5xl font-headline font-bold mb-4 tracking-tight">
-        Da strumento di conversione<br />
-        <span className="italic font-serif font-normal text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">a sistema di gestione.</span>
+        {isV5 ? <>Dalla preview<br /><span className="italic font-serif font-normal text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">a un sistema di gestione integrato.</span></> : <>Da strumento di conversione<br /><span className="italic font-serif font-normal text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">a sistema di gestione.</span></>}
       </h2>
-      <p className="text-xl text-text-muted leading-relaxed mb-3 max-w-2xl mx-auto">SmileLive non e' solo preview. E' il software che mancava al tuo studio.</p>
-      <p className="text-lg text-text-muted leading-relaxed mb-12 max-w-2xl mx-auto">Chi e' abbonato entrera' automaticamente nella nostra <strong className="text-text-main">Vetrina di Odontoiatri Specialisti</strong>: un vantaggio competitivo enorme per le richieste locali.</p>
+      <p className="text-xl text-text-muted leading-relaxed mb-3 max-w-2xl mx-auto">{isV5 ? "SmileLive collega la comunicazione del possibile risultato alle attività operative che seguono la consulenza." : "SmileLive non e' solo preview. E' il software che mancava al tuo studio."}</p>
+      <p className="text-lg text-text-muted leading-relaxed mb-12 max-w-2xl mx-auto">{isV5 ? <>La <strong className="text-text-main">Vetrina di Odontoiatri Specialisti</strong> è in sviluppo e sarà dedicata alla visibilità locale degli studi.</> : <>Chi e' abbonato entrera' automaticamente nella nostra <strong className="text-text-main">Vetrina di Odontoiatri Specialisti</strong>: un vantaggio competitivo enorme per le richieste locali.</>}</p>
 
       <motion.div
         variants={staggerContainer}
@@ -2136,21 +2302,23 @@ const FutureVision = () => (
         <motion.div variants={fadeUp} className="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm hover:border-primary/30 hover:shadow-md transition-all duration-300">
           <Target size={28} weight="light" className="text-primary mb-4" />
           <h3 className="text-xl font-bold mb-2 text-text-main">Marketing e ADS Centralizzati</h3>
-          <p className="text-text-muted leading-relaxed">Intercettiamo i pazienti indecisi o insoddisfatti del proprio sorriso tramite campagne digitali mirate, educandoli alle possibilita' estetiche prima ancora che entrino in studio.</p>
+          <p className="text-text-muted leading-relaxed">{isV5 ? "Strumenti dedicati alla comunicazione locale dello studio e all'informazione sui trattamenti con rilevanza estetica." : "Intercettiamo i pazienti indecisi o insoddisfatti del proprio sorriso tramite campagne digitali mirate, educandoli alle possibilita' estetiche prima ancora che entrino in studio."}</p>
         </motion.div>
         <motion.div variants={fadeUp} className="bg-white border border-primary/30 rounded-2xl p-8 shadow-sm relative overflow-hidden hover:shadow-md transition-all duration-300">
-          <div className="absolute top-4 right-4 bg-primary/10 text-primary text-xs uppercase tracking-widest font-bold px-2 py-1 rounded">Vantaggio Locale</div>
+          <div className="absolute top-4 right-4 bg-primary/10 text-primary text-xs uppercase tracking-widest font-bold px-2 py-1 rounded">{isV5 ? "In sviluppo" : "Vantaggio Locale"}</div>
           <Medal size={28} weight="light" className="text-primary mb-4" />
           <h3 className="text-xl font-bold mb-2 text-text-main">Vetrina Specialisti Esclusiva</h3>
-          <p className="text-text-muted leading-relaxed">I pazienti sceglieranno con chi effettuare il trattamento consultando il nostro network. <strong className="text-text-main">Posizionarsi per primi nella propria citta' garantisce un vantaggio competitivo enorme.</strong></p>
+          <p className="text-text-muted leading-relaxed">{isV5 ? "Una futura area di ricerca pensata per mettere in relazione pazienti e professionisti, con profili informativi organizzati per area geografica e competenza." : <>I pazienti sceglieranno con chi effettuare il trattamento consultando il nostro network. <strong className="text-text-main">Posizionarsi per primi nella propria citta' garantisce un vantaggio competitivo enorme.</strong></>}</p>
         </motion.div>
       </motion.div>
     </motion.div>
   </section>
-);
+  );
+};
 
 // ─── FAQ ───────────────────────────────────────────────────────────────────────
 const FAQ = () => {
+  const isV5 = useIsV5();
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const faqs = [
     { q: "Posso provarlo senza abbonarmi?", a: "Si'. La registrazione e' gratuita e ti regaliamo 3 foto e 1 video in omaggio nella tab SmileLive Preview, senza carta e senza impegno. Il resto del software resta visibile e si sblocca quando attivi un abbonamento. Per generare ancora senza abbonarti, paghi 5€ a foto e 5€ a video." },
@@ -2158,7 +2326,9 @@ const FAQ = () => {
     { q: "Cosa succede se una preview esce male (denti deformati, artefatti)?", a: "La generazione scala comunque dal piano, ma con un tasto la segnali: verifichiamo il caso e, se l'errore e' nostro, la rigeneriamo gratis entro 24 ore. Le modifiche creative che chiedi tu (piu' bianchi, forma diversa) contano invece come una generazione normale." },
     { q: "E se finisco le foto o i video inclusi nel mese?", a: "Non ti blocchiamo mai, soprattutto col paziente in poltrona. Al raggiungimento del limite scatta l'addebito automatico dell'extra (5€/foto · 5€/video, 2€/foto · 3€/video sullo Studio Grande) oppure puoi passare al piano superiore. Decidi tu." },
     { q: "Chi genera le preview? Devo farlo io?", a: "No. Il protocollo e' pensato per la segreteria o l'ASO. E' semplicissimo da usare: da quel momento lo staff lavora in autonomia e tu resti in poltrona." },
-    { q: "Il 70% di accuratezza visiva non e' troppo basso?", a: "SmileLive non e' uno strumento diagnostico: e' uno strumento di desiderio. Il suo compito non e' garantire il risultato clinico, quello e' il tuo. Il suo compito e' far nascere nel paziente la voglia di iniziare. Per i casi riproducibili, la preview e' molto accurata. Per i casi complessi, sblocca la conversazione. Funziona in entrambi i casi." },
+    isV5
+      ? { q: "La preview sostituisce una simulazione diagnostica?", a: "No. SmileLive è uno strumento di comunicazione e non sostituisce diagnosi, progettazione clinica o consenso informato. La preview aiuta il paziente a comprendere un possibile cambiamento, che resta sempre da valutare e spiegare dal professionista." }
+      : { q: "Il 70% di accuratezza visiva non e' troppo basso?", a: "SmileLive non e' uno strumento diagnostico: e' uno strumento di desiderio. Il suo compito non e' garantire il risultato clinico, quello e' il tuo. Il suo compito e' far nascere nel paziente la voglia di iniziare. Per i casi riproducibili, la preview e' molto accurata. Per i casi complessi, sblocca la conversazione. Funziona in entrambi i casi." },
     { q: "Posso usarlo per l'implantologia o solo per l'estetica?", a: "SmileLive lavora su qualsiasi trattamento che cambia visibilmente il sorriso: faccette, sbiancamento, ortodonzia, protesi, impianti su arcata. Se il risultato si vede, SmileLive lo puo' mostrare." },
   ];
 
@@ -2218,7 +2388,9 @@ const FAQ = () => {
 };
 
 // ─── FinalCTA ──────────────────────────────────────────────────────────────────
-const FinalCTA = () => (
+const FinalCTA = () => {
+  const isV5 = useIsV5();
+  return (
   <section className="py-20 md:py-40 relative overflow-hidden text-center bg-gradient-to-b from-white via-sky-50/50 to-sky-50">
     <WaveField className="absolute top-0 inset-x-0 h-full z-0" style={{ WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, #000 24%, #000 60%, transparent 92%)', maskImage: 'linear-gradient(to bottom, transparent 0%, #000 24%, #000 60%, transparent 92%)' }} focusX={-0.03} focusY={-0.05} spreadX={1} opacity={0.2} />
     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[500px] bg-primary/10 blur-[160px] rounded-full pointer-events-none"></div>
@@ -2230,15 +2402,15 @@ const FinalCTA = () => (
       transition={{ duration: 0.8 }}
       className="max-w-4xl mx-auto px-6 relative z-10"
     >
-      <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-primary mb-5">Pronto a partire</span>
+      <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-primary mb-5">{isV5 ? "Inizia con una preview" : "Pronto a partire"}</span>
       <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-headline font-bold mb-6 leading-tight text-text-main tracking-tight text-balance">
-        Il tuo prossimo paziente <span className="text-gold">indeciso</span> e' gia' in sala d'attesa.
+        {isV5 ? <>Rendi più chiara la <span className="text-gold">prossima consulenza.</span></> : <>Il tuo prossimo paziente <span className="text-gold">indeciso</span> e' gia' in sala d'attesa.</>}
       </h2>
       <p className="text-lg md:text-xl text-text-muted leading-relaxed max-w-2xl mx-auto">
-        Ogni "ci penso" che senti oggi e' un trattamento che potrebbe diventare un si' domani.
+        {isV5 ? "Mostra al paziente un possibile cambiamento e continua il percorso con preventivo, firma e follow-up nello stesso software." : "Ogni \"ci penso\" che senti oggi e' un trattamento che potrebbe diventare un si' domani."}
       </p>
       <p className="mt-3 text-base md:text-lg text-text-main font-semibold">
-        Il primo risultato potrebbe arrivare questa settimana.
+        {isV5 ? "Puoi iniziare oggi con 3 foto e 1 video in omaggio." : "Il primo risultato potrebbe arrivare questa settimana."}
       </p>
       <div className="mt-10 flex flex-col items-center gap-3">
         <motion.a
@@ -2266,7 +2438,8 @@ const FinalCTA = () => (
       </div>
     </motion.div>
   </section>
-);
+  );
+};
 
 // ─── Footer ────────────────────────────────────────────────────────────────────
 const SOCIALS = [
@@ -2284,7 +2457,9 @@ const FooterCol = ({ title, children }: { title: string; children: React.ReactNo
 
 const footerLink = "hover:text-white transition-colors";
 
-const Footer = () => (
+const Footer = () => {
+  const isV5 = useIsV5();
+  return (
   <footer className="bg-[#0b1220] text-white">
     <div className="max-w-7xl mx-auto px-6 py-16">
       <motion.div
@@ -2298,7 +2473,7 @@ const Footer = () => (
         <motion.div variants={fadeUp} className="flex flex-col gap-5">
           <img src={logoFinale} alt="SmileLive" className="h-11 w-auto object-contain object-left brightness-0 invert" width="120" height="44" loading="lazy" />
           <p className="text-sm text-slate-400 leading-relaxed max-w-[260px]">
-            Il convertitore di pazienti indecisi: simulazioni del sorriso con l'AI che aumentano l'accettazione dei preventivi.
+            {isV5 ? "Preview AI e strumenti gestionali per accompagnare la consulenza e il lavoro quotidiano dello studio dentistico." : "Il convertitore di pazienti indecisi: simulazioni del sorriso con l'AI che aumentano l'accettazione dei preventivi."}
           </p>
           <div className="flex items-center gap-3">
             {SOCIALS.map(({ label, href, Icon, wip }) =>
@@ -2374,29 +2549,45 @@ const Footer = () => (
       </div>
     </motion.div>
   </footer>
-);
+  );
+};
 
 // ─── SectionWave (curva dell'Hero come overlay in fondo a una sezione) ──────────
 // Va messa DENTRO la sezione (che deve essere `relative`). Lo sfondo del div è il
 // colore della sezione SOTTO (`fill`), l'SVG disegna la forma della sezione SOPRA
 // (`top`) fino alla curva. Così il bordo inferiore è tinta piena → nessun hairline.
-const SectionWave = ({ top, fill, flip = false }: { top: string; fill: string; flip?: boolean }) => (
-  <div
-    className="absolute inset-x-0 bottom-0 pointer-events-none leading-[0] z-[1]"
-    aria-hidden="true"
-    style={{ background: fill, ...(flip ? { transform: "scaleX(-1)" } : {}) }}
-  >
-    <svg viewBox="0 0 1440 260" preserveAspectRatio="none" className="block w-full h-[60px] md:h-[100px]">
-      <path d="M0,0 L1440,0 L1440,30 C1352,44 1250,71 1080,120 C760,212 360,232 0,150 Z" fill={top} />
-      <path d="M0,150 C360,232 760,212 1080,120 C1250,71 1352,44 1440,30" fill="none" stroke="rgba(56,189,248,0.55)" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
-    </svg>
-  </div>
-);
+const SectionWave = ({ top, fill, flip = false }: { top: string; fill: string; flip?: boolean }) => {
+  const isV5 = useIsV5();
+  const v5Colors: Record<string, string> = {
+    "#eef2fc": "#eaf5fa",
+    "#f8fafc": "#eaf5fa",
+    "#07111f": "#071623",
+    "#e8f3fb": "#eaf5fa",
+  };
+  const resolvedTop = isV5 ? (v5Colors[top] ?? top) : top;
+  const resolvedFill = isV5 ? (v5Colors[fill] ?? fill) : fill;
+
+  return (
+    <div
+      className="section-wave absolute inset-x-0 -bottom-px pointer-events-none leading-[0] z-[1]"
+      aria-hidden="true"
+      style={{ background: resolvedFill, ...(flip ? { transform: "scaleX(-1)" } : {}) }}
+    >
+      <svg viewBox="0 0 1440 260" preserveAspectRatio="none" className="block w-full h-[60px] md:h-[100px]">
+        <path d="M0,150 C360,232 760,212 1080,120 C1250,71 1352,44 1440,30 L1440,260 L0,260 Z" fill={resolvedFill} />
+        <path d="M0,0 L1440,0 L1440,30 C1352,44 1250,71 1080,120 C760,212 360,232 0,150 Z" fill={resolvedTop} />
+        <path d="M0,150 C360,232 760,212 1080,120 C1250,71 1352,44 1440,30" fill="none" stroke="rgba(56,189,248,0.55)" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
+      </svg>
+    </div>
+  );
+};
 
 // ─── Page ──────────────────────────────────────────────────────────────────────
-export default function IndexV3() {
+export default function IndexV3({ variant = "v3" }: { variant?: SmileLiveLandingVariant }) {
   return (
-    <main className="min-h-screen w-full overflow-x-clip bg-white text-text-main selection:bg-primary/20 selection:text-text-main font-['Inter']">
+    <MotionConfig reducedMotion="user">
+    <LandingVariantContext.Provider value={variant}>
+    <main data-landing-version={variant} className={`min-h-screen w-full overflow-x-clip bg-white text-text-main selection:bg-primary/20 selection:text-text-main font-['Inter'] ${variant === "v5" ? "smilelive-v5" : ""}`}>
       <TopBar />
       {/* ── Hormozi spine: Hook → Dolore (€ poi emotivo) → Reframe → Meccanismo → Prova → Facilità → CTA → Value stack → Prova → Ancora prezzo → Offerta → Qualifica → Urgenza → Obiezioni → Chiusura ── */}
       <Hero />                {/* Hook / dream outcome */}
@@ -2420,5 +2611,7 @@ export default function IndexV3() {
       <Footer />
       <WhatsAppWidget />
     </main>
+    </LandingVariantContext.Provider>
+    </MotionConfig>
   );
 }
