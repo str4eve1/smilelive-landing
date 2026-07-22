@@ -1989,7 +1989,7 @@ const Pricing = () => {
   const studioPlans = [
     { name: "Studio Piccolo", tagline: "Per studi che iniziano", monthly: 57, annualMonthly: 47, annualTotal: 564, foto: 20, video: 8, promemoria: 25, extra: "5€/foto · 5€/video · €0,20/promemoria", cta: "Scegli Studio Piccolo", ctaId: "scegli_studio_piccolo", highlighted: false, accent: "#0d9488", grad: "linear-gradient(135deg,#2dd4bf,#0d9488)" },
     { name: "Studio Medio", tagline: "Per studi attivi", monthly: 114, annualMonthly: 94, annualTotal: 1128, foto: 50, video: 18, promemoria: 50, extra: "5€/foto · 5€/video · €0,19/promemoria", cta: "Scegli Studio Medio", ctaId: "scegli_studio_medio", highlighted: true, accent: "#2563eb", grad: "linear-gradient(135deg,#38bdf8,#4f46e5)" },
-    { name: "Studio Grande", tagline: "Per grandi studi e cliniche", monthly: 157, annualMonthly: 137, annualTotal: 1644, foto: 120, video: 30, promemoria: 125, extra: "2€/foto · 3€/video · €0,18/promemoria", cta: "Scegli Studio Grande", ctaId: "scegli_studio_grande", highlighted: false, accent: "#7c3aed", grad: "linear-gradient(135deg,#a78bfa,#7c3aed)" },
+    { name: "Studio Grande", tagline: "Per grandi studi e cliniche", monthly: 157, annualMonthly: 137, annualTotal: 1644, foto: 100, video: 30, promemoria: 125, extra: "2€/foto · 3€/video · €0,18/promemoria", cta: "Scegli Studio Grande", ctaId: "scegli_studio_grande", highlighted: false, accent: "#7c3aed", grad: "linear-gradient(135deg,#a78bfa,#7c3aed)" },
   ];
 
   const rules = [
