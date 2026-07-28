@@ -23,7 +23,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <Routes>
-          <Route path="/" element={<IndexV3 />} />
+          <Route path="/" element={<IndexV5 />} />
           <Route path="/v1" element={<Index />} />
           <Route path="/v2" element={<IndexV2 />} />
           <Route path="/v3" element={<IndexV3 />} />
