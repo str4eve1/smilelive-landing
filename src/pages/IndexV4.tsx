@@ -275,8 +275,8 @@ const GridBg = () => (
 const AISimShowcase = () => {
   const benefits = [
     "Non se lo immagina: si vede davvero, in movimento",
-    "L'emozione del video abbatte l'obiezione sul prezzo",
-    "Accetta e paga subito, senza «ci penso»",
+    "Vedersi in movimento rende il risultato piu' concreto",
+    "Meno dubbi, una decisione piu' serena",
   ];
   return (
     <section className="pt-16 pb-16 md:pb-24 bg-white relative overflow-hidden isolate">
@@ -287,7 +287,7 @@ const AISimShowcase = () => {
             {/* Titolo — su mobile va sopra le immagini (ponytail: duplicato del titolo desktop, nascosto da lg in su) */}
             <h2 className="lg:hidden text-center text-2xl sm:text-3xl font-headline font-bold tracking-tight leading-snug text-text-main mb-2">
               <VideoCamera weight="fill" size="1em" className="inline-block align-[-0.12em] mr-2 text-gold" />
-              Non solo una <span className="text-primary">foto</span>.<br />Un <span className="text-gold whitespace-nowrap">video realistico</span> che favorisce il sì.
+              Non solo una <span className="text-primary">foto</span>.<br />Un <span className="text-gold whitespace-nowrap">video realistico</span> che aiuta a decidere.
             </h2>
 
             {/* ── Illustrazione Prima → Dopo → Video (cerchi) ── */}
@@ -350,7 +350,7 @@ const AISimShowcase = () => {
             <div>
               <h2 className="hidden lg:block text-4xl md:text-5xl font-headline font-bold tracking-tight leading-tight text-text-main">
                 <VideoCamera weight="fill" size="1em" className="inline-block align-[-0.12em] mr-2.5 text-gold" />
-                Non solo una <span className="text-primary">foto</span>. Un <span className="text-gold">video realistico</span> che favorisce il sì.
+                Non solo una <span className="text-primary">foto</span>. Un <span className="text-gold">video realistico</span> che aiuta a decidere.
               </h2>
               <p className="mt-5 text-xl text-text-muted leading-relaxed">
                 SmileLive non si limita a trasformare un'immagine: genera un <strong className="text-text-main font-semibold">video realistico</strong> del paziente con il suo nuovo sorriso. Vedersi, non doverlo solo immaginare, fa crollare l'esitazione e porta l'accettazione dei preventivi <strong className="text-text-main font-semibold">oltre il 67%</strong>.
@@ -659,7 +659,7 @@ const Hero = () => (
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.5, type: "spring", stiffness: 180, damping: 18 }}
-            className="hero-badge transition-opacity duration-700 ease-out absolute -right-4 sm:-right-20 bottom-[9%] w-[132px] sm:w-[168px] rounded-2xl overflow-hidden bg-white p-1.5 shadow-[0_18px_46px_-16px_rgba(2,132,199,0.5)] ring-1 ring-slate-100"
+            className="hero-badge transition-opacity duration-700 ease-out absolute -left-4 sm:left-auto sm:-right-20 bottom-[9%] w-[132px] sm:w-[168px] rounded-2xl overflow-hidden bg-white p-1.5 shadow-[0_18px_46px_-16px_rgba(2,132,199,0.5)] ring-1 ring-slate-100"
           >
             <div className="relative rounded-xl overflow-hidden aspect-[3/2] bg-slate-100">
               <img src={afterImg} alt="Denti dopo" className="absolute inset-0 w-full h-full object-cover origin-center" style={{ objectPosition: '56% 57%', transform: 'scale(4.4)' }} loading="lazy" />
@@ -744,9 +744,9 @@ const WhyChoose = () => {
             Più chiarezza. Più fiducia. <span className="text-primary">Decisioni consapevoli.</span>
           </h2>
         </motion.div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-12 lg:gap-y-0 lg:divide-x lg:divide-slate-100">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-10 sm:gap-y-12 lg:gap-y-0 lg:divide-x lg:divide-slate-100">
           {items.map(({ icon: Icon, title, desc }) => (
-            <div key={title} className="flex flex-col items-center text-center px-6">
+            <div key={title} className="flex flex-col items-center text-center px-3 sm:px-6">
               <div className="w-16 h-16 rounded-full bg-sky-100/70 flex items-center justify-center mb-6">
                 <Icon size={28} weight="regular" className="text-primary" />
               </div>
@@ -1145,7 +1145,7 @@ const OtSlider = ({ prima, dopo, alt, focus = "center" }: { prima: string; dopo:
       <span className="ot-tag ot-prima" style={{ opacity: pos > 18 ? 1 : 0 }}>Prima</span>
       <span className="ot-tag ot-dopo" style={{ opacity: pos < 82 ? 1 : 0 }}>Dopo</span>
       <div className="pointer-events-none absolute top-0 bottom-0 -ml-px w-0.5 bg-white shadow" style={{ left: `${pos}%`, transition: dragging ? "none" : "left 0.4s ease" }}>
-        <span className="ot-handle">⇆</span>
+        <span className="ot-handle"><ArrowsHorizontal size={16} weight="bold" /></span>
       </div>
     </div>
   );
@@ -1416,13 +1416,13 @@ const WhatYouGet = () => {
         >
           <div>
             <h2 className="text-4xl md:text-6xl lg:text-7xl font-body font-black tracking-tight leading-[0.98] text-balance">
-              <span className="text-orange-500">Aspetta.</span><br className="sm:hidden" /> SmileLive non è solo la preview del sorriso.
+              SmileLive non è solo <span className="text-orange-500">l'anteprima</span> del sorriso.
             </h2>
             <p className="mt-4 text-xl md:text-2xl font-body font-bold tracking-tight leading-snug text-orange-500 max-w-2xl">
-              È un gestionale con tutto incluso.
+              È un gestionale completo per lo studio.
             </p>
             <p className="mt-3 text-base md:text-lg leading-relaxed text-slate-300 max-w-2xl">
-              Mentre lo usavi per convertire i pazienti indecisi, lavorava già su tutto il resto: i tre modi silenziosi in cui ogni studio perde soldi. Pazienti che non firmano, appuntamenti dimenticati, burocrazia che mangia ore. Li risolve tutti e tre, in un unico posto.
+              Oltre all'anteprima, segue il resto del percorso: scheda paziente, preventivi, promemoria degli appuntamenti e adempimenti fiscali. Meno strumenti separati, meno tempo in segreteria, tutto in un unico posto.
             </p>
           </div>
           <aside className="relative overflow-hidden rounded-[22px] border border-orange-300/40 bg-[linear-gradient(150deg,rgba(249,115,22,0.16),rgba(18,28,43,0.6))] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_30px_78px_-58px_rgba(0,0,0,0.88)] backdrop-blur">
@@ -1657,12 +1657,12 @@ const ROICalculator = () => {
         <div className="text-center mb-14">
           <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gold/10 border border-gold/25 mb-6">
             <ChartLineUp size={16} weight="fill" className="text-gold" />
-            <span className="text-xs font-bold tracking-widest uppercase text-gold">Calcolatore ROI</span>
+            <span className="text-xs font-bold tracking-widest uppercase text-gold">Una stima realistica</span>
           </span>
           <h2 className="text-4xl md:text-6xl font-headline font-black mb-4 tracking-tight text-text-main">
-            Simula il tuo <span className="italic font-serif font-normal text-primary">flusso di cassa</span>
+            Cosa può cambiare <span className="italic font-serif font-normal text-primary">nel tuo studio</span>
           </h2>
-          <p className="text-xl text-text-muted max-w-2xl mx-auto">Gli studi che usano SmileLive chiudono in media 2–3 trattamenti estetici in piu' al mese nei primi 60 giorni.</p>
+          <p className="text-xl text-text-muted max-w-2xl mx-auto">Gli studi che usano SmileLive registrano in media 2–3 trattamenti estetici accettati in piu' al mese nei primi 60 giorni.</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
@@ -1676,7 +1676,7 @@ const ROICalculator = () => {
             </div>
             <div className="space-y-3">
               <div className="flex justify-between items-end">
-                <label htmlFor="conversion-range" className="text-sm font-semibold text-text-main flex items-center gap-2"><TrendUp size={17} weight="fill" className="text-gold" /> Tasso di conversione stimato</label>
+                <label htmlFor="conversion-range" className="text-sm font-semibold text-text-main flex items-center gap-2"><TrendUp size={17} weight="fill" className="text-gold" /> Tasso di accettazione stimato</label>
                 <span className="text-2xl font-headline font-bold text-gold num-tabular">{conversion}%</span>
               </div>
               <input id="conversion-range" type="range" aria-label="Tasso di conversione" min="1" max="50" step="1" value={conversion} onChange={(e) => setConversion(Number(e.target.value))} className="w-full h-2 bg-gold/15 rounded-lg appearance-none cursor-pointer accent-gold" />
@@ -1694,11 +1694,11 @@ const ROICalculator = () => {
             <div className="absolute top-0 right-0 w-56 h-56 bg-gold/15 blur-[80px] rounded-full pointer-events-none"></div>
             <div className="relative z-10 space-y-7">
               <div>
-                <p className="text-text-muted mb-2 font-medium text-sm uppercase tracking-widest">Nuovi pazienti al mese</p>
+                <p className="text-text-muted mb-2 font-medium text-sm uppercase tracking-widest">Trattamenti accettati in più</p>
                 <div className="text-5xl font-headline font-black text-text-main num-tabular">+{monthlyPatients}</div>
               </div>
               <div>
-                <p className="text-text-muted mb-2 font-medium text-sm uppercase tracking-widest">Fatturato extra stimato</p>
+                <p className="text-text-muted mb-2 font-medium text-sm uppercase tracking-widest">Valore stimato dei trattamenti</p>
                 <div className="text-[clamp(1.9rem,8vw,3.5rem)] font-headline font-black text-gold num-tabular leading-none tracking-tight whitespace-nowrap">€{extraRevenue.toLocaleString('it-IT')}</div>
                 <p className="text-text-muted/70 text-sm mt-1">al mese</p>
               </div>
@@ -1719,9 +1719,9 @@ const ROICalculator = () => {
 const IntermediateCTA = () => {
   const stats = [
     { icon: <Users size={22} weight="fill" className="text-gold" />, value: "50+", label: "Studi Attivi in Italia" },
-    { icon: <TrendUp size={22} weight="fill" className="text-primary" />, value: "+67%", label: "Conversione Media" },
-    { icon: <Pulse size={22} weight="fill" className="text-text-main" />, value: "€700k+", label: "Generati in Extra" },
-    { icon: <Lightning size={22} weight="fill" className="text-text-main" />, value: "10s", label: "Per Simulazione" },
+    { icon: <TrendUp size={22} weight="fill" className="text-primary" />, value: "+67%", label: "Accettazione media" },
+    { icon: <Lightning size={22} weight="fill" className="text-text-main" />, value: "10 sec", label: "Per anteprima" },
+    { icon: <Check size={22} weight="fill" className="text-text-main" />, value: "3", label: "Anteprime gratis" },
   ];
 
   return (
@@ -1734,9 +1734,9 @@ const IntermediateCTA = () => {
         transition={{ duration: 0.6 }}
         className="max-w-5xl mx-auto px-6 text-center relative z-10"
       >
-        <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-primary mb-5">Non lasciarlo uscire indeciso</span>
+        <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-primary mb-5">Un aiuto alla decisione</span>
         <h2 className="font-headline font-bold leading-[1.12] tracking-tight text-3xl md:text-5xl text-text-main max-w-3xl mx-auto">
-          Chi ti dice <span className="font-serif font-normal italic text-primary">"ci penso"</span> potrebbe dirti di sì.<br className="hidden md:block" /> Se gli mostri il risultato.
+          Quando il paziente <span className="font-serif font-normal italic text-primary">vede il risultato</span>,<br className="hidden md:block" /> la decisione diventa più semplice.
         </h2>
         <div className="mt-10 flex flex-col items-center gap-3">
           <motion.a
@@ -2167,15 +2167,15 @@ const FinalCTA = () => (
       transition={{ duration: 0.8 }}
       className="max-w-4xl mx-auto px-6 relative z-10"
     >
-      <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-primary mb-5">Pronto a partire</span>
+      <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-primary mb-5">Inizia quando vuoi</span>
       <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-headline font-bold mb-6 leading-tight text-text-main tracking-tight text-balance">
-        Il tuo prossimo paziente <span className="text-gold">indeciso</span> e' gia' in sala d'attesa.
+        Fai vedere ai tuoi pazienti <span className="text-gold">il loro nuovo sorriso.</span>
       </h2>
       <p className="text-lg md:text-xl text-text-muted leading-relaxed max-w-2xl mx-auto">
-        Ogni "ci penso" che senti oggi e' un trattamento che potrebbe diventare un si' domani.
+        Uno strumento in più per spiegare i trattamenti con chiarezza e accompagnare il paziente nella decisione.
       </p>
       <p className="mt-3 text-base md:text-lg text-text-main font-semibold">
-        Il primo risultato potrebbe arrivare questa settimana.
+        Puoi provarlo con i primi pazienti già questa settimana.
       </p>
       <div className="mt-10 flex flex-col items-center gap-3">
         <motion.a

@@ -187,17 +187,28 @@ const EmotionalVideo = () => {
   return (
     <section className="pt-12 pb-10 relative overflow-hidden bg-white">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        {/* Titolo mobile — su mobile va sopra lo slider (ponytail: duplicato del titolo desktop, nascosto da lg in su) */}
+        <div className="lg:hidden order-first space-y-4">
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">L'Effetto Wow</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-headline font-bold leading-tight tracking-tight text-text-main">
+            "Non ci credo...<br />
+            <span className="italic font-serif font-normal text-transparent bg-clip-text bg-gradient-to-r from-primary to-sky-400">sono io!"</span>
+          </h2>
+        </div>
+
         <motion.div
           initial={{ opacity: 0, x: -40 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          className="space-y-6"
+          className="space-y-6 order-3 lg:order-1"
         >
-          <div className="flex items-center gap-3">
+          <div className="hidden lg:flex items-center gap-3">
             <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">L'Effetto Wow</span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-headline font-bold leading-tight tracking-tight text-text-main">
+          <h2 className="hidden lg:block text-4xl md:text-5xl font-headline font-bold leading-tight tracking-tight text-text-main">
             "Non ci credo...<br />
             <span className="italic font-serif font-normal text-transparent bg-clip-text bg-gradient-to-r from-primary to-sky-400">sono io!"</span>
           </h2>
@@ -224,7 +235,7 @@ const EmotionalVideo = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7, delay: 0.15 }}
-          className="relative mx-auto w-full max-w-[560px]"
+          className="relative mx-auto w-full max-w-[560px] order-2"
         >
           <div className="relative w-full aspect-square rounded-3xl overflow-hidden border border-slate-200 shadow-[0_24px_80px_rgba(2,132,199,0.12)] p-2 bg-white">
             <div className="relative w-full h-full rounded-2xl overflow-hidden bg-slate-50">
@@ -1350,6 +1361,7 @@ const WhatYouGet = () => {
           className="grid grid-cols-1 lg:grid-cols-[minmax(0,700px)_360px] gap-8 lg:gap-10 items-end mb-10"
         >
           <div>
+            <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-primary mb-4">Gestionale completo</span>
             <h2 className="text-4xl md:text-6xl lg:text-7xl font-body font-black tracking-tight leading-[0.98] text-balance">
               <span className="text-orange-500">Aspetta.</span><br className="sm:hidden" /> SmileLive non è solo la preview del sorriso.
             </h2>
@@ -1360,7 +1372,7 @@ const WhatYouGet = () => {
               Mentre lo usavi per convertire i pazienti indecisi, lavorava già su tutto il resto: i tre modi silenziosi in cui ogni studio perde soldi. Pazienti che non firmano, appuntamenti dimenticati, burocrazia che mangia ore. Li risolve tutti e tre, in un unico posto.
             </p>
           </div>
-          <aside className="relative overflow-hidden rounded-[22px] border border-orange-300/40 bg-[linear-gradient(150deg,rgba(249,115,22,0.16),rgba(18,28,43,0.6))] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_30px_78px_-58px_rgba(0,0,0,0.88)] backdrop-blur">
+          <aside className="relative min-h-[255px] overflow-hidden rounded-[22px] border border-orange-300/50 bg-[linear-gradient(150deg,rgba(249,115,22,0.34),rgba(217,70,20,0.14))] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_30px_78px_-58px_rgba(0,0,0,0.88)] backdrop-blur">
             <strong className="block text-3xl font-body font-black tracking-tight leading-none text-white">Sì, tutto incluso.</strong>
             <span className="block mt-3 text-sm leading-relaxed text-slate-200">
               CRM, preventivi, firma, reminder, fisco e prescrizione vocale nello stesso flusso commerciale.
