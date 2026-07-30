@@ -9,6 +9,7 @@ import IndexV2 from "./pages/IndexV2.tsx";
 import IndexV3 from "./pages/IndexV3.tsx";
 import IndexV4 from "./pages/IndexV4.tsx";
 import IndexV5 from "./pages/IndexV5.tsx";
+import DemoPrescrizione from "./pages/DemoPrescrizione.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import Privacy from "./pages/Privacy.tsx";
 import CookiePolicy from "./pages/CookiePolicy.tsx";
@@ -29,6 +30,7 @@ const App = () => (
           <Route path="/v3" element={<IndexV3 />} />
           <Route path="/v4" element={<IndexV4 />} />
           <Route path="/v5" element={<IndexV5 />} />
+          <Route path="/demo-prescrizione" element={<DemoPrescrizione />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/cookie-policy" element={<CookiePolicy />} />
           <Route path="/terms" element={<Terms />} />

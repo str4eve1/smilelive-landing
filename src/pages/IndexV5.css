@@ -134,9 +134,9 @@
   stroke: rgba(56, 189, 248, 0.34);
 }
 
-/* La sezione dopo una curva copre la fessura da 1px lasciata dall'overflow-hidden */
+/* La sezione dopo una curva copre la fessura alla giuntura (2px: anche i subpixel dei display retina) */
 .smilelive-v5 section:has(.section-wave) + section {
-  margin-top: -1px;
+  margin-top: -2px;
 }
 
 .smilelive-v5 > section:nth-of-type(7),
@@ -202,6 +202,11 @@
 .smilelive-v5 section h2 {
   letter-spacing: -0.045em;
   line-height: 1.04;
+}
+
+/* Niente font wide (Syne): titoli e numeri in Inter stretto */
+.smilelive-v5 .font-headline {
+  font-family: "Inter", sans-serif !important;
 }
 
 /* Escluse le sezioni scure: lì valgono i colori chiari originali (slate-*) */

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence, MotionConfig, useMotionValueEvent, useReducedMotion, useScroll } from "framer-motion";
 import {
   CaretRight, Sparkle, Pulse, ShieldCheck,
@@ -1514,8 +1515,6 @@ const HowItWorks = () => {
 // ─── WhatYouGet ───────────────────────────────────────────────────────────────
 const WhatYouGet = () => {
   const isV5 = useIsV5();
-  const [isDemoOpen, setIsDemoOpen] = useState(false);
-  const [demoStage, setDemoStage] = useState<"idle" | "listening" | "processing" | "ready" | "sent">("idle");
 
   const features = [
     {
@@ -1565,32 +1564,6 @@ const WhatYouGet = () => {
     },
   ];
 
-  const prescriptionFields = [
-    ["Lavorazione", "Corona monolitica"],
-    ["Elemento", "2.6 - primo molare sup. sx"],
-    ["Materiale", "Zirconia monolitica"],
-    ["Colore", "A2 - scala VITA"],
-    ["Preparazione", "Spalla circolare"],
-    ["Consegna", "Entro venerdi"],
-    ["Laboratorio", "Odontotecnica Rossi"],
-  ];
-  const transcript = "Corona in zirconia monolitica sull'elemento due-sei, colore A2, spalla circolare. Consegna entro venerdi.";
-
-  const runPrescriptionDemo = () => {
-    setDemoStage("listening");
-    window.setTimeout(() => setDemoStage("processing"), 1200);
-    window.setTimeout(() => setDemoStage("ready"), 2600);
-  };
-
-  const openPrescriptionDemo = () => {
-    setIsDemoOpen(true);
-    setDemoStage("idle");
-  };
-
-  const closePrescriptionDemo = () => {
-    setIsDemoOpen(false);
-    setDemoStage("idle");
-  };
 
   return (
     <section className="py-20 md:py-32 relative overflow-hidden isolate bg-[#07111f] text-white font-body">
@@ -1699,126 +1672,19 @@ const WhatYouGet = () => {
                   </span>
                 ))}
               </div>
-              <button
-                type="button"
-                onClick={openPrescriptionDemo}
+              <Link
+                to="/demo-prescrizione"
+                onClick={() => trackCta("demo_prescrizione", "gestionale")}
                 className="mt-6 inline-flex min-h-[46px] items-center justify-center gap-2 rounded-full bg-gradient-to-br from-orange-400 to-amber-600 px-5 py-3 font-extrabold text-white shadow-[0_24px_64px_-28px_rgba(249,115,22,0.95)] transition hover:-translate-y-0.5 hover:from-orange-300 hover:to-orange-600 active:scale-[0.98]"
               >
                 <CaretRight size={17} weight="fill" />
                 Demo prescrizione vocale
-              </button>
+              </Link>
             </div>
           </motion.div>
         </motion.div>
       </div>
 
-      <AnimatePresence>
-        {isDemoOpen && (
-          <motion.div
-            className="fixed inset-0 z-[999] flex items-center justify-center bg-[#07111f]/75 p-4 backdrop-blur-md"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={closePrescriptionDemo}
-          >
-            <motion.div
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="prescription-demo-title"
-              className="w-full max-w-4xl max-h-[calc(100dvh-32px)] overflow-auto rounded-[28px] border border-white/10 bg-[linear-gradient(145deg,#07111f,#101c2f)] text-white shadow-[0_40px_120px_-60px_rgba(0,0,0,0.9)]"
-              initial={{ opacity: 0, y: 18, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 18, scale: 0.98 }}
-              onClick={(event) => event.stopPropagation()}
-            >
-              <div className="flex items-start justify-between gap-5 p-6 pb-0">
-                <div>
-                  <span className="text-xs font-extrabold text-amber-300">Prova diretta</span>
-                  <h3 id="prescription-demo-title" className="mt-2 text-3xl md:text-5xl font-body font-black tracking-tight leading-none">
-                    Prescrizione vocale al laboratorio
-                  </h3>
-                  <p className="mt-3 text-slate-300">
-                    Premi il microfono: SmileLive trasforma una dettatura in una prescrizione ordinata.
-                  </p>
-                </div>
-                <button
-                  type="button"
-                  onClick={closePrescriptionDemo}
-                  aria-label="Chiudi demo"
-                  className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/10 bg-white/10 text-white"
-                >
-                  <X size={18} />
-                </button>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-6">
-                <div className="rounded-2xl border border-white/10 bg-white/[0.06] p-5">
-                  <p className="text-xs font-extrabold text-amber-300">Dettatura</p>
-                  <p className="mt-4 min-h-[124px] text-lg leading-relaxed text-slate-200">
-                    {demoStage === "idle" ? '"Premi il microfono e guarda come viene strutturata."' : `"${transcript}"`}
-                  </p>
-                  <div className="mt-5 flex items-center gap-4">
-                    <button
-                      type="button"
-                      onClick={runPrescriptionDemo}
-                      className="grid h-16 w-16 place-items-center rounded-full bg-amber-600 text-white shadow-[0_0_0_10px_rgba(217,119,6,0.13)]"
-                      aria-label="Avvia demo prescrizione"
-                    >
-                      <Microphone size={28} weight="fill" />
-                    </button>
-                    {demoStage === "listening" && (
-                      <div className="flex h-7 items-end gap-1 text-amber-300" aria-hidden="true">
-                        {[8, 17, 25, 14, 21].map((height, index) => (
-                          <span
-                            key={index}
-                            className="w-1 rounded-full bg-current animate-pulse"
-                            style={{ height }}
-                          />
-                        ))}
-                      </div>
-                    )}
-                    <span className="text-slate-300">
-                      {demoStage === "idle" && "Tocca per iniziare"}
-                      {demoStage === "listening" && "Sto ascoltando..."}
-                      {demoStage === "processing" && "Strutturo la prescrizione..."}
-                      {(demoStage === "ready" || demoStage === "sent") && "Fatto in pochi secondi."}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="rounded-2xl border border-white/10 bg-white/[0.06] p-5">
-                  <div className="flex items-center justify-between gap-4">
-                    <p className="text-xs font-extrabold text-slate-400">Prescrizione strutturata</p>
-                    <span className="text-xs font-extrabold text-sky-300">
-                      {demoStage === "idle" && "In attesa"}
-                      {demoStage === "listening" && "In ascolto"}
-                      {demoStage === "processing" && "Elaboro"}
-                      {demoStage === "ready" && "Pronta"}
-                      {demoStage === "sent" && "Inviata"}
-                    </span>
-                  </div>
-                  <div className="mt-3">
-                    {prescriptionFields.map(([key, value]) => (
-                      <div key={key} className={`flex items-center justify-between gap-3 border-b border-white/10 py-3 ${demoStage === "ready" || demoStage === "sent" ? "opacity-100" : "opacity-40"}`}>
-                        <small className="text-[11px] font-extrabold text-slate-400">{key}</small>
-                        <b className="text-right text-sm">{demoStage === "ready" || demoStage === "sent" ? value : "-"}</b>
-                      </div>
-                    ))}
-                  </div>
-                  <button
-                    type="button"
-                    disabled={demoStage !== "ready" && demoStage !== "sent"}
-                    onClick={() => setDemoStage("sent")}
-                    className={`mt-5 w-full rounded-2xl py-3 font-extrabold text-white transition ${demoStage === "sent" ? "bg-emerald-600" : "bg-primary disabled:cursor-not-allowed disabled:opacity-40"}`}
-                  >
-                    {demoStage === "sent" ? "Inviata al laboratorio" : "Invia al laboratorio"}
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
       <SectionWave top="#07111f" fill="#e8f3fb" flip />
     </section>
   );
@@ -2019,8 +1885,8 @@ const Pricing = () => {
           <p className="text-xl text-text-muted text-center mb-4">Inizia gratis con 3 anteprime. Poi scegli il piano giusto per il tuo studio.</p>
           <p className="text-base text-text-muted text-center max-w-2xl mb-8">L'abbonamento sblocca tutto il software e le generazioni incluse ogni mese. L'opzione annuale si paga in un'unica soluzione, al prezzo piu' basso.</p>
           <div className="inline-flex items-center gap-1 bg-slate-50 border border-slate-200 rounded-full p-1.5">
-            <button onClick={() => setIsAnnual(false)} className={`px-5 py-2 rounded-full font-medium transition-colors duration-200 ${!isAnnual ? 'bg-white shadow-sm text-text-main' : 'text-text-muted hover:text-text-main'}`}>Mensile</button>
-            <button onClick={() => setIsAnnual(true)} className={`px-5 py-2 rounded-full font-medium transition-colors duration-200 flex items-center gap-2 ${isAnnual ? 'bg-white shadow-sm text-text-main' : 'text-text-muted hover:text-text-main'}`}>
+            <button onClick={() => setIsAnnual(false)} className={`px-5 py-2 rounded-full font-medium transition-all duration-200 ${!isAnnual ? 'bg-white shadow-sm text-text-main ring-2 ring-primary/60' : 'text-text-muted hover:text-text-main'}`}>Mensile</button>
+            <button onClick={() => setIsAnnual(true)} className={`px-5 py-2 rounded-full font-medium transition-all duration-200 flex items-center gap-2 ${isAnnual ? 'bg-white shadow-sm text-text-main ring-2 ring-primary/60' : 'text-text-muted hover:text-text-main'}`}>
               Annuale
               <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-gold/15 text-gold whitespace-nowrap">Fino a -17%</span>
             </button>
@@ -2597,6 +2463,27 @@ export default function IndexV3({ variant = "v3" }: { variant?: SmileLiveLanding
       <Testimonials />        {/* Prova sociale prima del prezzo */}
       <ROICalculator />       {/* Ancora prezzo: il costo di aspettare */}
       <Pricing />             {/* L'offerta */}
+      {/* Teaser demo prescrizione vocale — div, non section: non deve spostare gli nth-of-type del CSS V5 */}
+      <div className="bg-[#07111f] text-white">
+        <div className="max-w-5xl mx-auto px-6 py-12 md:py-14 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+          <div className="flex flex-col md:flex-row items-center gap-4">
+            <div className="w-12 h-12 shrink-0 rounded-2xl grid place-items-center bg-gradient-to-br from-orange-400 to-amber-600 text-white shadow-[0_18px_48px_-24px_rgba(249,115,22,0.95)]">
+              <Microphone size={22} weight="fill" />
+            </div>
+            <div>
+              <h3 className="text-xl md:text-2xl font-bold tracking-tight">Prova la prescrizione vocale</h3>
+              <p className="mt-1 text-sm text-slate-300">Detti la lavorazione, SmileLive la struttura e la invia al laboratorio. Provala nella demo interattiva.</p>
+            </div>
+          </div>
+          <Link
+            to="/demo-prescrizione"
+            onClick={() => trackCta("demo_prescrizione", "teaser_pricing")}
+            className="shrink-0 inline-flex min-h-[46px] items-center gap-2 rounded-full bg-gradient-to-br from-orange-400 to-amber-600 px-6 py-3 font-extrabold text-white shadow-[0_24px_64px_-28px_rgba(249,115,22,0.95)] transition hover:-translate-y-0.5 active:scale-[0.98]"
+          >
+            Apri la demo <CaretRight size={16} weight="bold" />
+          </Link>
+        </div>
+      </div>
       <ForWho />              {/* Qualifica / esclusività */}
       <FutureVision />        {/* Urgenza: primo nella tua città */}
       <FAQ />                 {/* Gestione obiezioni */}
