@@ -457,7 +457,7 @@ const TopBar = () => {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className={`transition-all duration-300 ${scrolled ? 'bg-white/90 backdrop-blur-xl border-b border-slate-200 py-4' : 'bg-transparent py-5'}`}
+        className={`nav-bar transition-all duration-300 ${scrolled ? 'bg-white/90 backdrop-blur-xl border-b border-slate-200 py-4' : 'bg-transparent py-5'}`}
       >
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
           <img src={logoFinale} alt="SmileLive Logo" className="h-28 w-auto md:h-32" fetchPriority="high" width="180" height="130" />

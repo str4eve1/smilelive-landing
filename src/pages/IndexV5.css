@@ -21,7 +21,7 @@
     0 4px 12px rgba(2, 119, 181, 0.28);
 }
 
-.smilelive-v5 .site-header > div {
+.smilelive-v5 .site-header .nav-bar {
   min-height: 88px;
   padding-block: 15px !important;
   background: rgba(255, 255, 255, 0.94) !important;
@@ -247,7 +247,7 @@
     height: clamp(34px, 9.77vw, 42px) !important;
   }
 
-  .smilelive-v5 .site-header > div {
+  .smilelive-v5 .site-header .nav-bar {
     min-height: 72px;
     padding-block: 14px !important;
   }
