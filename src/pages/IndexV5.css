@@ -192,7 +192,8 @@
   line-height: 1.04;
 }
 
-.smilelive-v5 section p {
+/* Escluse le sezioni scure: lì valgono i colori chiari originali (slate-*) */
+.smilelive-v5 section:not([class*="#07111f"]):not([class*="#020c1a"]) p {
   color: var(--v5-copy);
 }
 
