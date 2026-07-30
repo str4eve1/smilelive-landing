@@ -11,7 +11,7 @@
   color: var(--v5-ink);
 }
 
-.smilelive-v5 .site-header > a {
+.smilelive-v5 .site-header .announcement-bar {
   min-height: 36px;
   padding-block: 7px;
   background: linear-gradient(180deg, #0ea5e9 0%, var(--v5-blue) 58%, #0369a1 100%);
@@ -97,19 +97,6 @@
   padding-inline: 28px;
   background: var(--v5-blue);
   box-shadow: 0 18px 42px -20px rgba(2, 119, 181, 0.65);
-}
-
-.smilelive-v5 .v5-secondary-cta {
-  min-height: 48px;
-  padding: 0 8px;
-  border-bottom: 1px solid rgba(2, 119, 181, 0.28);
-  transition: color 160ms ease, border-color 160ms ease, transform 160ms ease;
-}
-
-.smilelive-v5 .v5-secondary-cta:hover {
-  color: var(--v5-blue);
-  border-color: var(--v5-blue);
-  transform: translateY(-1px);
 }
 
 .smilelive-v5 .hero-proof {
@@ -252,10 +239,6 @@
   .smilelive-v5 .hero-title h1 {
     max-width: 13ch;
   }
-
-  .smilelive-v5 .hero-proof {
-    display: none;
-  }
 }
 
 @media (max-width: 639px) {
@@ -313,17 +296,6 @@
     gap: 14px;
     padding-inline: 24px;
     font-size: 1rem;
-  }
-
-  .smilelive-v5 .hero-copy .v5-secondary-cta {
-    align-self: flex-start;
-    min-height: 40px;
-    padding-inline: 4px;
-    border-bottom: 0;
-    color: var(--v5-copy);
-    font-size: 0.875rem;
-    font-weight: 600;
-    opacity: 0.78;
   }
 
   .smilelive-v5 .hero-visual .phone-wrap {

@@ -167,13 +167,13 @@ const EmotionalVideo = () => {
             <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">{isV5 ? "La preview personale" : "L'Effetto Wow"}</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-headline font-bold leading-tight tracking-tight text-text-main">
-            {isV5 ? <>Un possibile risultato,<br /><span className="italic font-serif font-normal text-transparent bg-clip-text bg-gradient-to-r from-primary to-sky-400">sul volto del paziente.</span></> : <>"Non ci credo...<br /><span className="italic font-serif font-normal text-transparent bg-clip-text bg-gradient-to-r from-primary to-sky-400">sono io!"</span></>}
+            {isV5 ? <>Il risultato, in anteprima,<br /><span className="italic font-serif font-normal text-transparent bg-clip-text bg-gradient-to-r from-primary to-sky-400">sul volto del paziente.</span></> : <>"Non ci credo...<br /><span className="italic font-serif font-normal text-transparent bg-clip-text bg-gradient-to-r from-primary to-sky-400">sono io!"</span></>}
           </h2>
           <p className="text-xl text-text-muted leading-relaxed">
             {isV5 ? <>La preview porta la conversazione da un esempio generico a una visualizzazione <em className="text-text-main">personale</em>, che il clinico può spiegare e contestualizzare.</> : <>È la prima cosa che dicono quando si vedono col nuovo sorriso. Non devono più <em className="text-text-main">immaginare</em> il risultato: ce l'hanno davanti.</>}
           </p>
           <p className="text-lg text-text-muted leading-relaxed">
-            {isV5 ? <>Trascina il cursore per confrontare la situazione iniziale con una possibile evoluzione estetica. La preview resta uno strumento di comunicazione e <strong className="text-text-main">non sostituisce la valutazione clinica</strong>.</> : <>Trascina il cursore e guarda il cambiamento, da com'è oggi a come potrebbe essere. È lo stesso istante che vive il paziente in poltrona. E quando si vede, il preventivo non è più una spesa al buio: è{" "}<strong className="text-text-main">qualcosa che vuole</strong>.</>}
+            {isV5 ? <>Trascina il cursore e confronta la situazione iniziale con il risultato estetico simulato. La preview resta uno strumento di comunicazione e <strong className="text-text-main">non sostituisce la valutazione clinica</strong>.</> : <>Trascina il cursore e guarda il cambiamento, da com'è oggi a come potrebbe essere. È lo stesso istante che vive il paziente in poltrona. E quando si vede, il preventivo non è più una spesa al buio: è{" "}<strong className="text-text-main">qualcosa che vuole</strong>.</>}
           </p>
           <div className="pt-4 flex items-center gap-4">
             <div className="w-12 h-12 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center shrink-0">
@@ -298,7 +298,7 @@ const WaveField = ({ className = "", style, focusX = -0.03, focusY = -0.05, spre
 const AISimShowcase = () => {
   const isV5 = useIsV5();
   const benefits = isV5 ? [
-    "Il paziente osserva il possibile cambiamento anche in movimento",
+    "Il paziente si osserva con il nuovo sorriso, anche in movimento",
     "Il video rende più semplice discutere aspettative e limiti",
     "La consulenza parte da un riferimento personale, non generico",
   ] : [
@@ -382,7 +382,7 @@ const AISimShowcase = () => {
               </h2>
               <p className="mt-5 text-xl text-text-muted leading-relaxed">
                 {isV5 ? <>
-                  SmileLive genera una <strong className="text-text-main font-semibold">sequenza video personale</strong> a partire dalla preview. Il paziente può osservare il possibile cambiamento in modo più naturale; nei dati raccolti dagli studi attivi, l'accettazione dei preventivi arriva <strong className="text-text-main font-semibold">oltre il 67%</strong>.
+                  SmileLive genera una <strong className="text-text-main font-semibold">sequenza video personale</strong> a partire dalla preview. Il paziente osserva il suo cambiamento in modo naturale; nei dati raccolti dagli studi attivi, l'accettazione dei preventivi arriva <strong className="text-text-main font-semibold">oltre il 67%</strong>.
                 </> : <>
                   SmileLive non si limita a trasformare un'immagine: genera un <strong className="text-text-main font-semibold">video realistico</strong> del paziente con il suo nuovo sorriso. Vedersi, non doverlo solo immaginare, fa crollare l'esitazione e porta l'accettazione dei preventivi <strong className="text-text-main font-semibold">oltre il 67%</strong>.
                 </>}
@@ -436,16 +436,23 @@ const TopBar = () => {
 
   return (
     <div ref={ref} className="site-header fixed top-0 inset-x-0 z-50 flex flex-col">
-      {/* Announcement bar: invito alle 3 prove gratis */}
-      <a
-        href="https://app.smilelive.it/"
-        onClick={() => trackCta("inizia_ora", "announcement_bar")}
-        className="bg-gradient-to-b from-sky-500 via-primary to-sky-700 text-white text-xs md:text-sm font-semibold text-center py-2 px-4 flex items-center justify-center gap-x-2 gap-y-0.5 flex-wrap shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_3px_12px_rgba(2,132,199,0.35)] hover:brightness-105 transition-all"
+      {/* Announcement bar: invito alle 3 prove gratis — scende qualche secondo dopo l'header */}
+      <motion.div
+        initial={{ height: 0 }}
+        animate={{ height: "auto" }}
+        transition={{ delay: 3, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        className="overflow-hidden"
       >
-        <Sparkle size={14} weight="fill" className="shrink-0" />
-        <span>Inizia gratis: <strong className="font-bold">{isV5 ? "3 foto + 1 video gratis" : "3 anteprime in omaggio"}</strong></span>
-        <span className="inline-flex items-center gap-1 underline underline-offset-2 font-bold">Inizia ora <CaretRight size={12} weight="bold" /></span>
-      </a>
+        <a
+          href="https://app.smilelive.it/"
+          onClick={() => trackCta("inizia_ora", "announcement_bar")}
+          className="announcement-bar bg-gradient-to-b from-sky-500 via-primary to-sky-700 text-white text-xs md:text-sm font-semibold text-center py-2 px-4 flex items-center justify-center gap-x-2 gap-y-0.5 flex-wrap shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_3px_12px_rgba(2,132,199,0.35)] hover:brightness-105 transition-all"
+        >
+          <Sparkle size={14} weight="fill" className="shrink-0" />
+          <span>Inizia gratis: <strong className="font-bold">{isV5 ? "3 foto + 1 video gratis" : "3 anteprime in omaggio"}</strong></span>
+          <span className="inline-flex items-center gap-1 underline underline-offset-2 font-bold">Inizia ora <CaretRight size={12} weight="bold" /></span>
+        </a>
+      </motion.div>
       <motion.div
         initial={{ y: -100 }}
         animate={{ y: 0 }}
@@ -555,7 +562,7 @@ const Hero = () => {
           {isV5 ? (
             <>
               <span className="block">1 foto. 1 video.</span>
-              <span className="block text-primary">Il paziente vede il possibile risultato.</span>
+              <span className="block text-primary">Il paziente vede subito il risultato.</span>
             </>
           ) : (
             <>
@@ -596,11 +603,7 @@ const Hero = () => {
               <CaretRight size={14} weight="bold" />
             </span>
           </motion.a>
-          {isV5 ? (
-            <a href="#come-funziona" className="v5-secondary-cta inline-flex items-center gap-2 font-bold text-text-main">Guarda come funziona <CaretRight size={15} weight="bold" /></a>
-          ) : (
-            <div className="flex items-center gap-2 text-sm font-medium text-text-muted"><ShieldCheck size={16} weight="fill" className="text-primary shrink-0" /><span>Nessuna carta. Setup in 10 minuti.</span></div>
-          )}
+          <div className="flex items-center gap-2 text-sm font-medium text-text-muted"><ShieldCheck size={16} weight="fill" className="text-primary shrink-0" /><span>Nessuna carta. Setup in 10 minuti.</span></div>
         </motion.div>
 
         <motion.div variants={fadeUp} className="hero-proof pt-3 flex items-center gap-5">
@@ -810,7 +813,7 @@ const WhyChoose = () => {
   const isV5 = useIsV5();
   const items = isV5 ? [
     { icon: Camera, title: "Foto e video in pochi secondi", desc: "Da uno scatto, lo studio ottiene una preview personale da utilizzare durante la consulenza." },
-    { icon: Sparkle, title: "Una visualizzazione credibile", desc: "Il paziente osserva un possibile cambiamento sul proprio volto, con aspettative spiegate dal professionista." },
+    { icon: Sparkle, title: "Una visualizzazione credibile", desc: "Il paziente osserva il cambiamento sul proprio volto, con aspettative guidate dal professionista." },
     { icon: Users, title: "Un protocollo per tutto il team", desc: "Segreteria, ASO e clinico lavorano nello stesso flusso, senza rallentare l'attività." },
     { icon: TrendUp, title: "Più chiarezza nella decisione", desc: "Una proposta compresa meglio facilita il confronto e aumenta l'accettazione del piano." },
   ] : [
@@ -1180,7 +1183,7 @@ const ProblemSection = () => {
             </p>
             <p className="mt-5 font-serif italic text-text-main text-xl md:text-[22px] leading-snug">
               {isV5 ? <>
-                Non sempre manca l'interesse.<br />Spesso manca una rappresentazione chiara del possibile risultato.
+                Non sempre manca l'interesse.<br />Spesso manca una rappresentazione chiara del risultato.
               </> : <>
                 Non e' che non voleva il trattamento.<br />E' che non riusciva a vedersi.
               </>}
@@ -1353,7 +1356,7 @@ const ManifestoBand = () => {
       </h2>
       <p className="mt-6 text-lg md:text-xl text-white/60 leading-relaxed">
         {isV5
-          ? "La preview rende il possibile risultato più concreto e apre una conversazione clinica più consapevole."
+          ? "La preview rende il risultato concreto e apre una conversazione clinica più consapevole."
           : "Come fanno le grandi aziende. Come in un Apple Store."}
       </p>
       <p className="mt-8 font-headline font-bold text-2xl md:text-4xl text-orange-500">
@@ -1387,7 +1390,7 @@ const HowItWorks = () => {
       num: "03",
       icon: <Sparkle size={20} weight="light" className="text-primary" />,
       title: "La preview entra in consulenza",
-      desc: "Il possibile cambiamento viene mostrato sul volto del paziente e discusso insieme al professionista.",
+      desc: "Il cambiamento viene mostrato sul volto del paziente e discusso insieme al professionista.",
       image: stepSorriso,
     },
     {
@@ -2289,7 +2292,7 @@ const FutureVision = () => {
       <h2 className="text-4xl md:text-5xl font-headline font-bold mb-4 tracking-tight">
         {isV5 ? <>Dalla preview<br /><span className="italic font-serif font-normal text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">a un sistema di gestione integrato.</span></> : <>Da strumento di conversione<br /><span className="italic font-serif font-normal text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">a sistema di gestione.</span></>}
       </h2>
-      <p className="text-xl text-text-muted leading-relaxed mb-3 max-w-2xl mx-auto">{isV5 ? "SmileLive collega la comunicazione del possibile risultato alle attività operative che seguono la consulenza." : "SmileLive non e' solo preview. E' il software che mancava al tuo studio."}</p>
+      <p className="text-xl text-text-muted leading-relaxed mb-3 max-w-2xl mx-auto">{isV5 ? "SmileLive collega la comunicazione del risultato alle attività operative che seguono la consulenza." : "SmileLive non e' solo preview. E' il software che mancava al tuo studio."}</p>
       <p className="text-lg text-text-muted leading-relaxed mb-12 max-w-2xl mx-auto">{isV5 ? <>La <strong className="text-text-main">Vetrina di Odontoiatri Specialisti</strong> è in sviluppo e sarà dedicata alla visibilità locale degli studi.</> : <>Chi e' abbonato entrera' automaticamente nella nostra <strong className="text-text-main">Vetrina di Odontoiatri Specialisti</strong>: un vantaggio competitivo enorme per le richieste locali.</>}</p>
 
       <motion.div
@@ -2327,7 +2330,7 @@ const FAQ = () => {
     { q: "E se finisco le foto o i video inclusi nel mese?", a: "Non ti blocchiamo mai, soprattutto col paziente in poltrona. Al raggiungimento del limite scatta l'addebito automatico dell'extra (5€/foto · 5€/video, 2€/foto · 3€/video sullo Studio Grande) oppure puoi passare al piano superiore. Decidi tu." },
     { q: "Chi genera le preview? Devo farlo io?", a: "No. Il protocollo e' pensato per la segreteria o l'ASO. E' semplicissimo da usare: da quel momento lo staff lavora in autonomia e tu resti in poltrona." },
     isV5
-      ? { q: "La preview sostituisce una simulazione diagnostica?", a: "No. SmileLive è uno strumento di comunicazione e non sostituisce diagnosi, progettazione clinica o consenso informato. La preview aiuta il paziente a comprendere un possibile cambiamento, che resta sempre da valutare e spiegare dal professionista." }
+      ? { q: "La preview sostituisce una simulazione diagnostica?", a: "No. SmileLive è uno strumento di comunicazione e non sostituisce diagnosi, progettazione clinica o consenso informato. La preview aiuta il paziente a comprendere il cambiamento proposto, che resta sempre da valutare e spiegare dal professionista." }
       : { q: "Il 70% di accuratezza visiva non e' troppo basso?", a: "SmileLive non e' uno strumento diagnostico: e' uno strumento di desiderio. Il suo compito non e' garantire il risultato clinico, quello e' il tuo. Il suo compito e' far nascere nel paziente la voglia di iniziare. Per i casi riproducibili, la preview e' molto accurata. Per i casi complessi, sblocca la conversazione. Funziona in entrambi i casi." },
     { q: "Posso usarlo per l'implantologia o solo per l'estetica?", a: "SmileLive lavora su qualsiasi trattamento che cambia visibilmente il sorriso: faccette, sbiancamento, ortodonzia, protesi, impianti su arcata. Se il risultato si vede, SmileLive lo puo' mostrare." },
   ];
@@ -2407,7 +2410,7 @@ const FinalCTA = () => {
         {isV5 ? <>Rendi più chiara la <span className="text-gold">prossima consulenza.</span></> : <>Il tuo prossimo paziente <span className="text-gold">indeciso</span> e' gia' in sala d'attesa.</>}
       </h2>
       <p className="text-lg md:text-xl text-text-muted leading-relaxed max-w-2xl mx-auto">
-        {isV5 ? "Mostra al paziente un possibile cambiamento e continua il percorso con preventivo, firma e follow-up nello stesso software." : "Ogni \"ci penso\" che senti oggi e' un trattamento che potrebbe diventare un si' domani."}
+        {isV5 ? "Mostra al paziente il risultato in anteprima e continua il percorso con preventivo, firma e follow-up nello stesso software." : "Ogni \"ci penso\" che senti oggi e' un trattamento che potrebbe diventare un si' domani."}
       </p>
       <p className="mt-3 text-base md:text-lg text-text-main font-semibold">
         {isV5 ? "Puoi iniziare oggi con 3 foto e 1 video in omaggio." : "Il primo risultato potrebbe arrivare questa settimana."}
