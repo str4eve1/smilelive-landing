@@ -440,7 +440,7 @@ const TopBar = () => {
       <motion.div
         initial={{ height: 0 }}
         animate={{ height: "auto" }}
-        transition={{ delay: 3, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ delay: 1.5, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         className="overflow-hidden"
       >
         <a
