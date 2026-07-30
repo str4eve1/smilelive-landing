@@ -1606,24 +1606,16 @@ const WhatYouGet = () => {
           <div>
             <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-orange-500 mb-4">Gestionale completo</span>
             <h2 className="text-3xl md:text-5xl font-headline font-bold tracking-tight leading-[1.05] text-balance">
-              {isV5 ? <>
-                La preview è solo l'inizio. <span className="text-orange-500">Il gestionale è già incluso.</span>
-              </> : <>
-                <span className="text-orange-500">Aspetta.</span><br className="sm:hidden" /> SmileLive non è solo l'anteprima del sorriso.
-              </>}
+              <span className="text-orange-500">Aspetta.</span><br className="sm:hidden" /> SmileLive non è solo l'anteprima del sorriso.
             </h2>
             <p className="mt-5 text-base md:text-lg leading-relaxed text-slate-300 max-w-2xl">
-              {isV5
-                ? "Dopo la consulenza, SmileLive accompagna il lavoro dello studio con scheda paziente, preventivi, firma, reminder e adempimenti fiscali nello stesso ambiente operativo."
-                : "Oltre all'anteprima, segue il resto del percorso: scheda paziente, preventivi, promemoria degli appuntamenti e adempimenti fiscali. Meno strumenti separati, meno tempo in segreteria, tutto in un unico posto."}
+              Oltre all'anteprima, segue il resto del percorso: scheda paziente, preventivi, promemoria degli appuntamenti e adempimenti fiscali. Meno strumenti separati, meno tempo in segreteria, tutto in un unico posto.
             </p>
           </div>
           <aside className="relative overflow-hidden rounded-2xl border border-orange-300/50 bg-[linear-gradient(150deg,rgba(249,115,22,0.34),rgba(217,70,20,0.14))] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_30px_78px_-58px_rgba(0,0,0,0.88)] backdrop-blur">
-            <strong className="block text-2xl font-headline font-bold tracking-tight leading-none text-white">{isV5 ? "Un unico ambiente operativo." : "Sì, tutto incluso."}</strong>
+            <strong className="block text-2xl font-headline font-bold tracking-tight leading-none text-white">Sì, tutto incluso.</strong>
             <span className="block mt-3 text-sm leading-relaxed text-slate-200">
-              {isV5
-                ? "Pazienti, preventivi, firma, reminder, fisco e prescrizione vocale raccolti nello stesso flusso."
-                : "CRM, preventivi, firma, reminder, fisco e prescrizione vocale nello stesso flusso commerciale."}
+              CRM, preventivi, firma, reminder, fisco e prescrizione vocale nello stesso flusso commerciale.
             </span>
           </aside>
         </motion.div>
