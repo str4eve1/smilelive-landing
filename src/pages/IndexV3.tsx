@@ -1323,6 +1323,22 @@ const EveryTreatment = () => {
               </div>
             </div>
           ))}
+
+          {/* Card di continuità: vale per tutto il resto, senza CTA */}
+          <div className="sm:col-span-2 lg:col-span-3 bg-white border border-primary/20 rounded-[20px] shadow-sm p-5 md:p-6 flex flex-col md:flex-row md:items-center gap-4 md:gap-6">
+            <div className="w-11 h-11 shrink-0 rounded-full bg-primary/10 flex items-center justify-center">
+              <Sparkle size={20} weight="fill" className="text-primary" />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-lg font-bold text-text-main">E su tutto il resto che si vede.</h3>
+              <p className="mt-1 text-sm text-text-muted leading-relaxed">Questi sono solo tre esempi: la preview accompagna ogni trattamento con un cambiamento estetico visibile, sempre con la stessa qualità.</p>
+            </div>
+            <div className="flex flex-wrap gap-2 md:justify-end md:max-w-[280px]">
+              {["Ortodonzia", "Protesi", "Ricostruzioni", "Zirconio", "Igiene estetica"].map((t) => (
+                <span key={t} className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-bold text-text-muted">{t}</span>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
       <SectionWave top="#f8fafc" fill="#f2f9ff" />
@@ -1966,7 +1982,7 @@ const Pricing = () => {
           transition={{ duration: 0.5 }}
           className="mt-20 max-w-5xl mx-auto text-center"
         >
-          <h3 className="text-2xl md:text-3xl font-headline font-bold mb-3 tracking-tight">Come funzionano le generazioni</h3>
+          <h3 className="text-4xl md:text-5xl font-headline font-bold mb-3 tracking-tight">Come funzionano le generazioni</h3>
           <p className="text-text-muted max-w-2xl mx-auto">Regole chiare, nessuna sorpresa in fattura, nessun blocco col paziente in poltrona.</p>
         </motion.div>
 
