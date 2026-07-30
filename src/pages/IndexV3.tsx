@@ -436,23 +436,21 @@ const TopBar = () => {
 
   return (
     <div ref={ref} className="site-header fixed top-0 inset-x-0 z-50 flex flex-col">
-      {/* Announcement bar: invito alle 3 prove gratis — scende qualche secondo dopo l'header */}
-      <motion.div
-        initial={{ height: 0 }}
-        animate={{ height: "auto" }}
-        transition={{ delay: 1.5, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        className="overflow-hidden"
-      >
-        <a
+      {/* Announcement bar: lo slot è bianco e fa parte dell'header fin da subito; la fascia blu ci scende sopra dopo un attimo (niente salto di layout) */}
+      <div className="overflow-hidden bg-white">
+        <motion.a
+          initial={{ y: "-100%" }}
+          animate={{ y: 0 }}
+          transition={{ delay: 1.5, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           href="https://app.smilelive.it/"
           onClick={() => trackCta("inizia_ora", "announcement_bar")}
-          className="announcement-bar bg-gradient-to-b from-sky-500 via-primary to-sky-700 text-white text-xs md:text-sm font-semibold text-center py-2 px-4 flex items-center justify-center gap-x-2 gap-y-0.5 flex-wrap shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_3px_12px_rgba(2,132,199,0.35)] hover:brightness-105 transition-all"
+          className="announcement-bar bg-gradient-to-b from-sky-500 via-primary to-sky-700 text-white text-xs md:text-sm font-semibold text-center py-2 px-4 flex items-center justify-center gap-x-2 gap-y-0.5 flex-wrap shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_3px_12px_rgba(2,132,199,0.35)] hover:brightness-105 transition-[filter]"
         >
           <Sparkle size={14} weight="fill" className="shrink-0" />
           <span>Inizia gratis: <strong className="font-bold">{isV5 ? "3 foto + 1 video gratis" : "3 anteprime in omaggio"}</strong></span>
           <span className="inline-flex items-center gap-1 underline underline-offset-2 font-bold">Inizia ora <CaretRight size={12} weight="bold" /></span>
-        </a>
-      </motion.div>
+        </motion.a>
+      </div>
       <motion.div
         initial={{ y: -100 }}
         animate={{ y: 0 }}
