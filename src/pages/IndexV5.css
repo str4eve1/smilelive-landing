@@ -21,6 +21,13 @@
     0 4px 12px rgba(2, 119, 181, 0.28);
 }
 
+/* Slot della fascia promo: stesso trattamento della nav, così prima che scenda
+   la fascia l'header è un blocco bianco unico senza stacchi */
+.smilelive-v5 .announcement-slot {
+  background: rgba(255, 255, 255, 0.94) !important;
+  backdrop-filter: blur(18px);
+}
+
 .smilelive-v5 .site-header .nav-bar {
   min-height: 88px;
   padding-block: 15px !important;

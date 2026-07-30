@@ -437,10 +437,10 @@ const TopBar = () => {
   return (
     <div ref={ref} className="site-header fixed top-0 inset-x-0 z-50 flex flex-col">
       {/* Announcement bar: lo slot è bianco e fa parte dell'header fin da subito; la fascia blu ci scende sopra dopo un attimo (niente salto di layout) */}
-      <div className="overflow-hidden bg-white">
+      <div className="announcement-slot overflow-hidden bg-white">
         <motion.a
-          initial={{ y: "-100%" }}
-          animate={{ y: 0 }}
+          initial={{ y: "-100%", opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 1.5, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           href="https://app.smilelive.it/"
           onClick={() => trackCta("inizia_ora", "announcement_bar")}
