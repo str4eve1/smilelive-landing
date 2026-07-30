@@ -2564,7 +2564,7 @@ const SectionWave = ({ top, fill, flip = false }: { top: string; fill: string; f
     <div
       className="section-wave absolute inset-x-0 -bottom-px pointer-events-none leading-[0] z-[1]"
       aria-hidden="true"
-      style={{ background: resolvedFill, ...(flip ? { transform: "scaleX(-1)" } : {}) }}
+      style={{ background: `linear-gradient(${resolvedTop} 50%, ${resolvedFill} 50%)`, ...(flip ? { transform: "scaleX(-1)" } : {}) }}
     >
       <svg viewBox="0 0 1440 260" preserveAspectRatio="none" className="block w-full h-[60px] md:h-[100px]">
         <path d="M0,150 C360,232 760,212 1080,120 C1250,71 1352,44 1440,30 L1440,260 L0,260 Z" fill={resolvedFill} />

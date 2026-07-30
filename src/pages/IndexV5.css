@@ -127,6 +127,11 @@
   stroke: rgba(56, 189, 248, 0.34);
 }
 
+/* La sezione dopo una curva copre la fessura da 1px lasciata dall'overflow-hidden */
+.smilelive-v5 section:has(.section-wave) + section {
+  margin-top: -1px;
+}
+
 .smilelive-v5 > section:nth-of-type(7),
 .smilelive-v5 > section:nth-of-type(13),
 .smilelive-v5 > section:nth-of-type(16) {
