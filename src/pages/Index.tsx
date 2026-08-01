@@ -35,6 +35,7 @@ import stepSorriso from '../assets/steps/step-3-sorriso.webp';
 import stepDentista from '../assets/steps/step-4-dentista.webp';
 import logoFinale from '../assets/WEBP/SmileLive FINALE senza sfondo COLORI CORRETTI (1).webp';
 import { trackCta } from "@/lib/analytics";
+import AiBadge from "../components/AiBadge";
 import { openCookieBanner } from "@/lib/consent";
 
 // ─── Motion Variants ───────────────────────────────────────────────────────
@@ -291,6 +292,7 @@ const EmotionalVideo = () => {
                 </div>
                 <div className="absolute bottom-6 left-6 px-4 py-2 bg-white/90 backdrop-blur-md rounded-full text-xs uppercase tracking-widest text-text-main font-bold shadow-sm border border-slate-200 pointer-events-none transition-opacity duration-300" style={{ opacity: sliderPosition > 20 ? 1 : 0 }}>Prima</div>
                 <div className="absolute bottom-6 right-6 px-4 py-2 bg-primary/90 backdrop-blur-md rounded-full text-xs uppercase tracking-widest text-white font-bold shadow-sm pointer-events-none transition-opacity duration-300" style={{ opacity: sliderPosition < 80 ? 1 : 0 }}>Dopo</div>
+                <AiBadge className="top-3 left-3" />
               </div>
             </div>
           </div>
@@ -354,16 +356,18 @@ const AISimShowcase = () => {
 
               {/* Prima */}
               <div className="absolute left-[1%] top-[24%] w-[31%] z-10">
-                <div className="rounded-full overflow-hidden shadow-lg ring-4 ring-white aspect-square">
+                <div className="relative rounded-full overflow-hidden shadow-lg ring-4 ring-white aspect-square">
                   <img src={beforeImg} alt="Prima" className="w-full h-full object-cover object-[center_28%]" loading="lazy" />
+                  <AiBadge className="bottom-2 left-1/2 -translate-x-1/2" />
                 </div>
                 <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-white text-[11px] font-bold text-text-muted shadow">Prima</span>
               </div>
 
               {/* Dopo */}
               <div className="absolute right-[2%] top-[4%] w-[34%] z-10">
-                <div className="rounded-full overflow-hidden shadow-xl ring-4 ring-white aspect-square">
+                <div className="relative rounded-full overflow-hidden shadow-xl ring-4 ring-white aspect-square">
                   <img src={afterImg} alt="Dopo" className="w-full h-full object-cover object-[center_28%]" loading="lazy" />
+                  <AiBadge className="bottom-2 left-1/2 -translate-x-1/2" />
                 </div>
                 <span className="absolute -top-2 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-primary text-[11px] font-bold text-white shadow">Dopo</span>
               </div>
@@ -377,6 +381,7 @@ const AISimShowcase = () => {
                       <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 ml-0.5 text-primary"><path d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" /></svg>
                     </div>
                   </div>
+                  <AiBadge className="top-2 right-2" />
                 </div>
                 <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 z-10 px-3 py-1 rounded-full bg-gold text-[11px] font-bold text-white shadow whitespace-nowrap">Video Realistico AI</span>
               </div>
@@ -614,6 +619,7 @@ const Hero = () => (
                   e.currentTarget.closest('.phone-wrap')?.querySelectorAll('.hero-badge').forEach((el) => { (el as HTMLElement).style.opacity = '1'; (el as HTMLElement).style.pointerEvents = ''; });
                 }}
               />
+              <AiBadge className="bottom-4 right-4" />
               <div className="play-button absolute inset-0 flex items-center justify-center bg-black/40 transition-opacity duration-300 pt-8">
                 <div className="w-20 h-20 rounded-full bg-primary text-white flex items-center justify-center ring-2 ring-white/60 transition-transform duration-200 group-hover:scale-110">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-9 h-9 ml-1">
@@ -866,8 +872,9 @@ const TreatmentComparison = () => {
                         <span className="flex items-center gap-1.5 text-[11px] font-bold text-green-700"><Check size={12} weight="bold" className="shrink-0" /> Chiuso</span>
                         <span className="text-[10px] italic text-green-600 leading-tight">"{conPhrase}"</span>
                       </div>
-                      <div className="mt-2 aspect-[4/3] rounded-md overflow-hidden border border-primary/20">
+                      <div className="relative mt-2 aspect-[4/3] rounded-md overflow-hidden border border-primary/20">
                         <img src={items[activeItem].preview} alt={`Preview ${items[activeItem].title}`} className="w-full h-full object-cover" loading="lazy" />
+                        <AiBadge className="bottom-1 right-1" />
                       </div>
                     </div>
                     <motion.div
@@ -1081,6 +1088,7 @@ const OtSlider = ({ prima, dopo, alt, focus = "center" }: { prima: string; dopo:
         style={{ objectPosition: focus, clipPath: `inset(0 ${100 - pos}% 0 0)`, transition: dragging ? "none" : "clip-path 0.4s ease" }} />
       <span className="ot-tag ot-prima" style={{ opacity: pos > 18 ? 1 : 0 }}>Prima</span>
       <span className="ot-tag ot-dopo" style={{ opacity: pos < 82 ? 1 : 0 }}>Dopo</span>
+      <AiBadge className="bottom-2 right-2" />
       <div className="pointer-events-none absolute top-0 bottom-0 -ml-px w-0.5 bg-white shadow" style={{ left: `${pos}%`, transition: dragging ? "none" : "left 0.4s ease" }}>
         <span className="ot-handle">⇆</span>
       </div>
@@ -1238,6 +1246,7 @@ const HowItWorks = () => {
                     loading="lazy"
                     className="h-full w-full object-cover object-center"
                   />
+                  <AiBadge className="bottom-2 right-2" />
                 </div>
               )}
             </motion.div>

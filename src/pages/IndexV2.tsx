@@ -24,6 +24,7 @@ import imgImpianti from '../assets/WEBP/DOPO (2).webp';
 import imgOrtodonzia from '../assets/WEBP/TERMOSTAMPATA-CrUanAGb.jpg';
 import logoFinale from '../assets/WEBP/SmileLive FINALE senza sfondo COLORI CORRETTI (1).webp';
 import { trackCta } from "@/lib/analytics";
+import AiBadge from "../components/AiBadge";
 import { openCookieBanner } from "@/lib/consent";
 
 // ─── Motion Variants ───────────────────────────────────────────────────────
@@ -211,6 +212,7 @@ const EmotionalVideo = () => {
                 </div>
                 <div className="absolute bottom-6 left-6 px-4 py-2 bg-white/90 backdrop-blur-md rounded-full text-xs uppercase tracking-widest text-text-main font-bold shadow-sm border border-slate-200 pointer-events-none transition-opacity duration-300" style={{ opacity: sliderPosition > 20 ? 1 : 0 }}>Prima</div>
                 <div className="absolute bottom-6 right-6 px-4 py-2 bg-primary/90 backdrop-blur-md rounded-full text-xs uppercase tracking-widest text-white font-bold shadow-sm pointer-events-none transition-opacity duration-300" style={{ opacity: sliderPosition < 80 ? 1 : 0 }}>Dopo</div>
+                <AiBadge className="top-3 left-3" />
               </div>
             </div>
           </div>
@@ -249,7 +251,7 @@ const TopBar = () => {
         className={`transition-all duration-300 ${scrolled ? 'bg-white/90 backdrop-blur-xl border-b border-slate-200 py-4' : 'bg-transparent py-5'}`}
       >
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-          <img src={logoFinale} alt="SmileLive Logo" className="h-16 w-auto md:h-20" fetchpriority="high" width="180" height="130" />
+          <img src={logoFinale} alt="SmileLive Logo" className="h-16 w-auto md:h-20" fetchPriority="high" width="180" height="130" />
           <div className="hidden md:flex items-center gap-8 text-base text-text-muted font-medium">
             <a href="#come-funziona" className="hover:text-primary transition-colors duration-200 relative after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:bg-primary after:transition-all after:duration-200 hover:after:w-full">Come funziona</a>
             <a href="#pricing" className="hover:text-primary transition-colors duration-200 relative after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:bg-primary after:transition-all after:duration-200 hover:after:w-full">Prezzi</a>
@@ -375,6 +377,7 @@ const Hero = () => (
                 onPlay={(e) => { e.currentTarget.parentElement?.querySelector('.play-button')?.classList.add('opacity-0', 'pointer-events-none'); }}
                 onPause={(e) => { e.currentTarget.parentElement?.querySelector('.play-button')?.classList.remove('opacity-0', 'pointer-events-none'); }}
               />
+              <AiBadge className="bottom-4 right-4" />
               <div className="play-button absolute inset-0 flex items-center justify-center bg-black/30 transition-opacity duration-300 pt-8">
                 <div className="w-14 h-14 rounded-full bg-primary/90 text-white flex items-center justify-center shadow-[0_0_30px_rgba(2,132,199,0.6)]">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-7 h-7 ml-1">
@@ -536,11 +539,14 @@ const ProblemSection = () => {
                 className="w-full h-full flex items-center justify-center p-8"
               >
                 {items[activeItem].image ? (
-                  <img
-                    src={items[activeItem].image}
-                    alt={items[activeItem].title}
-                    className="max-w-full max-h-full object-contain rounded-xl"
-                  />
+                  <div className="relative max-w-full max-h-full">
+                    <img
+                      src={items[activeItem].image}
+                      alt={items[activeItem].title}
+                      className="max-w-full max-h-full object-contain rounded-xl"
+                    />
+                    <AiBadge className="bottom-2 right-2" />
+                  </div>
                 ) : (
                   <div className="flex flex-col items-center justify-center text-slate-300">
                     <div className="text-7xl mb-4">🦷</div>
