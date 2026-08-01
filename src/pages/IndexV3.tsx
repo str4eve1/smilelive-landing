@@ -351,7 +351,8 @@ const AISimShowcase = () => {
               <div className="absolute left-[1%] top-[24%] w-[31%] z-10">
                 <div className="relative rounded-full overflow-hidden shadow-lg ring-4 ring-white aspect-square">
                   <img src={beforeImg} alt="Prima" className="w-full h-full object-cover object-[center_28%]" loading="lazy" />
-                  <AiBadge className="bottom-2 left-1/2 -translate-x-1/2" />
+                  {/* in alto: l'etichetta "Prima" sta sotto al cerchio (-bottom-2) */}
+                  <AiBadge className="top-2 left-1/2 -translate-x-1/2" />
                 </div>
                 <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-white text-[11px] font-bold text-text-muted shadow">Prima</span>
               </div>
@@ -1955,7 +1956,10 @@ const Pricing = () => {
               <>
                 <h3 className="text-xl font-bold mb-1" style={{ color: plan.accent }}>{plan.name}</h3>
                 <p className="text-sm text-text-muted mb-4">{plan.tagline}</p>
-                <div className="text-4xl font-headline font-bold mb-1 num-tabular text-text-main">€{price}<span className="text-sm font-normal text-text-muted">/mese</span></div>
+                <div className="text-4xl font-headline font-bold mb-1 num-tabular text-text-main flex items-baseline justify-center gap-2">
+                  {isAnnual && <span className="text-2xl font-semibold text-text-muted/70 line-through decoration-2">€{plan.monthly}</span>}
+                  <span>€{price}<span className="text-sm font-normal text-text-muted">/mese</span></span>
+                </div>
                 {isAnnual && <div className="text-sm font-semibold mb-0.5" style={{ color: plan.accent }}>€{plan.annualTotal.toLocaleString("it-IT")}/anno · risparmi €{saving}</div>}
                 {isAnnual && <div className="text-xs mb-1 text-text-muted">in un'unica soluzione</div>}
                 <div className="h-px w-full my-5 bg-slate-100"></div>
