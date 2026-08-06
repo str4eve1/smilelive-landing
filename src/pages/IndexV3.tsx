@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
 import { motion, AnimatePresence, MotionConfig, useMotionValueEvent, useReducedMotion, useScroll } from "framer-motion";
 import {
   CaretRight, Sparkle, Pulse, ShieldCheck,
@@ -1699,14 +1698,14 @@ const WhatYouGet = () => {
                   </span>
                 ))}
               </div>
-              <Link
-                to="/demo-prescrizione"
+              <a
+                href="https://app.smilelive.it/?open=lab"
                 onClick={() => trackCta("demo_prescrizione", "gestionale")}
                 className="mt-6 inline-flex min-h-[46px] items-center justify-center gap-2 rounded-full bg-gradient-to-br from-orange-400 to-amber-600 px-5 py-3 font-extrabold text-white shadow-[0_24px_64px_-28px_rgba(249,115,22,0.95)] transition hover:-translate-y-0.5 hover:from-orange-300 hover:to-orange-600 active:scale-[0.98]"
               >
                 <CaretRight size={17} weight="fill" />
-                Demo prescrizione vocale
-              </Link>
+                Prova la prescrizione vocale
+              </a>
             </div>
           </motion.div>
         </motion.div>
@@ -2502,16 +2501,16 @@ export default function IndexV3({ variant = "v3" }: { variant?: SmileLiveLanding
             </div>
             <div>
               <h3 className="text-xl md:text-2xl font-bold tracking-tight">Prova la prescrizione vocale</h3>
-              <p className="mt-1 text-sm text-slate-300">Detti la lavorazione, SmileLive la struttura e la invia al laboratorio. Provala nella demo interattiva.</p>
+              <p className="mt-1 text-sm text-slate-300">Detti la lavorazione, SmileLive la struttura e la invia al laboratorio. Provala subito: la dettatura è aperta anche in prova gratuita.</p>
             </div>
           </div>
-          <Link
-            to="/demo-prescrizione"
+          <a
+            href="https://app.smilelive.it/?open=lab"
             onClick={() => trackCta("demo_prescrizione", "teaser_pricing")}
             className="shrink-0 inline-flex min-h-[46px] items-center gap-2 rounded-full bg-gradient-to-br from-orange-400 to-amber-600 px-6 py-3 font-extrabold text-white shadow-[0_24px_64px_-28px_rgba(249,115,22,0.95)] transition hover:-translate-y-0.5 active:scale-[0.98]"
           >
-            Apri la demo <CaretRight size={16} weight="bold" />
-          </Link>
+            Provala ora <CaretRight size={16} weight="bold" />
+          </a>
         </div>
       </div>
       <ForWho />              {/* Qualifica / esclusività */}
