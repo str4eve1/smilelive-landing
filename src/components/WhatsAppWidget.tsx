@@ -1,20 +1,32 @@
 import { useEffect, useRef, useState } from "react";
 import { trackCta } from "@/lib/analytics";
 
-const PHONE = "393289598557";
 const HEADER = "Come possiamo aiutarti?";
 // Vignetta "operatore": esce dopo un po' che la persona legge la landing
 const NUDGE_DELAY_MS = 120_000;
 const NUDGE_TEXT = "Ciao, vorrei parlare con un operatore.";
+
+export type WaMessage = { emoji: string; text: string };
+
+// Default = funnel studi (la home). Le pagine rivolte ai pazienti passano i propri.
+const DEFAULT_PHONE = "393289598557";
 // emoji = solo nella bolla mostrata; text = quello inviato a WhatsApp (senza emoji:
 // l'unicode esce sballato nel link wa.me)
-const MESSAGES = [
+const DEFAULT_MESSAGES: WaMessage[] = [
   { emoji: "ℹ️", text: "Ciao, vorrei maggiori informazioni su SmileLive." },
   { emoji: "🎬", text: "Ciao, vorrei vedere una demo di SmileLive per il mio studio." },
   { emoji: "💳", text: "Ciao, vorrei sapere di più su piani e prezzi." },
 ];
 
-export default function WhatsAppWidget() {
+type Props = {
+  phone?: string;
+  messages?: WaMessage[];
+};
+
+export default function WhatsAppWidget({
+  phone = DEFAULT_PHONE,
+  messages = DEFAULT_MESSAGES,
+}: Props = {}) {
   const [open, setOpen] = useState(false);
   const [visible, setVisible] = useState(false);
   const [nudge, setNudge] = useState(false);
@@ -43,10 +55,10 @@ export default function WhatsAppWidget() {
         <div className="wa-bubble wa-bubble-header" style={{ "--i": 0 } as React.CSSProperties}>
           <span>{HEADER}</span>
         </div>
-        {MESSAGES.map(({ emoji, text }, i) => (
+        {messages.map(({ emoji, text }, i) => (
           <a
             key={i}
-            href={`https://wa.me/${PHONE}?text=${encodeURIComponent(text)}`}
+            href={`https://wa.me/${phone}?text=${encodeURIComponent(text)}`}
             target="_blank"
             rel="noopener noreferrer"
             className="wa-bubble"
@@ -64,7 +76,7 @@ export default function WhatsAppWidget() {
             ×
           </button>
           <a
-            href={`https://wa.me/${PHONE}?text=${encodeURIComponent(NUDGE_TEXT)}`}
+            href={`https://wa.me/${phone}?text=${encodeURIComponent(NUDGE_TEXT)}`}
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => {
