@@ -203,8 +203,16 @@ export default function Simulazione() {
       {/* Header: solo logo, senza nav. Il visitatore arriva da una campagna
           pazienti: non va spinto dentro il funnel per studi. */}
       <header className="border-b border-slate-200 bg-white/95 backdrop-blur-sm">
-        <div className="mx-auto flex max-w-5xl items-center px-5 py-3 sm:px-6">
-          <img src={logoFinale} alt="SmileLive" className="h-9 w-auto sm:h-11" width="150" height="44" />
+        <div className="mx-auto flex max-w-5xl items-center px-5 py-4 sm:px-6 sm:py-5">
+          {/* L'asset ha molto vuoto attorno al marchio: box forzato + object-cover
+              per ritagliarlo, stessa tecnica dell'header della home (IndexV5.css). */}
+          <img
+            src={logoFinale}
+            alt="SmileLive"
+            className="h-[52px] w-[168px] object-cover object-[center_55%] sm:h-[60px] sm:w-[196px]"
+            width="168"
+            height="52"
+          />
         </div>
       </header>
 
