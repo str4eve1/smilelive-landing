@@ -18,7 +18,7 @@ import faccettePrima from '../assets/trattamenti/faccetta-prima.webp';
 import faccetteDopo from '../assets/trattamenti/faccetta-dopo.webp';
 import implantologiaPrima from '../assets/trattamenti/implantologia-prima.webp';
 import implantologiaDopo from '../assets/trattamenti/implantologia-dopo.webp';
-import emotionalVideo from '../assets/video per SITO 1080p FINITO.mp4';
+import emotionalVideo from '../assets/video-hero-finale-720.mp4';
 
 import logoBerlinesi from '../assets/LOGHI STUDI WEBP/BERLINESI 2 (1).png';
 import logoFerretti from '../assets/LOGHI STUDI WEBP/FERRETTI GIACOMO.png';
