@@ -2555,10 +2555,10 @@ export default function IndexV3({ variant = "v3" }: { variant?: SmileLiveLanding
       <ManifestoBand />       {/* Reframe: "compra l'immagine di sé" */}
       <EmotionalVideo />      {/* Effetto Wow + slider — la soluzione */}
       <AISimShowcase />       {/* "Non solo una foto": video realistico (assieme all'Effetto Wow) */}
+      <DemoVideo />           {/* Il software vero, 2 minuti con voce */}
       <EveryTreatment />     {/* Su ogni trattamento: crolla "il mio caso e' diverso" */}
       <IntermediateCTA />     {/* CTA contestuale + prova numerica: se vede il risultato, non esce indeciso */}
       <HowItWorks />          {/* Facilità: quanto è semplice */}
-      <DemoVideo />           {/* Il software vero, 2 minuti con voce */}
       <WhatYouGet />          {/* Value stack: cosa ottieni */}
       <Testimonials />        {/* Prova sociale prima del prezzo */}
       <ROICalculator />       {/* Ancora prezzo: il costo di aspettare */}
