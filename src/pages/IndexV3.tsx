@@ -18,7 +18,9 @@ import faccettePrima from '../assets/trattamenti/faccetta-prima.webp';
 import faccetteDopo from '../assets/trattamenti/faccetta-dopo.webp';
 import implantologiaPrima from '../assets/trattamenti/implantologia-prima.webp';
 import implantologiaDopo from '../assets/trattamenti/implantologia-dopo.webp';
-import emotionalVideo from '../assets/video-hero-finale-720.mp4';
+import emotionalVideo from '../assets/video per SITO 1080p FINITO.mp4';
+import demoVideo from '../assets/demo-smilelive-4x5.mp4';
+import demoPoster from '../assets/demo-smilelive-poster.jpg';
 
 import logoBerlinesi from '../assets/LOGHI STUDI WEBP/BERLINESI 2 (1).png';
 import logoFerretti from '../assets/LOGHI STUDI WEBP/FERRETTI GIACOMO.png';
@@ -642,7 +644,9 @@ const Hero = () => {
             </div>
             <div
               className="group relative rounded-[2.8rem] overflow-hidden bg-[#0f172a] cursor-pointer"
-              style={{ aspectRatio: '9/19.5' }}
+              /* stessa forma del video (9/16): con 9/19.5 object-cover tagliava
+                 il 9% per lato, e object-contain lasciava due bande scure. */
+              style={{ aspectRatio: '9/16' }}
               onClick={(e) => {
                 const video = e.currentTarget.querySelector('video') as HTMLVideoElement | null;
                 if (video) { if (video.paused) { video.play(); } else { video.pause(); } }
@@ -1537,6 +1541,72 @@ const HowItWorks = () => {
     </section>
   );
 };
+
+// ─── DemoVideo ────────────────────────────────────────────────────────────────
+// Il tour completo del software: 2 minuti, con voce, UI reale.
+// È un <div> e non una <section> di proposito: IndexV5.css indirizza le sezioni
+// figlie per nth-of-type, una in più le sfaserebbe tutte.
+// Formato 4:5 e non 9:16: a parità di larghezza mostra la UI molto più grande,
+// perché il 9:16 spende mezza altezza in fondo vuoto.
+const DemoVideo = () => (
+  <div className="bg-gradient-to-b from-white via-sky-50/40 to-white py-16 md:py-28">
+    <div className="max-w-6xl mx-auto px-6 grid gap-10 lg:grid-cols-[1fr_minmax(0,460px)] lg:gap-16 items-center">
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
+        <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary">La demo</span>
+        <h2 id="demo-titolo" className="mt-3 text-3xl md:text-5xl font-headline font-bold tracking-tight leading-[1.1] text-text-main">
+          Guarda SmileLive <span className="text-gold">al lavoro.</span>
+        </h2>
+        <p className="mt-5 text-lg text-text-muted leading-relaxed max-w-lg">
+          Due minuti, raccontati a voce, dentro il software vero: dalla foto del paziente
+          alla preview, poi preventivo, firma, prescrizione al laboratorio e follow-up.
+          Nessuna slide: è la UI che userebbe il tuo staff.
+        </p>
+        <ul className="mt-7 space-y-3">
+          {[
+            "Come nasce una preview, passaggio per passaggio",
+            "Cosa vede il paziente e cosa resta allo studio",
+            "Dove finiscono preventivi, firme e reminder",
+          ].map((voce) => (
+            <li key={voce} className="flex gap-3 text-base text-text-muted">
+              <CheckCircle size={19} weight="light" className="mt-0.5 shrink-0 text-primary" />
+              {voce}
+            </li>
+          ))}
+        </ul>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, scale: 0.97 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="relative mx-auto w-full max-w-[460px]"
+      >
+        {/* controls nativi: due minuti vanno poter messi in pausa e scorsi.
+            preload="none" + poster => zero byte finché non premono play. */}
+        <video
+          src={demoVideo}
+          poster={demoPoster}
+          controls
+          preload="none"
+          playsInline
+          aria-labelledby="demo-titolo"
+          className="w-full rounded-3xl bg-[#0b1220] shadow-[0_28px_70px_-28px_rgba(2,132,199,0.55)] ring-1 ring-slate-900/10"
+          style={{ aspectRatio: '4/5' }}
+          onPlay={() => trackCta("demo_video", "demo_section")}
+        />
+        <p className="mt-3 text-center text-sm text-text-muted">
+          Tour completo · 2 minuti · con audio
+        </p>
+      </motion.div>
+    </div>
+  </div>
+);
 
 // ─── WhatYouGet ───────────────────────────────────────────────────────────────
 const WhatYouGet = () => {
@@ -2488,6 +2558,7 @@ export default function IndexV3({ variant = "v3" }: { variant?: SmileLiveLanding
       <EveryTreatment />     {/* Su ogni trattamento: crolla "il mio caso e' diverso" */}
       <IntermediateCTA />     {/* CTA contestuale + prova numerica: se vede il risultato, non esce indeciso */}
       <HowItWorks />          {/* Facilità: quanto è semplice */}
+      <DemoVideo />           {/* Il software vero, 2 minuti con voce */}
       <WhatYouGet />          {/* Value stack: cosa ottieni */}
       <Testimonials />        {/* Prova sociale prima del prezzo */}
       <ROICalculator />       {/* Ancora prezzo: il costo di aspettare */}
