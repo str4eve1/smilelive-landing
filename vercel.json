@@ -4,5 +4,12 @@
       "source": "/(.*)",
       "destination": "/index.html"
     }
+  ],
+  "redirects": [
+    {
+      "source": "/inizia",
+      "destination": "/?utm_source=scatola&utm_medium=qr&utm_campaign=scatola",
+      "permanent": false
+    }
   ]
 }

@@ -455,7 +455,7 @@ const TopBar = () => {
           className="announcement-bar bg-gradient-to-b from-sky-500 via-primary to-sky-700 text-white text-xs md:text-sm font-semibold text-center py-2 px-4 flex items-center justify-center gap-x-2 gap-y-0.5 flex-wrap shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_3px_12px_rgba(2,132,199,0.35)] hover:brightness-105 transition-[filter]"
         >
           <Sparkle size={14} weight="fill" className="shrink-0" />
-          <span>Inizia gratis: <strong className="font-bold">{isV5 ? "3 foto + 1 video gratis" : "3 anteprime in omaggio"}</strong></span>
+          <span>Inizia gratis: <strong className="font-bold">{isV5 ? "5 foto + 2 video gratis" : "5 anteprime in omaggio"}</strong></span>
           <span className="inline-flex items-center gap-1 underline underline-offset-2 font-bold">Inizia ora <CaretRight size={12} weight="bold" /></span>
         </motion.a>
       </div>
@@ -591,7 +591,7 @@ const Hero = () => {
           {isV5 ? (
             <>In circa 10 secondi crei una preview personale da discutere durante la consulenza. Poi preventivo, firma, reminder e gestione dello studio nello stesso software.</>
           ) : (
-            <>Ogni giorno escono dallo studio pazienti che volevano cambiare il loro sorriso. Non li hai persi perche' il prezzo era troppo alto. Li hai persi perche' <strong className="text-text-main font-semibold">non riuscivano a immaginarlo.</strong><br /><br />SmileLive mostra loro il risultato. Prima che escano dalla porta. Inizi gratis: 3 anteprime in omaggio.</>
+            <>Ogni giorno escono dallo studio pazienti che volevano cambiare il loro sorriso. Non li hai persi perche' il prezzo era troppo alto. Li hai persi perche' <strong className="text-text-main font-semibold">non riuscivano a immaginarlo.</strong><br /><br />SmileLive mostra loro il risultato. Prima che escano dalla porta. Inizi gratis: 5 anteprime in omaggio.</>
           )}
         </motion.p>
 
@@ -1918,7 +1918,7 @@ const IntermediateCTA = () => {
               <CaretRight size={14} weight="bold" />
             </span>
           </motion.a>
-          <span className="text-sm text-text-muted">{isV5 ? "3 foto + 1 video in omaggio, senza carta" : "3 anteprime in omaggio · senza carta richiesta"}</span>
+          <span className="text-sm text-text-muted">{isV5 ? "5 foto + 2 video in omaggio, senza carta" : "5 anteprime in omaggio · senza carta richiesta"}</span>
         </div>
         <div className="mt-14 bg-white rounded-[2.5rem] shadow-[0_20px_60px_-30px_rgba(15,23,42,0.25)] border border-slate-200 grid grid-cols-2 md:grid-cols-4 gap-y-8 py-8 px-6 md:divide-x md:divide-slate-100">
           {stats.map((s, i) => (
@@ -1948,7 +1948,7 @@ const Pricing = () => {
   ];
 
   const rules = [
-    { icon: Sparkle, title: "Inizi gratis", body: "3 foto + 1 video in omaggio alla registrazione. Senza abbonamento generi ancora a 5€/foto e 5€/video, nessun canone fisso." },
+    { icon: Sparkle, title: "Inizi gratis", body: "5 foto + 2 video in omaggio alla registrazione. Senza abbonamento generi ancora a 5€/foto e 5€/video, nessun canone fisso." },
     { icon: ShieldCheck, title: "Errore nostro? Rigenerazione gratis entro 24h", body: "Se una generazione esce male la segnali con un tasto: la verifichiamo e, se l'errore e' nostro, la rifacciamo gratis entro 24 ore." },
     { icon: Camera, title: "Le modifiche creative scalano dal piano", body: "Le modifiche che chiedi tu (es. 'piu' bianchi', forma diversa) contano come una generazione normale e scalano dalle quote del piano." },
     { icon: Lightning, title: "Mai un blocco in poltrona", body: "Al raggiungimento del limite non si blocca nulla: addebito automatico dell'extra o passaggio al piano superiore. Col paziente davanti non ti fermi mai." },
@@ -1978,7 +1978,7 @@ const Pricing = () => {
           className="flex flex-col items-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-headline font-bold text-center mb-4 tracking-tight">Scegli il tuo <span className="text-gold">piano</span></h2>
-          <p className="text-xl text-text-muted text-center mb-4">Inizia gratis con 3 anteprime. Poi scegli il piano giusto per il tuo studio.</p>
+          <p className="text-xl text-text-muted text-center mb-4">Inizia gratis con 5 anteprime. Poi scegli il piano giusto per il tuo studio.</p>
           <p className="text-base text-text-muted text-center max-w-2xl mb-8">L'abbonamento sblocca tutto il software e le generazioni incluse ogni mese. L'opzione annuale si paga in un'unica soluzione, al prezzo piu' basso.</p>
           <div className="inline-flex items-center gap-1 bg-slate-50 border border-slate-200 rounded-full p-1.5">
             <button onClick={() => setIsAnnual(false)} className={`px-5 py-2 rounded-full font-medium transition-all duration-200 ${!isAnnual ? 'bg-white shadow-sm text-text-main ring-2 ring-primary/60' : 'text-text-muted hover:text-text-main'}`}>Mensile</button>
@@ -2003,7 +2003,7 @@ const Pricing = () => {
             <div className="text-4xl font-headline font-bold mb-1 num-tabular text-text-main">€0<span className="text-sm text-text-muted font-normal">/mese</span></div>
             <div className="h-px w-full bg-slate-100 my-5"></div>
             <ul className="space-y-3 mb-8 flex-grow w-full">
-              <Feat icon={Gift} grad={freeTokens.grad}><strong className="text-text-main">3 foto + 1 video</strong> in omaggio</Feat>
+              <Feat icon={Gift} grad={freeTokens.grad}><strong className="text-text-main">5 foto + 2 video</strong> in omaggio</Feat>
               <Feat icon={Sparkle} grad={freeTokens.grad}>Tab <strong className="text-text-main">SmileLive Preview</strong> attiva subito</Feat>
               <Feat icon={Lightning} grad={freeTokens.grad}>Poi <strong className="text-text-main">5€/foto · 5€/video</strong>, senza canone</Feat>
               <li className="text-sm pt-2 border-t border-slate-100 text-text-muted text-left">Il resto si sblocca con l'abbonamento.</li>
@@ -2106,7 +2106,7 @@ const Pricing = () => {
           <div>
             <p className="font-bold text-lg text-text-main mb-1">Senza abbonamento? Paghi solo quando usi.</p>
             <p className="text-text-muted text-base leading-relaxed">
-              Dopo le <strong className="text-text-main">3 anteprime in omaggio</strong> puoi generare a <strong className="text-text-main">5€/foto</strong> e <strong className="text-text-main">5€/video</strong>, senza canone fisso. Quando vedi che funziona, passi a un abbonamento.
+              Dopo le <strong className="text-text-main">5 anteprime in omaggio</strong> puoi generare a <strong className="text-text-main">5€/foto</strong> e <strong className="text-text-main">5€/video</strong>, senza canone fisso. Quando vedi che funziona, passi a un abbonamento.
             </p>
           </div>
         </motion.div>
@@ -2279,7 +2279,7 @@ const FAQ = () => {
   const isV5 = useIsV5();
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const faqs = [
-    { q: "Posso provarlo senza abbonarmi?", a: "Si'. La registrazione e' gratuita e ti regaliamo 3 foto e 1 video in omaggio nella tab SmileLive Preview, senza carta e senza impegno. Il resto del software resta visibile e si sblocca quando attivi un abbonamento. Per generare ancora senza abbonarti, paghi 5€ a foto e 5€ a video." },
+    { q: "Posso provarlo senza abbonarmi?", a: "Si'. La registrazione e' gratuita e ti regaliamo 5 foto e 2 video in omaggio nella tab SmileLive Preview, senza carta e senza impegno. Il resto del software resta visibile e si sblocca quando attivi un abbonamento. Per generare ancora senza abbonarti, paghi 5€ a foto e 5€ a video." },
     { q: "Meglio l'abbonamento o pagare a consumo?", a: "Dipende dal volume. Senza abbonamento generi a 5€/foto e 5€/video, comodo per testare. Con un abbonamento Studio hai foto e video inclusi ogni mese a un costo unitario molto piu' basso, piu' i promemoria WhatsApp/SMS e tutto il software sbloccato. Sul piano Studio Grande anche gli extra costano meno: 2€/foto e 3€/video." },
     { q: "Cosa succede se una preview esce male (denti deformati, artefatti)?", a: "La generazione scala comunque dal piano, ma con un tasto la segnali: verifichiamo il caso e, se l'errore e' nostro, la rigeneriamo gratis entro 24 ore. Le modifiche creative che chiedi tu (piu' bianchi, forma diversa) contano invece come una generazione normale." },
     { q: "E se finisco le foto o i video inclusi nel mese?", a: "Non ti blocchiamo mai, soprattutto col paziente in poltrona. Al raggiungimento del limite scatta l'addebito automatico dell'extra (5€/foto · 5€/video, 2€/foto · 3€/video sullo Studio Grande) oppure puoi passare al piano superiore. Decidi tu." },
@@ -2368,7 +2368,7 @@ const FinalCTA = () => {
         {isV5 ? "Mostra al paziente il risultato in anteprima e continua il percorso con preventivo, firma e follow-up nello stesso software." : "Ogni \"ci penso\" che senti oggi e' un trattamento che potrebbe diventare un si' domani."}
       </p>
       <p className="mt-3 text-base md:text-lg text-text-main font-semibold">
-        {isV5 ? "Puoi iniziare oggi con 3 foto e 1 video in omaggio." : "Il primo risultato potrebbe arrivare questa settimana."}
+        {isV5 ? "Puoi iniziare oggi con 5 foto e 2 video in omaggio." : "Il primo risultato potrebbe arrivare questa settimana."}
       </p>
       <div className="mt-10 flex flex-col items-center gap-3">
         <motion.a
@@ -2384,7 +2384,7 @@ const FinalCTA = () => {
             <CaretRight size={16} weight="bold" />
           </span>
         </motion.a>
-        <span className="text-sm text-text-muted">3 foto + 1 video in omaggio · senza carta richiesta</span>
+        <span className="text-sm text-text-muted">5 foto + 2 video in omaggio · senza carta richiesta</span>
       </div>
       <p className="mt-6 text-sm text-text-muted/70">Setup in 10 minuti. Il tuo staff e' operativo oggi.</p>
       <div className="mt-6 flex flex-wrap justify-center gap-4 text-sm text-text-muted font-medium">
