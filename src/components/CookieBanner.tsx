@@ -67,10 +67,15 @@ export default function CookieBanner() {
           aria-modal="false"
           aria-labelledby="cookie-banner-title"
         >
-          <div className="max-w-5xl mx-auto bg-background/95 backdrop-blur-xl border border-secondary/20 rounded-2xl shadow-2xl overflow-hidden">
-            <div className="p-5 md:p-6">
-              <div className="flex items-start gap-3 mb-4">
-                <div className="w-10 h-10 shrink-0 rounded-full bg-primary/10 flex items-center justify-center">
+          {/* Altezza massima + scorrimento interno: con «Personalizza» aperto, su telefono
+              il riquadro usciva dallo schermo in alto e non si poteva scorrere. */}
+          <div className="max-w-5xl mx-auto max-h-[calc(100dvh-1.5rem)] overflow-y-auto overscroll-contain bg-background/95 backdrop-blur-xl border border-secondary/20 rounded-2xl shadow-2xl">
+            {/* Su telefono il banner è compatto (testo breve, due bottoni affiancati):
+                a 360×640 copriva tre quarti dello schermo, titolo della pagina compreso.
+                Le tre scelte restano tutte al primo livello. */}
+            <div className="p-4 sm:p-5 md:p-6">
+              <div className="flex items-start gap-3 mb-3 sm:mb-4">
+                <div className="hidden sm:flex w-10 h-10 shrink-0 rounded-full bg-primary/10 items-center justify-center">
                   <Cookie className="w-5 h-5 text-primary" />
                 </div>
                 <div className="flex-1">
@@ -78,10 +83,12 @@ export default function CookieBanner() {
                     Privacy e cookie
                   </h2>
                   <p className="text-sm text-text-muted leading-relaxed">
-                    Usiamo cookie tecnici essenziali e, con il tuo consenso, cookie di statistica e marketing per
-                    migliorare il sito e personalizzare gli annunci. Puoi accettare tutti, rifiutare tutti o
-                    scegliere quali categorie attivare. Cambierai idea quando vuoi dal link "Gestione cookie" in
-                    fondo alla pagina.
+                    Usiamo cookie tecnici essenziali e, con il tuo consenso, cookie di statistica e marketing
+                    <span className="hidden sm:inline"> per migliorare il sito e personalizzare gli annunci</span>.
+                    <span className="hidden sm:inline">
+                      {" "}Puoi accettare tutti, rifiutare tutti o scegliere quali categorie attivare. Cambierai idea
+                      quando vuoi dal link "Gestione cookie" in fondo alla pagina.
+                    </span>
                     {" "}
                     <a href="/privacy" className="underline hover:text-primary transition-colors">Privacy Policy</a>
                     {" · "}
@@ -129,11 +136,12 @@ export default function CookieBanner() {
                 </motion.div>
               )}
 
-              <div className="flex flex-col sm:flex-row gap-2 sm:justify-end">
+              {/* Telefono: Accetta e Rifiuta affiancati e grandi uguali, Personalizza sotto. Da sm in su: come prima. */}
+              <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-row sm:justify-end">
                 <button
                   type="button"
                   onClick={acceptAll}
-                  className="px-5 py-2.5 rounded-full bg-primary text-text-main font-bold text-sm hover:scale-[1.02] active:scale-95 transition-transform shadow-[0_0_20px_rgba(14,165,233,0.3)]"
+                  className="min-h-[44px] px-5 py-2.5 rounded-full bg-primary text-text-main font-bold text-sm hover:scale-[1.02] active:scale-95 transition-transform shadow-[0_0_20px_rgba(14,165,233,0.3)]"
                 >
                   Accetta tutti
                 </button>
@@ -141,7 +149,7 @@ export default function CookieBanner() {
                   <button
                     type="button"
                     onClick={saveCustom}
-                    className="px-5 py-2.5 rounded-full border border-primary/30 bg-primary/10 hover:bg-primary/20 transition-colors font-medium text-sm text-primary"
+                    className="col-span-2 order-last sm:order-none min-h-[44px] px-5 py-2.5 rounded-full border border-primary/30 bg-primary/10 hover:bg-primary/20 transition-colors font-medium text-sm text-primary"
                   >
                     Salva preferenze
                   </button>
@@ -149,7 +157,7 @@ export default function CookieBanner() {
                   <button
                     type="button"
                     onClick={() => setShowDetails(true)}
-                    className="px-5 py-2.5 rounded-full border border-secondary/30 bg-transparent hover:bg-secondary/5 transition-colors font-medium text-sm text-text-main"
+                    className="col-span-2 order-last sm:order-none min-h-[44px] px-5 py-2.5 rounded-full border border-transparent sm:border-secondary/30 bg-transparent hover:bg-secondary/5 transition-colors font-medium text-sm text-text-main underline sm:no-underline"
                   >
                     Personalizza
                   </button>
@@ -157,7 +165,7 @@ export default function CookieBanner() {
                 <button
                   type="button"
                   onClick={rejectAll}
-                  className="px-5 py-2.5 rounded-full border border-secondary/30 bg-transparent hover:bg-secondary/5 transition-colors font-medium text-sm text-text-main"
+                  className="min-h-[44px] px-5 py-2.5 rounded-full border border-secondary/30 bg-transparent hover:bg-secondary/5 transition-colors font-medium text-sm text-text-main"
                 >
                   Rifiuta tutti
                 </button>
