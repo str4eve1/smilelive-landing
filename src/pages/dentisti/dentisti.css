@@ -1,0 +1,93 @@
+/* Stili solo della pagina /dentisti. Colori come variabili in cima. */
+.dn-page {
+  --dn-navy: #0b1120;
+  --dn-blue: #2563eb;
+  --dn-blue-deep: #1d4ed8;
+  --dn-cream: #f8fafc;
+  --dn-text: #0b1120;
+  --dn-text-soft: #475569;
+  --dn-on-blue-soft: #dbe6ff;
+  --dn-line: #e2e8f0;
+  --dn-bar-h: 84px;
+  font-family: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: var(--dn-cream);
+  color: var(--dn-text);
+  min-height: 100vh;
+  /* spazio per la barra fissa su telefono, safe-area inclusa */
+  padding-bottom: calc(var(--dn-bar-h) + env(safe-area-inset-bottom));
+}
+.dn-page * { box-sizing: border-box; }
+.dn-wrap { width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+
+/* Hero blu, come l'inserzione */
+.dn-hero { background: var(--dn-blue); color: #fff; padding: 20px 0 36px; }
+.dn-logo { position: relative; overflow: hidden; height: 40px; aspect-ratio: 1020 / 307; margin-bottom: 28px; }
+.dn-logo img { position: absolute; width: 115.4%; max-width: none; height: auto; left: -8.04%; top: -120.8%; filter: brightness(0) invert(1); }
+.dn-grid { display: grid; gap: 24px; grid-template-areas: "text" "video" "cta"; }
+.dn-text { grid-area: text; }
+.dn-video { grid-area: video; }
+.dn-cta { grid-area: cta; }
+.dn-eyebrow { margin: 0 0 12px; font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--dn-on-blue-soft); }
+.dn-h1 { margin: 0 0 16px; font-size: 32px; line-height: 1.1; font-weight: 800; letter-spacing: -0.03em; }
+.dn-sub { margin: 0; font-size: 17px; line-height: 1.5; font-weight: 500; color: var(--dn-on-blue-soft); }
+.dn-video video { display: block; width: 100%; max-width: 640px; aspect-ratio: 1 / 1; margin: 0 auto; border-radius: 16px; background: #000; box-shadow: 0 20px 50px rgba(11, 17, 32, .35); }
+.dn-small { margin: 10px 0 0; font-size: 14px; text-align: center; color: var(--dn-on-blue-soft); }
+
+/* Bottoni */
+.dn-btn { text-wrap: balance; display: flex; align-items: center; justify-content: center; min-height: 56px; padding: 14px 24px; border-radius: 14px; font-weight: 800; font-size: 17px; line-height: 1.2; text-align: center; text-decoration: none; transition: transform .15s, background .15s; }
+.dn-btn:focus-visible, .dn-link:focus-visible, .dn-footer a:focus-visible, .dn-footer button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; box-shadow: 0 0 0 6px var(--dn-navy); }
+.dn-btn:active { transform: scale(.98); }
+.dn-btn--navy { background: var(--dn-navy); color: #fff; }
+.dn-btn--navy:hover { background: #1a2540; }
+.dn-btn--blue { background: var(--dn-blue); color: #fff; }
+.dn-btn--blue:hover { background: var(--dn-blue-deep); }
+.dn-btn--outline { background: #fff; color: var(--dn-navy); border: 2px solid var(--dn-navy); }
+.dn-btn--outline:hover { background: var(--dn-navy); color: #fff; }
+
+/* Tre punti */
+.dn-points { padding-top: 36px; padding-bottom: 8px; }
+.dn-points ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
+.dn-points li { background: #fff; border: 1px solid var(--dn-line); border-radius: 16px; padding: 20px; }
+.dn-points h2 { margin: 0 0 6px; font-size: 19px; font-weight: 800; letter-spacing: -0.01em; }
+.dn-points p { margin: 0; font-size: 16px; line-height: 1.55; color: var(--dn-text-soft); }
+.dn-link { display: inline-block; margin-top: 12px; min-height: 44px; padding-top: 10px; font-weight: 700; color: var(--dn-blue-deep); text-decoration: underline; text-underline-offset: 3px; }
+.dn-link:focus-visible, .dn-wa .dn-btn:focus-visible { outline-color: var(--dn-blue); box-shadow: none; }
+
+/* WhatsApp */
+.dn-wa { padding-top: 36px; padding-bottom: 8px; text-align: center; display: grid; gap: 14px; justify-items: center; }
+.dn-wa h2 { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
+.dn-wa .dn-btn { width: 100%; max-width: 360px; }
+
+.dn-disclaimer { margin: 28px auto 0; padding-bottom: 36px; font-size: 13px; line-height: 1.5; color: var(--dn-text-soft); text-align: center; max-width: 720px; }
+
+/* Piè di pagina */
+.dn-footer { background: var(--dn-navy); color: #cbd5e1; padding: 24px 0; font-size: 13px; line-height: 1.6; }
+.dn-footer p { margin: 0 0 10px; }
+.dn-footer nav { display: flex; flex-wrap: wrap; gap: 4px 20px; }
+.dn-footer a, .dn-footer button { color: #fff; background: none; border: 0; padding: 10px 0; min-height: 44px; font: inherit; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+
+/* Barra fissa del bottone (solo telefono) */
+.dn-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); background: rgba(248, 250, 252, .96); border-top: 1px solid var(--dn-line); box-shadow: 0 -8px 24px rgba(11, 17, 32, .12); transform: translateY(110%); transition: transform .25s ease; }
+.dn-bar.is-visible { transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) { .dn-bar { transition: none; } }
+
+/* Da tablet in su: testo e video affiancati, niente barra */
+@media (min-width: 900px) {
+  .dn-page { padding-bottom: 0; }
+  .dn-bar { display: none; }
+  .dn-hero { padding: 28px 0 64px; }
+  .dn-logo { height: 52px; margin-bottom: 48px; }
+  .dn-grid { grid-template-columns: 1fr minmax(0, 520px); grid-template-areas: "text video" "cta video"; column-gap: 64px; row-gap: 28px; grid-template-rows: auto 1fr; }
+  .dn-text { align-self: end; }
+  .dn-cta { align-self: start; max-width: 460px; }
+  .dn-video { align-self: center; }
+  .dn-video video { max-width: 520px; }
+  .dn-h1 { font-size: 52px; }
+  .dn-sub { font-size: 20px; }
+  .dn-points ul { grid-template-columns: repeat(3, 1fr); }
+  .dn-footer .dn-wrap { display: flex; justify-content: space-between; align-items: center; gap: 24px; }
+  .dn-footer p { margin: 0; }
+}
+
+/* Il sito forza Syne sui titoli: qui no */
+.dn-page h1, .dn-page h2, .dn-page h3 { font-family: inherit; }

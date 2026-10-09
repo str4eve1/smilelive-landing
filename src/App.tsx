@@ -1,4 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
@@ -14,6 +15,9 @@ import Privacy from "./pages/Privacy.tsx";
 import Simulazione from "./pages/Simulazione.tsx";
 import CookiePolicy from "./pages/CookiePolicy.tsx";
 import Terms from "./pages/Terms.tsx";
+
+// Pagina /dentisti a richiesta: non pesa sulla home
+const Dentisti = lazy(() => import("./pages/Dentisti.tsx"));
 
 const queryClient = new QueryClient();
 
@@ -31,6 +35,7 @@ const App = () => (
           <Route path="/v4" element={<IndexV4 />} />
           <Route path="/v5" element={<IndexV5 />} />
           <Route path="/simulazione" element={<Simulazione />} />
+          <Route path="/dentisti" element={<Suspense fallback={null}><Dentisti /></Suspense>} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/cookie-policy" element={<CookiePolicy />} />
           <Route path="/terms" element={<Terms />} />
