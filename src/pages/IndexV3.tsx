@@ -589,7 +589,7 @@ const Hero = () => {
       >
         <motion.p variants={fadeUp} className="text-lg text-text-muted leading-relaxed max-w-lg">
           {isV5 ? (
-            <>In circa 10 secondi crei una preview personale da discutere durante la consulenza. Poi preventivo, firma, reminder e gestione dello studio nello stesso software.</>
+            <>In circa un minuto crei una preview personale da discutere durante la consulenza. Poi preventivo, firma, reminder e gestione dello studio nello stesso software.</>
           ) : (
             <>Ogni giorno escono dallo studio pazienti che volevano cambiare il loro sorriso. Non li hai persi perche' il prezzo era troppo alto. Li hai persi perche' <strong className="text-text-main font-semibold">non riuscivano a immaginarlo.</strong><br /><br />SmileLive mostra loro il risultato. Prima che escano dalla porta. Inizi gratis: 5 anteprime in omaggio.</>
           )}
@@ -822,7 +822,7 @@ const TrustMarquee = () => {
 const WhyChoose = () => {
   const isV5 = useIsV5();
   const items = isV5 ? [
-    { icon: Camera, title: "Foto e video in pochi secondi", desc: "Da uno scatto, lo studio ottiene una preview personale da utilizzare durante la consulenza." },
+    { icon: Camera, title: "Foto e video in prima visita", desc: "Da uno scatto, lo studio ottiene una preview personale da utilizzare durante la consulenza." },
     { icon: Sparkle, title: "Una visualizzazione credibile", desc: "Il paziente osserva il cambiamento sul proprio volto, con aspettative guidate dal professionista." },
     { icon: Users, title: "Un protocollo per tutto il team", desc: "Segreteria, ASO e clinico lavorano nello stesso flusso, senza rallentare l'attività." },
     { icon: TrendUp, title: "Più chiarezza nella decisione", desc: "Una proposta compresa meglio facilita il confronto e aumenta l'accettazione del piano." },
@@ -1440,7 +1440,7 @@ const HowItWorks = () => {
       num: "02",
       icon: <Camera size={20} weight="light" className="text-primary" />,
       title: "Lo staff genera la preview",
-      desc: "La segretaria o l'ASO carica la foto e in 30 secondi la preview e' pronta. Zero intervento del dentista.",
+      desc: "La segretaria o l'ASO carica la foto e in circa un minuto la preview e' pronta. Zero intervento del dentista.",
       image: stepPreview,
       highlight: true,
     },
