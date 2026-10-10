@@ -115,6 +115,15 @@ export default function Dentisti() {
                 Prova gratis: 5 simulazioni e 2 video
               </a>
               <p className="dn-small">Senza carta di credito.</p>
+              <a
+                href={waHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => trackCta("whatsapp", "dentisti_testata")}
+                className="dn-btn dn-btn--ghost dn-wa-hero"
+              >
+                Scrivici su WhatsApp
+              </a>
             </div>
           </div>
         </div>

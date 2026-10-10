@@ -45,6 +45,10 @@
 .dn-btn--navy:hover { background: #1a2540; }
 .dn-btn--blue { background: var(--dn-blue); color: #fff; }
 .dn-btn--blue:hover { background: var(--dn-blue-deep); }
+.dn-btn--ghost { background: transparent; color: #fff; border: 2px solid rgba(255, 255, 255, .85); }
+.dn-btn--ghost:hover { background: #fff; color: var(--dn-blue-deep); }
+/* il secondo WhatsApp sta sotto il bottone principale solo da computer; su telefono c'è quello in testata */
+.dn-wa-hero { display: none; }
 .dn-btn--outline { background: #fff; color: var(--dn-navy); border: 2px solid var(--dn-navy); }
 .dn-btn--outline:hover { background: var(--dn-navy); color: #fff; }
 
@@ -79,18 +83,20 @@
 @media (min-width: 900px) {
   .dn-page { padding-bottom: 0; }
   .dn-bar { display: none; }
-  .dn-hero { padding: 24px 0 56px; }
-  .dn-hero .dn-wrap { max-width: 1560px; padding: 0 32px; }
-  .dn-top { margin-bottom: 28px; }
+  .dn-hero { padding: 24px 0; }
+  /* logo in alto a sinistra, video a destra per tutta l'altezza, testo e bottoni centrati rispetto al video */
+  .dn-hero .dn-wrap { max-width: 1560px; padding: 0 32px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); grid-template-rows: auto minmax(0, 1fr) auto auto minmax(0, 1fr); grid-template-areas: "top video" ". video" "text video" "cta video" ". video"; column-gap: 56px; }
+  .dn-top { grid-area: top; margin-bottom: 0; }
   .dn-logo { height: 52px; }
-  .dn-wa-top { padding: 0 18px; font-size: 15px; }
-  .dn-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); grid-template-areas: "text video" "cta video"; column-gap: 56px; row-gap: 28px; grid-template-rows: auto 1fr; }
-  .dn-text { align-self: end; }
-  .dn-cta { align-self: start; max-width: 520px; }
-  .dn-cta .dn-btn { min-height: 64px; font-size: 19px; }
+  .dn-wa-top { display: none; }
+  .dn-grid { display: contents; }
+  .dn-text { padding-top: 24px; }
+  .dn-cta { max-width: 560px; margin-top: 28px; padding-bottom: 24px; }
+  .dn-cta .dn-btn { min-height: 68px; font-size: 20px; }
+  .dn-wa-hero { display: flex; margin-top: 14px; }
   .dn-video { align-self: center; }
   /* il video quadrato prende tutta la colonna, ma resta intero dentro lo schermo */
-  .dn-video video { max-width: none; width: min(100%, max(480px, calc(100vh - 150px))); }
+  .dn-video video { max-width: none; width: min(100%, max(480px, calc(100vh - 80px))); }
   .dn-h1 { font-size: clamp(40px, 4vw, 64px); }
   .dn-sub { font-size: clamp(19px, 1.5vw, 23px); }
   .dn-points ul { grid-template-columns: repeat(3, 1fr); }
