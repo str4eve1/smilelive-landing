@@ -86,3 +86,27 @@ scrivi(
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${voci.join("\n")}\n</urlset>\n`,
 );
 console.log(`sitemap.xml (${voci.length} pagine, ${SITO})`);
+
+// llms.txt: presentazione del sito per gli assistenti IA (formato llmstxt.org), generata dalla stessa tabella delle pagine.
+const sezioniLlms = [
+  ["Pagine principali", (p) => p.percorso === "/" || p.percorso === "/protocollo"],
+  ["Guide", (p) => p.percorso.startsWith("/guide/")],
+  ["Per i pazienti", (p) => p.percorso === "/simulazione"],
+  ["Informazioni legali", (p) => ["/privacy", "/cookie-policy", "/terms"].includes(p.percorso)],
+];
+const collegamento = (p) => `- [${p.title}](${canonicoDi(p.percorso)}): ${p.description}`;
+const llms = [
+  "# SmileLive",
+  "",
+  "> SmileLive è un software per studi dentistici: da una foto del paziente genera con l'intelligenza artificiale una simulazione del sorriso, in foto e in video, da mostrare in prima visita. Nello stesso strumento ci sono preventivo, firma a schermo, fattura e prescrizione vocale al laboratorio.",
+  "",
+  "Una simulazione richiede circa un minuto. La prova gratuita comprende 5 foto e 2 video, senza carta di credito. I piani sono Studio Piccolo a 57 € al mese (47 con il piano annuale), Studio Medio a 114 € (94) e Studio Grande a 157 € (137), prezzi IVA inclusa. Si usa dal browser, senza installare nulla. La simulazione è uno strumento di comunicazione e non sostituisce diagnosi né progettazione clinica. Il sito è rivolto ai dentisti.",
+  ...sezioniLlms.flatMap(([titolo, scelta]) => ["", `## ${titolo}`, "", ...pagine.filter(scelta).map(collegamento)]),
+  "",
+].join("\n");
+const inLlms = new Set(sezioniLlms.flatMap(([, scelta]) => pagine.filter(scelta).map((p) => p.percorso)));
+for (const p of pagine.filter((x) => x.sitemap)) {
+  if (!inLlms.has(p.percorso)) throw new Error(`llms.txt: la pagina ${p.percorso} non rientra in nessuna sezione`);
+}
+scrivi(join(dist, "llms.txt"), llms);
+console.log(`llms.txt (${inLlms.size} pagine)`);

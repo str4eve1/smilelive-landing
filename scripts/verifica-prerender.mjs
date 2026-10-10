@@ -106,8 +106,17 @@ if (existsSync(join(dist, "sitemap.xml"))) {
   }
 }
 
+if (!existsSync(join(dist, "llms.txt"))) ko("manca dist/llms.txt");
+else {
+  const l = leggi("llms.txt");
+  if (!l.startsWith("# SmileLive")) ko("llms.txt: non comincia con «# SmileLive»");
+  for (const p of pagine.filter((x) => x.sitemap)) {
+    if (!l.includes(`](${canonicoDi(p.percorso)})`)) ko(`llms.txt: manca ${p.percorso}`);
+  }
+}
+
 if (errori.length) {
   console.error("Verifica prerender FALLITA:\n- " + errori.join("\n- "));
   process.exit(1);
 }
-console.log(`Verifica prerender ok (${pagine.length} pagine, di cui ${contenuti.length} di contenuto con dati strutturati, + 404, sitemap, spa.html)`);
+console.log(`Verifica prerender ok (${pagine.length} pagine, di cui ${contenuti.length} di contenuto con dati strutturati, + 404, sitemap, llms.txt, spa.html)`);
