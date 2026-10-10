@@ -443,7 +443,7 @@ export default function Simulazione() {
           </div>
 
           <p className="text-xs text-text-muted/60">
-            © {new Date().getFullYear()} SmileLive. Tutti i diritti riservati.
+            © {new Date().getFullYear()} SmileLive · P.IVA 09125450727. Tutti i diritti riservati.
           </p>
         </div>
       </footer>
