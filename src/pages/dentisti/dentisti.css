@@ -79,17 +79,20 @@
 @media (min-width: 900px) {
   .dn-page { padding-bottom: 0; }
   .dn-bar { display: none; }
-  .dn-hero { padding: 28px 0 64px; }
-  .dn-top { margin-bottom: 48px; }
+  .dn-hero { padding: 24px 0 56px; }
+  .dn-hero .dn-wrap { max-width: 1560px; padding: 0 32px; }
+  .dn-top { margin-bottom: 28px; }
   .dn-logo { height: 52px; }
   .dn-wa-top { padding: 0 18px; font-size: 15px; }
-  .dn-grid { grid-template-columns: 1fr minmax(0, 520px); grid-template-areas: "text video" "cta video"; column-gap: 64px; row-gap: 28px; grid-template-rows: auto 1fr; }
+  .dn-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); grid-template-areas: "text video" "cta video"; column-gap: 56px; row-gap: 28px; grid-template-rows: auto 1fr; }
   .dn-text { align-self: end; }
-  .dn-cta { align-self: start; max-width: 460px; }
+  .dn-cta { align-self: start; max-width: 520px; }
+  .dn-cta .dn-btn { min-height: 64px; font-size: 19px; }
   .dn-video { align-self: center; }
-  .dn-video video { max-width: 520px; }
-  .dn-h1 { font-size: 52px; }
-  .dn-sub { font-size: 20px; }
+  /* il video quadrato prende tutta la colonna, ma resta intero dentro lo schermo */
+  .dn-video video { max-width: none; width: min(100%, max(480px, calc(100vh - 150px))); }
+  .dn-h1 { font-size: clamp(40px, 4vw, 64px); }
+  .dn-sub { font-size: clamp(19px, 1.5vw, 23px); }
   .dn-points ul { grid-template-columns: repeat(3, 1fr); }
   .dn-footer .dn-wrap { display: flex; justify-content: space-between; align-items: center; gap: 24px; }
   .dn-footer p { margin: 0; }
