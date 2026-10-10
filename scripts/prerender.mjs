@@ -28,7 +28,32 @@ function sostituisci(html, regola, nuova) {
   return html.replace(regola, () => nuova);
 }
 
-function impagina({ title, description, canonico, jsonLd, corpo, noindex }) {
+// Le pagine che hanno un foglio di stile proprio, caricato di norma solo insieme al loro programma.
+// Senza collegarlo qui, la pagina già scritta comparirebbe per un attimo con lo stile di base e poi cambierebbe aspetto.
+const SORGENTE_DI = { "/": "src/pages/IndexV5.tsx" };
+const manifest = JSON.parse(readFileSync(join(dist, ".vite", "manifest.json"), "utf8"));
+
+function stileDi(percorso) {
+  const css = new Set();
+  const font = new Set();
+  const visti = new Set();
+  const visita = (chiave) => {
+    const voce = manifest[chiave];
+    if (!voce || visti.has(chiave)) return;
+    visti.add(chiave);
+    (voce.css ?? []).forEach((f) => css.add(f));
+    (voce.assets ?? []).filter((f) => f.endsWith(".woff2")).forEach((f) => font.add(f));
+    (voce.imports ?? []).forEach(visita);
+  };
+  if (SORGENTE_DI[percorso]) visita(SORGENTE_DI[percorso]);
+  return [
+    ...[...font].map((f) => `<link rel="preload" as="font" type="font/woff2" crossorigin href="/${f}" />`),
+    // il foglio comune è già nel modello: qui solo quelli in più, che così restano dopo di lui
+    ...[...css].filter((f) => !modello.includes(f)).map((f) => `<link rel="stylesheet" crossorigin href="/${f}" />`),
+  ];
+}
+
+function impagina({ title, description, canonico, jsonLd, corpo, noindex, percorso }) {
   let h = modello;
   h = sostituisci(h, /<title>.*?<\/title>/, `<title>${testoHtml(title)}</title>`);
   h = sostituisci(h, /<meta name="description" content="[^"]*" \/>/, `<meta name="description" content="${attr(description)}" />`);
@@ -43,7 +68,7 @@ function impagina({ title, description, canonico, jsonLd, corpo, noindex }) {
     h = sostituisci(h, /\s*<meta property="og:url" content="[^"]*" \/>/, "");
     h = sostituisci(h, /\s*<link rel="canonical" href="[^"]*" \/>/, "");
   }
-  const extra = [];
+  const extra = percorso ? stileDi(percorso) : [];
   if (noindex) extra.push('<meta name="robots" content="noindex" />');
   if (jsonLd) extra.push(`<script type="application/ld+json">${JSON.stringify(jsonLd).replace(/</g, "\\u003c")}</script>`);
   if (extra.length) h = sostituisci(h, /<\/head>/, `    ${extra.join("\n    ")}\n  </head>`);
@@ -63,6 +88,7 @@ for (const p of pagine) {
     canonico: canonicoDi(p.percorso),
     jsonLd: p.percorso === "/" ? datiStrutturatiHome : p.articolo ? datiStrutturatiArticolo(p) : null,
     corpo,
+    percorso: p.percorso,
   });
   scrivi(p.percorso === "/" ? join(dist, "index.html") : join(dist, p.percorso, "index.html"), html);
   console.log(`prerender ${p.percorso} (${html.length} byte)`);

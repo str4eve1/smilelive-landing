@@ -22,6 +22,8 @@ export default defineConfig(() => ({
     },
   },
   build: {
+    // Elenco dei file prodotti (dist/.vite/manifest.json): lo legge scripts/prerender.mjs.
+    manifest: true,
     rollupOptions: {
       output: {
         // Estrae le librerie pesanti e indipendenti in chunk dedicati: bundle

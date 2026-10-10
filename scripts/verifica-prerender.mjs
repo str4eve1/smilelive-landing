@@ -91,6 +91,7 @@ if (existsSync(join(dist, "index.html"))) {
   }
   const h1 = prendi(home, /<h1[^>]*>([\s\S]*?)<\/h1>/)?.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim() ?? "";
   if (h1.length < 10) ko("home: il testo dell'<h1> manca nell'HTML");
+  if (!/<link rel="stylesheet" crossorigin href="\/assets\/IndexV5-[^"]+\.css" \/>/.test(home)) ko("home: manca il foglio di stile della pagina (comparirebbe con lo stile di base e poi cambierebbe)");
 }
 
 if (existsSync(join(dist, "spa.html"))) {
