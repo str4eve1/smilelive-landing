@@ -42,6 +42,17 @@ const FILES = [
   `${A}/esempi/caso3-app-poster.webp`,
   `${A}/esempi/caso3-video.mp4`,
   `${A}/esempi/caso3-video-poster.webp`,
+  `${A}/esempi/caso4-mini.webp`,
+  `${A}/esempi/caso4-linea.mp4`,
+  `${A}/esempi/caso4-linea-poster.webp`,
+  `${A}/esempi/caso4-video.mp4`,
+  `${A}/esempi/caso4-video-poster.webp`,
+  `${A}/esempi/caso5-mini.webp`,
+  `${A}/esempi/caso5-prima.webp`,
+  `${A}/esempi/caso5-dopo.webp`,
+  `${A}/esempi/caso6-mini.webp`,
+  `${A}/esempi/caso6-video.mp4`,
+  `${A}/esempi/caso6-video-poster.webp`,
 ];
 
 const SRC_TYPE = "http://cv.iptc.org/newscodes/digitalsourcetype/trainedAlgorithmicMedia";
