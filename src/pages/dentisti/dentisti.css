@@ -64,7 +64,7 @@
 .dn-footer { background: var(--dn-navy); color: #cbd5e1; padding: 24px 0; font-size: 13px; line-height: 1.6; }
 .dn-footer p { margin: 0 0 10px; }
 .dn-footer nav { display: flex; flex-wrap: wrap; gap: 4px 20px; }
-.dn-footer a, .dn-footer button { color: #fff; background: none; border: 0; padding: 10px 0; min-height: 44px; font: inherit; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.dn-footer a, .dn-footer button { color: #fff; background: none; border: 0; padding: 10px 0; min-width: 44px; min-height: 44px; font: inherit; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 
 /* Barra fissa del bottone (solo telefono) */
 .dn-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); background: rgba(248, 250, 252, .96); border-top: 1px solid var(--dn-line); box-shadow: 0 -8px 24px rgba(11, 17, 32, .12); transform: translateY(110%); transition: transform .25s ease; }

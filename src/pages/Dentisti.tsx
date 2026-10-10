@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import logoFinale from "@/assets/WEBP/SmileLive FINALE senza sfondo COLORI CORRETTI (1).webp";
+import poster from "@/assets/dentisti-poster.jpg";
+import video from "@/assets/dentisti-video.mp4";
 import { trackCta } from "@/lib/analytics";
 import { openCookieBanner } from "@/lib/consent";
+import { appLink } from "@/lib/utm";
 import "./dentisti/dentisti.css";
 
 /**
@@ -11,7 +14,6 @@ import "./dentisti/dentisti.css";
  * niente numeri di risultato, niente garanzie.
  */
 
-const APP_URL = "https://app.smilelive.it/";
 const PROTOCOL_URL = "https://app.smilelive.it/protocollo-smilelive.pdf";
 const WA_PHONE = "393289598557"; // stesso numero di WhatsAppWidget
 const WA_TEXT = "Buongiorno, sono un dentista e vorrei informazioni su SmileLive.";
@@ -19,19 +21,8 @@ const PAGE_TITLE = "SmileLive per i dentisti — la simulazione del sorriso in p
 const FONT_HREF =
   "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap";
 
-// Porta con sé i parametri utm_* con cui il visitatore è arrivato; se mancano, usa quelli di riserva.
-function buildAppUrl(search: string): string {
-  const incoming = new URLSearchParams(search);
-  const out = new URLSearchParams();
-  incoming.forEach((value, key) => {
-    if (key.startsWith("utm_")) out.set(key, value);
-  });
-  if (Array.from(out.keys()).length === 0) {
-    out.set("utm_source", "sito");
-    out.set("utm_medium", "dentisti");
-  }
-  return `${APP_URL}?${out.toString()}`;
-}
+// Il link all'app porta con sé gli utm_* con cui il visitatore è arrivato; se mancano, questi.
+const UTM_DI_RISERVA = { source: "sito", medium: "dentisti" };
 
 const POINTS = [
   { title: "In prima visita", text: "Il paziente vede il possibile risultato sul proprio viso prima di parlare del piano di cura." },
@@ -45,7 +36,7 @@ const POINTS = [
 
 export default function Dentisti() {
   const [appUrl, setAppUrl] = useState(() =>
-    buildAppUrl(typeof window === "undefined" ? "" : window.location.search),
+    appLink(typeof window === "undefined" ? "" : window.location.search, UTM_DI_RISERVA),
   );
   const [barVisible, setBarVisible] = useState(false);
   const ctaRef = useRef<HTMLAnchorElement>(null);
@@ -58,7 +49,7 @@ export default function Dentisti() {
     link.rel = "stylesheet";
     link.href = FONT_HREF;
     document.head.appendChild(link);
-    setAppUrl(buildAppUrl(window.location.search));
+    setAppUrl(appLink(window.location.search, UTM_DI_RISERVA));
     return () => {
       document.title = prevTitle;
       link.remove();
@@ -90,7 +81,7 @@ export default function Dentisti() {
               <p className="dn-eyebrow">Per gli studi dentistici</p>
               <h1 className="dn-h1">Hai mai fatto una simulazione del sorriso in prima visita?</h1>
               <p className="dn-sub">
-                Scatti una foto e in circa un minuto mostri al paziente il possibile risultato sul suo viso, in foto e in video. Guarda come funziona in due minuti.
+                Scatti una foto e in circa un minuto mostri al paziente il possibile risultato sul suo viso, in foto e in video. Guarda come funziona in meno di due minuti.
               </p>
             </div>
             <div className="dn-video">
@@ -98,10 +89,10 @@ export default function Dentisti() {
                 controls
                 playsInline
                 preload="metadata"
-                poster="/dentisti/finale-1x1-poster.jpg"
-                aria-label="Come funziona SmileLive, video di due minuti"
+                poster={poster}
+                aria-label="Come funziona SmileLive, video di meno di due minuti"
               >
-                <source src="/dentisti/finale-1x1-web.mp4" type="video/mp4" />
+                <source src={video} type="video/mp4" />
               </video>
             </div>
             <div className="dn-cta">
@@ -151,7 +142,7 @@ export default function Dentisti() {
 
       <footer className="dn-footer">
         <div className="dn-wrap">
-          <p>© {new Date().getFullYear()} SmileLive — Giampiero Lombardi, Ditta Individuale — Casamassima (BA), Italia</p>
+          <p>© {new Date().getFullYear()} SmileLive — Giampiero Lombardi, Ditta Individuale — P.IVA 09125450727 — Casamassima (BA), Italia</p>
           <nav aria-label="Informazioni legali">
             <a href="/privacy">Privacy</a>
             <a href="/cookie-policy">Cookie</a>
