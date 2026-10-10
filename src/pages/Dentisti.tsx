@@ -6,6 +6,7 @@ import { trackCta } from "@/lib/analytics";
 import { openCookieBanner } from "@/lib/consent";
 import { appLink } from "@/lib/utm";
 import "./dentisti/dentisti.css";
+import ModuloRichiamata from "./dentisti/ModuloRichiamata";
 
 /**
  * Landing /dentisti — atterraggio dell'inserzione Facebook per gli studi.
@@ -23,6 +24,8 @@ const FONT_HREF =
 
 // Il link all'app porta con sé gli utm_* con cui il visitatore è arrivato; se mancano, questi.
 const UTM_DI_RISERVA = { source: "sito", medium: "dentisti" };
+// Il modulo si accende alla compilazione: la pagina può uscire prima del modulo.
+const MODULO_ATTIVO = import.meta.env.VITE_MODULO_RICHIAMATA === "1";
 
 const POINTS = [
   { title: "In prima visita", text: "Il paziente vede il possibile risultato sul proprio viso prima di parlare del piano di cura." },
@@ -121,6 +124,8 @@ export default function Dentisti() {
             ))}
           </ul>
         </section>
+
+        {MODULO_ATTIVO && <ModuloRichiamata appUrl={appUrl} onTry={onTry} waHref={waHref} />}
 
         <section className="dn-wa dn-wrap" aria-label="Contatto WhatsApp">
           <h2>Preferisci parlarne prima?</h2>
