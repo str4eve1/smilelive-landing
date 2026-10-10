@@ -75,14 +75,26 @@ export default function Dentisti() {
     <div className="dn-page">
       <header className="dn-hero">
         <div className="dn-wrap">
-          {/* il file ha molto margine trasparente: lo ritaglio sul solo logo */}
-          <div className="dn-logo" role="img" aria-label="SmileLive">
-            <img src={logoFinale} alt="" width="1177" height="991" />
+          <div className="dn-top">
+            {/* il file ha molto margine trasparente: lo ritaglio sul solo logo */}
+            <div className="dn-logo" role="img" aria-label="SmileLive">
+              <img src={logoFinale} alt="" width="1177" height="991" />
+            </div>
+            <a
+              href={waHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackCta("whatsapp", "dentisti_testata")}
+              className="dn-wa-top"
+            >
+              Scrivici su WhatsApp
+            </a>
           </div>
           <div className="dn-grid">
             <div className="dn-text">
-              <p className="dn-eyebrow">Per gli studi dentistici</p>
-              <h1 className="dn-h1">Hai mai fatto una simulazione del sorriso in prima visita?</h1>
+              <h1 className="dn-h1">
+                <span>Sei un dentista?</span> Hai mai fatto una simulazione del sorriso in prima visita?
+              </h1>
               <p className="dn-sub">
                 Scatti una foto e in circa un minuto mostri al paziente il possibile risultato sul suo viso, in foto e in video. Guarda come funziona in meno di due minuti.
               </p>

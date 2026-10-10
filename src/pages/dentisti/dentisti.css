@@ -21,14 +21,18 @@
 
 /* Hero blu, come l'inserzione */
 .dn-hero { background: var(--dn-blue); color: #fff; padding: 20px 0 36px; }
-.dn-logo { position: relative; overflow: hidden; height: 40px; aspect-ratio: 1020 / 307; margin-bottom: 28px; }
+.dn-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 28px; }
+.dn-logo { position: relative; overflow: hidden; flex: none; height: 40px; aspect-ratio: 1020 / 307; }
+.dn-wa-top { display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; border: 2px solid rgba(255, 255, 255, .85); border-radius: 999px; color: #fff; font-size: 13px; font-weight: 700; line-height: 1.2; text-decoration: none; white-space: nowrap; }
+.dn-wa-top:hover { background: #fff; color: var(--dn-blue-deep); }
+.dn-wa-top:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
 .dn-logo img { position: absolute; width: 115.4%; max-width: none; height: auto; left: -8.04%; top: -120.8%; filter: brightness(0) invert(1); }
 .dn-grid { display: grid; gap: 24px; grid-template-areas: "text" "video" "cta"; }
 .dn-text { grid-area: text; }
 .dn-video { grid-area: video; }
 .dn-cta { grid-area: cta; }
-.dn-eyebrow { margin: 0 0 12px; font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--dn-on-blue-soft); }
 .dn-h1 { margin: 0 0 16px; font-size: 32px; line-height: 1.1; font-weight: 800; letter-spacing: -0.03em; }
+.dn-h1 span { display: block; }
 .dn-sub { margin: 0; font-size: 17px; line-height: 1.5; font-weight: 500; color: var(--dn-on-blue-soft); }
 .dn-video video { display: block; width: 100%; max-width: 640px; aspect-ratio: 1 / 1; margin: 0 auto; border-radius: 16px; background: #000; box-shadow: 0 20px 50px rgba(11, 17, 32, .35); }
 .dn-small { margin: 10px 0 0; font-size: 14px; text-align: center; color: var(--dn-on-blue-soft); }
@@ -76,7 +80,9 @@
   .dn-page { padding-bottom: 0; }
   .dn-bar { display: none; }
   .dn-hero { padding: 28px 0 64px; }
-  .dn-logo { height: 52px; margin-bottom: 48px; }
+  .dn-top { margin-bottom: 48px; }
+  .dn-logo { height: 52px; }
+  .dn-wa-top { padding: 0 18px; font-size: 15px; }
   .dn-grid { grid-template-columns: 1fr minmax(0, 520px); grid-template-areas: "text video" "cta video"; column-gap: 64px; row-gap: 28px; grid-template-rows: auto 1fr; }
   .dn-text { align-self: end; }
   .dn-cta { align-self: start; max-width: 460px; }
