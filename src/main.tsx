@@ -1,6 +1,6 @@
-import { createRoot } from "react-dom/client";
+import { createRoot, hydrateRoot } from "react-dom/client";
 import { SpeedInsights } from "@vercel/speed-insights/react";
-import App from "./App.tsx";
+import App, { precaricaRotta } from "./App.tsx";
 import "./lib/analytics"; // Auto-applies consent (loads tracker only if user accepted)
 import "./index.css";
 
@@ -18,9 +18,18 @@ if (!rootElement) {
   throw new Error("Root element not found");
 }
 
-createRoot(rootElement).render(
+const albero = (
   <>
     <App />
     <SpeedInsights />
   </>
 );
+
+if (rootElement.hasChildNodes()) {
+  // Pagina già scritta dalla build: si scarica prima il pezzo della rotta e poi si idrata.
+  precaricaRotta(window.location.pathname)
+    .catch(() => undefined)
+    .then(() => hydrateRoot(rootElement, albero));
+} else {
+  createRoot(rootElement).render(albero);
+}

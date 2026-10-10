@@ -12,6 +12,10 @@ export default defineConfig(() => ({
     },
   },
   plugins: [react()],
+  // Senza questo, nella build per il server le icone Phosphor si caricano a migliaia di file (30 s invece di 1 s).
+  ssr: {
+    noExternal: ["@phosphor-icons/react"],
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

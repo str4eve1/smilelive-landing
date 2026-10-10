@@ -1,8 +1,9 @@
 {
+  "trailingSlash": false,
   "rewrites": [
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "source": "/(dentisti|v1|v2|v3|v4|v5)",
+      "destination": "/spa.html"
     }
   ],
   "redirects": [
@@ -15,6 +16,24 @@
   "headers": [
     {
       "source": "/dentisti",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ]
+    },
+    {
+      "source": "/(v1|v2|v3|v4|v5)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ]
+    },
+    {
+      "source": "/spa.html",
       "headers": [
         {
           "key": "X-Robots-Tag",

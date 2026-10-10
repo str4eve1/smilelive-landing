@@ -4,7 +4,7 @@ const KEYS = ["source", "medium", "campaign", "content", "term"] as const;
 export type Utm = Partial<Record<(typeof KEYS)[number], string>>;
 
 // Gli utm_* dell'indirizzo, senza prefisso: { source: "facebook", medium: "paid", … }
-export function readUtm(search: string = window.location.search): Utm {
+export function readUtm(search: string = typeof window === "undefined" ? "" : window.location.search): Utm {
   const params = new URLSearchParams(search);
   const utm: Utm = {};
   for (const key of KEYS) {
@@ -16,7 +16,7 @@ export function readUtm(search: string = window.location.search): Utm {
 
 // Link all'app che porta con sé gli UTM con cui si è arrivati sulla pagina.
 // Se l'indirizzo non ne ha nessuno si usano quelli di riserva, quando la pagina li passa.
-export function appLink(search: string = window.location.search, fallback: Utm = {}): string {
+export function appLink(search: string = typeof window === "undefined" ? "" : window.location.search, fallback: Utm = {}): string {
   const utm = readUtm(search);
   const url = new URL(APP_URL);
   for (const [key, value] of Object.entries(Object.keys(utm).length > 0 ? utm : fallback)) {
