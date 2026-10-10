@@ -92,9 +92,7 @@ export default function Dentisti() {
           </div>
           <div className="dn-grid">
             <div className="dn-text">
-              <h1 className="dn-h1">
-                <span>Sei un dentista?</span> Hai mai fatto una simulazione del sorriso in prima visita?
-              </h1>
+              <h1 className="dn-h1">Hai mai fatto una simulazione del sorriso in prima visita?</h1>
               <p className="dn-sub">
                 Scatti una foto e in circa un minuto mostri al paziente il possibile risultato sul suo viso, in foto e in video. Guarda come funziona in meno di due minuti.
               </p>
