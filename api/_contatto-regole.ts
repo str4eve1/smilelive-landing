@@ -1,11 +1,18 @@
-// Regole di api/contatto: che cosa può arrivare dal modulo «Preferisci essere richiamato?» e che cosa si
-// inoltra al CRM. Nessuna dipendenza esterna, così tutto si prova con vitest. Il trattino basso nel nome:
-// Vercel non trasforma questo file in una funzione.
+// Regole e gestore di api/contatto: riceve il modulo «Preferisci essere richiamato?», lo controlla e lo inoltra
+// al CRM con la chiave che vive solo nelle variabili d'ambiente. La rete arriva come parametro (chiama), così
+// tutto si prova con vitest senza toccare servizi veri. Il trattino basso nel nome: Vercel non trasforma
+// questo file in una funzione.
 import { TESTO_CONSENSO, VERSIONE_TESTO } from "./_consenso.js";
 
 export type Esito = { ok: true; dati: Record<string, unknown> } | { ok: false; errore: string };
+// Chiamata di rete: in produzione fetch (api/contatto.ts), nelle prove una finta.
+export type Chiama = (url: string, init: RequestInit) => Promise<Response>;
 type Env = Record<string, string | undefined>;
 
+export const MAX_BYTE = 8 * 1024;
+export const MAX_INVII = 5; // per indirizzo IP…
+export const FINESTRA_MS = 10 * 60 * 1000; // …ogni 10 minuti
+const ATTESA_CRM_MS = 8000; // in tutto, nuovo tentativo compreso
 // Stessi limiti di chi riceve il contatto.
 const MAX_TESTO: Record<string, number> = { titolo: 10, nome: 100, cognome: 100, studio: 200, citta: 100, email: 200 };
 const ETICHETTE: Record<string, string> = {
@@ -95,4 +102,92 @@ export function valida(corpo: unknown, origine: string, adesso: number): Esito {
       },
     },
   };
+}
+
+// Istanti degli ultimi invii per indirizzo IP. In memoria: vale per istanza e si azzera a ogni ripartenza.
+const invii = new Map<string, number[]>();
+
+function troppiInvii(ip: string, adesso: number): boolean {
+  if (invii.size > 1000) invii.clear(); // la memoria non cresce senza fine
+  const recenti = (invii.get(ip) ?? []).filter((t) => adesso - t < FINESTRA_MS);
+  const troppi = recenti.length >= MAX_INVII;
+  if (!troppi) recenti.push(adesso);
+  invii.set(ip, recenti);
+  return troppi;
+}
+
+function json(status: number, corpo: unknown, intestazioni: Record<string, string> = {}): Response {
+  return Response.json(corpo, { status, headers: { "Cache-Control": "no-store", ...intestazioni } });
+}
+
+function rifiuto(status: number, errore: string, intestazioni: Record<string, string> = {}): Response {
+  return json(status, { ok: false, errore }, intestazioni);
+}
+
+// Il gestore completo: richiesta -> risposta. Al browser solo { ok: true } oppure { ok: false, errore }.
+export async function gestisci(
+  request: Request,
+  env: Env,
+  chiama: Chiama,
+  adesso: () => number = Date.now,
+): Promise<Response> {
+  if (request.method !== "POST") return rifiuto(405, "usare POST", { Allow: "POST" });
+
+  const troppo = `richiesta troppo grande (massimo ${MAX_BYTE} byte)`;
+  if (Number(request.headers.get("content-length") ?? 0) > MAX_BYTE) return rifiuto(413, troppo);
+  const testo = await request.text();
+  if (new TextEncoder().encode(testo).length > MAX_BYTE) return rifiuto(413, troppo);
+  let corpo: unknown;
+  try {
+    corpo = JSON.parse(testo);
+  } catch {
+    return rifiuto(400, "richiesta non valida");
+  }
+
+  const origine = request.headers.get("origin");
+  if (!origineAmmessa(origine, env)) return rifiuto(403, "origine non ammessa");
+
+  // Campo trappola: una persona non lo vede e non lo compila. Si risponde «ok» e non si inoltra niente.
+  if (typeof corpo === "object" && corpo !== null && pulito((corpo as Record<string, unknown>).sito_web) !== "") {
+    return json(200, { ok: true });
+  }
+
+  const ip =
+    request.headers.get("x-real-ip") ?? request.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "sconosciuto";
+  if (troppiInvii(ip, adesso())) return rifiuto(429, "Troppi invii: riprova tra qualche minuto.");
+
+  const v = valida(corpo, origine, adesso());
+  if (!v.ok) return rifiuto(400, v.errore);
+
+  const chiave = env.CRM_SALVA_LEAD_CHIAVE?.trim();
+  const indirizzo = env.CRM_SALVA_LEAD_URL?.trim();
+  if (!chiave || !indirizzo || !URL.canParse(indirizzo)) {
+    console.error("contatto: configurazione mancante");
+    return rifiuto(503, "servizio non disponibile");
+  }
+  const url = new URL(indirizzo);
+  if (env.CRM_ANTEPRIMA === "1") url.searchParams.set("anteprima", "1");
+
+  try {
+    const signal = AbortSignal.timeout(ATTESA_CRM_MS);
+    const invia = () =>
+      chiama(url.toString(), {
+        method: "POST",
+        headers: { Authorization: `Bearer ${chiave}`, "Content-Type": "application/json" },
+        body: JSON.stringify(v.dati),
+        signal,
+      });
+    let risposta = await invia();
+    if (risposta.status === 409) risposta = await invia(); // salvataggio contemporaneo: un solo nuovo tentativo
+    const esito: unknown = risposta.status === 200 ? await risposta.json() : null;
+    // ricevuto solo con 200 e «azione» nella risposta: altrimenti niente «grazie»
+    if (typeof esito !== "object" || esito === null || (esito as Record<string, unknown>).azione == null) {
+      throw new Error(`risposta ${risposta.status}`);
+    }
+    return json(200, { ok: true });
+  } catch (e) {
+    // il dettaglio solo nei log; al browser mai
+    console.error("contatto: invio non riuscito:", e instanceof Error ? e.message : String(e));
+    return rifiuto(502, "invio non riuscito");
+  }
 }
