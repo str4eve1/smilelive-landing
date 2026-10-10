@@ -23,7 +23,7 @@ export default function SimulazioneFaccetteImplantologiaProtesi() {
         <Tabella
           colonne={["Tipo di caso", "Cosa mostra la simulazione", "A cosa serve col paziente", "Limiti da dichiarare"]}
           righe={[
-            ["Sbiancamento", "Il colore dei denti nella tonalità scelta (Scala Vita)", "Concordare un obiettivo di colore prima di cominciare", "Il colore su schermo dipende da luce e monitor; il risultato reale dipende dal dente di partenza"],
+            ["Sbiancamento", "Il colore dei denti nella tonalità scelta (scala Vita)", "Concordare un obiettivo di colore prima di cominciare", "Il colore su schermo dipende da luce e monitor; il risultato reale dipende dal dente di partenza"],
             ["Ricostruzione conservativa", "Scheggiature, usura, diastemi o un dente mancante chiusi", "Far vedere quanto poco serve per correggere", "Mostra l'aspetto, non la tecnica né lo spazio disponibile"],
             ["Faccette", "Forma, proporzioni e colore dei denti dell'arcata", "Allineare le aspettative sull'armonia del sorriso", "È un'immagine 2D: non mostra spessori né preparazione; la conferma arriva dalla prova in bocca"],
             ["Forma del dente", "Le quattro forme (squadrata, triangolare, arrotondata, dominante)", "Scegliere insieme il carattere del sorriso", "La forma deve restare compatibile con anatomia e occlusione del paziente"],

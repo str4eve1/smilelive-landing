@@ -24,7 +24,7 @@ export default function ProgettazioneDigitaleDelSorriso() {
           righe={[
             ["Simulazione da foto", "Una o più fotografie", "Mostrare e discutere una proposta", "Misurare volumi, spessori, spazio disponibile"],
             ["Progettazione su foto con riferimenti", "Foto calibrate, linee di riferimento", "Impostare proporzioni e allineamenti sull'immagine", "Sostituire la verifica su scansione"],
-            ["Progettazione su scansione (software CAD)", "Scansione intraorale, foto", "Passare al progetto 3D e alla ceratura digitale", "È lavoro di studio o laboratorio, non una anteprima rapida"],
+            ["Progettazione su scansione (software CAD)", "Scansione intraorale, foto", "Passare al progetto 3D e alla ceratura digitale", "È lavoro di studio o laboratorio, non un'anteprima rapida"],
             ["Mock-up in bocca", "Ceratura e mascherina o fresatura/stampa", "Provare estetica, fonetica, funzione", "È un passo clinico successivo"],
           ]}
         />

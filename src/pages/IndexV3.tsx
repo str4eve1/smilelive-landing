@@ -1478,6 +1478,7 @@ const HowItWorks = () => {
           <p className="text-xl text-text-muted max-w-2xl mx-auto">
             {isV5 ? "Ogni ruolo ha un passaggio definito. Lo staff prepara la preview, il clinico la contestualizza e il gestionale accompagna ciò che viene dopo." : <>Uno studio a Bologna lo usa cosi': il poster in sala d'attesa dice una cosa sola. La segretaria apre SmileLive. 30 secondi. La paziente vede. Poi: <strong className="text-primary">"Quando possiamo iniziare?"</strong></>}
           </p>
+          {isV5 && <p className="mt-5"><a href="/protocollo" className="text-primary font-medium underline underline-offset-4 decoration-primary/40 hover:decoration-primary transition-colors">Leggi il protocollo clinico in sette fasi</a></p>}
         </motion.div>
 
         <motion.div
@@ -2431,7 +2432,7 @@ const Footer = () => {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.8fr_1fr_1fr_1.3fr] gap-12 lg:gap-8"
+        className={`grid grid-cols-1 sm:grid-cols-2 gap-12 lg:gap-8 ${isV5 ? "lg:grid-cols-[1.5fr_0.8fr_1.6fr_1fr_1.3fr]" : "lg:grid-cols-[1.8fr_1fr_1fr_1.3fr]"}`}
       >
         {/* Brand + social */}
         <motion.div variants={fadeUp} className="flex flex-col gap-5">
@@ -2463,6 +2464,17 @@ const Footer = () => {
           <li><a href="#faq" className={footerLink}>FAQ</a></li>
           <li><a href="https://app.smilelive.it/" target="_blank" rel="noopener noreferrer" className={footerLink}>Accedi</a></li>
         </FooterCol>
+
+        {/* Guide (solo versione in linea) */}
+        {isV5 && (
+          <FooterCol title="Guide">
+            <li><a href="/protocollo" className={footerLink}>Il protocollo SmileLive in sette fasi</a></li>
+            <li><a href="/guide/progettazione-digitale-del-sorriso" className={footerLink}>Progettazione digitale del sorriso</a></li>
+            <li><a href="/guide/mock-up-digitale-injection-technique" className={footerLink}>Mock-up digitale e injection technique</a></li>
+            <li><a href="/guide/far-accettare-piu-preventivi" className={footerLink}>Far accettare i preventivi in prima visita</a></li>
+            <li><a href="/guide/simulazione-faccette-implantologia-protesi" className={footerLink}>La simulazione caso per caso</a></li>
+          </FooterCol>
+        )}
 
         {/* Legale */}
         <FooterCol title="Legale">
