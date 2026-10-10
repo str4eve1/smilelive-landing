@@ -4,11 +4,19 @@ import {
   CaretRight, Sparkle, Pulse, ShieldCheck,
   Star, TrendUp, Users, Target, CheckCircle, Medal, Lightning, Camera, Check,
   ArrowsHorizontal, ClipboardText, Microphone, ChatCircle, Receipt, FileArrowDown, ChartLineUp,
-  List, X, VideoCamera, EyeSlash, Gift, Headset,
+  List, X, VideoCamera, EyeSlash, Gift, Headset, Play,
   InstagramLogo, FacebookLogo, WhatsappLogo, EnvelopeSimple
 } from "@phosphor-icons/react";
 import beforeImg from '../assets/WEBP/PRIMA (2).webp';
 import afterImg from '../assets/WEBP/DOPO (2).webp';
+import sorrisoVideo from '../assets/sorriso-video/sorriso-video.mp4';
+import sorrisoVideoPoster from '../assets/sorriso-video/sorriso-video-poster.webp';
+import esempioFotoPrima from '../assets/esempi/esempio-foto-prima.webp';
+import esempioFotoDopo from '../assets/esempi/esempio-foto-dopo.webp';
+import esempioSorriso from '../assets/esempi/esempio-sorriso.mp4';
+import esempioSorrisoPoster from '../assets/esempi/esempio-sorriso-poster.webp';
+import esempioLinea from '../assets/esempi/esempio-linea.mp4';
+import esempioLineaPoster from '../assets/esempi/esempio-linea-poster.webp';
 import prevSbiancamento from '../assets/WEBP/Sbiancamento prima e dopo2.webp';
 import prevFaccette from '../assets/WEBP/FACCETTE (1).jpeg';
 import prevOrtodonzia from '../assets/WEBP/TERMOSTAMPATA-CrUanAGb.jpg';
@@ -159,7 +167,7 @@ const EmotionalVideo = () => {
   };
 
   return (
-    <section className="pt-12 pb-10 relative overflow-hidden bg-white">
+    <section data-sez="anteprima" className="pt-12 pb-10 relative overflow-hidden bg-white">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         <motion.div
           initial={{ opacity: 0, x: -40 }}
@@ -213,7 +221,7 @@ const EmotionalVideo = () => {
                 aria-valuemin={0}
                 aria-valuemax={100}
                 aria-valuenow={50}
-                style={{ touchAction: "none" }}
+                style={{ touchAction: "pan-y" }}
               >
                 <img src={afterImg} width="1199" height="1600" alt="Sorriso Dopo" className="absolute inset-0 w-full h-full object-cover object-[center_62%]" draggable="false" />
                 <img
@@ -302,6 +310,54 @@ const WaveField = ({ className = "", style, focusX = -0.03, focusY = -0.05, spre
   );
 };
 
+// Un video breve e muto dentro una card: parte e si ferma al tocco.
+// Il tasto è solo un anello trasparente, così non copre il volto, e sparisce mentre il video va.
+type VideoAlToccoProps = { src: string; poster: string; width: number; height: number; etichetta: string; className: string };
+const VideoAlTocco = ({ src, poster, width, height, etichetta, className }: VideoAlToccoProps) => {
+  const ref = useRef<HTMLVideoElement>(null);
+  const [playing, setPlaying] = useState(false);
+  const toggle = () => {
+    const v = ref.current;
+    if (!v) return;
+    if (v.paused) v.play().catch(() => { /* il browser ha rifiutato: resta la copertina */ });
+    else v.pause();
+  };
+  return (
+    <div className={`relative overflow-hidden bg-slate-900 group ${className}`}>
+      <video
+        ref={ref}
+        src={src}
+        poster={poster}
+        width={width}
+        height={height}
+        muted
+        loop
+        playsInline
+        preload="none"
+        onPlay={() => setPlaying(true)}
+        onPause={() => setPlaying(false)}
+        className="w-full h-full object-cover"
+      />
+      <button
+        type="button"
+        onClick={toggle}
+        aria-label={playing ? `Ferma ${etichetta}` : `Guarda ${etichetta}`}
+        className="absolute inset-0 flex items-center justify-center cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-white"
+      >
+        <span className={`w-12 h-12 rounded-full border-2 border-white flex items-center justify-center text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.55)] transition-[opacity,transform] duration-200 ease-out group-active:scale-95 [@media(hover:hover)]:group-hover:scale-110 ${playing ? "opacity-0" : "opacity-100"}`}>
+          <Play size={20} weight="fill" className="ml-0.5" />
+        </span>
+      </button>
+      <AiBadge className="top-2 right-2" />
+    </div>
+  );
+};
+
+// La sequenza dell'illustrazione «dalla foto al video»: prima, freccia, dopo, freccia, video.
+const EASE_OUT = [0.23, 1, 0.32, 1] as const;
+const passo = (ritardo: number) => ({ hidden: { opacity: 0, scale: 0.92 }, visible: { opacity: 1, scale: 1, transition: { duration: 0.5, delay: ritardo, ease: EASE_OUT } } });
+const freccia = (ritardo: number) => ({ hidden: { pathLength: 0, opacity: 0 }, visible: { pathLength: 1, opacity: 1, transition: { duration: 0.45, delay: ritardo, ease: EASE_OUT } } });
+
 // ─── AISimShowcase ────────────────────────────────────────────────────────────
 const AISimShowcase = () => {
   const isV5 = useIsV5();
@@ -315,7 +371,7 @@ const AISimShowcase = () => {
     "Accetta e paga subito, senza «ci penso»",
   ];
   return (
-    <section className="pt-16 pb-16 md:pb-24 bg-white relative overflow-hidden isolate">
+    <section data-sez="video-sorriso" className="pt-16 pb-16 md:pb-24 bg-white relative overflow-hidden isolate">
       <GridBg />
       <div className="relative max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -327,7 +383,7 @@ const AISimShowcase = () => {
             </h2>
 
             {/* ── Illustrazione Prima → Dopo → Video (cerchi) ── */}
-            <div className="relative w-full aspect-[4/3] [container-type:inline-size]">
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.45 }} className="relative w-full aspect-[4/3] [container-type:inline-size]">
               {/* frecce */}
               <svg className="absolute inset-0 w-full h-full pointer-events-none z-0" viewBox="0 0 400 300" fill="none" preserveAspectRatio="none">
                 <defs>
@@ -340,8 +396,8 @@ const AISimShowcase = () => {
                   </marker>
                 </defs>
                 <g filter="url(#crayon)">
-                  <path d="M134,93 C168,85 206,82 232,80" stroke="#38bdf8" strokeWidth="3.5" strokeLinecap="round" markerEnd="url(#ah)" />
-                  <path d="M320,156 C336,178 318,196 300,198" stroke="#38bdf8" strokeWidth="3.5" strokeLinecap="round" markerEnd="url(#ah)" />
+                  <motion.path variants={freccia(0.3)} d="M134,93 C168,85 206,82 232,80" stroke="#38bdf8" strokeWidth="3.5" strokeLinecap="round" markerEnd="url(#ah)" />
+                  <motion.path variants={freccia(0.9)} d="M320,156 C336,178 318,196 300,198" stroke="#38bdf8" strokeWidth="3.5" strokeLinecap="round" markerEnd="url(#ah)" />
                 </g>
               </svg>
 
@@ -353,38 +409,30 @@ const AISimShowcase = () => {
               </div>
 
               {/* Prima */}
-              <div className="absolute left-[1%] top-[24%] w-[31%] z-10">
+              <motion.div variants={passo(0)} className="absolute left-[1%] top-[24%] w-[31%] z-10">
                 <div className="relative rounded-full overflow-hidden shadow-lg ring-4 ring-white aspect-square">
                   <img src={beforeImg} width="1199" height="1600" alt="Foto del sorriso prima della simulazione" className="w-full h-full object-cover object-[center_28%]" loading="lazy" />
                   {/* in alto: l'etichetta "Prima" sta sotto al cerchio (-bottom-2) */}
                   <AiBadge className="top-2 left-1/2 -translate-x-1/2" />
                 </div>
                 <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-white text-[11px] font-bold text-text-muted shadow">Prima</span>
-              </div>
+              </motion.div>
 
               {/* Dopo */}
-              <div className="absolute right-[2%] top-[4%] w-[34%] z-10">
+              <motion.div variants={passo(0.6)} className="absolute right-[2%] top-[4%] w-[34%] z-10">
                 <div className="relative rounded-full overflow-hidden shadow-xl ring-4 ring-white aspect-square">
                   <img src={afterImg} width="1199" height="1600" alt="Sorriso simulato con IA, dopo" className="w-full h-full object-cover object-[center_28%]" loading="lazy" />
                   <AiBadge className="bottom-2 left-1/2 -translate-x-1/2" />
                 </div>
                 <span className="absolute -top-2 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-primary text-[11px] font-bold text-white shadow">Dopo</span>
-              </div>
+              </motion.div>
 
               {/* AI Video (in primo piano) — rettangolare, più grande */}
-              <div className="absolute left-[33%] bottom-[2%] w-[38%] z-30">
-                <div className="relative rounded-3xl overflow-hidden shadow-2xl ring-4 ring-white aspect-[4/5] bg-slate-900 group cursor-pointer">
-                  <img src={afterImg} width="1199" height="1600" alt="Anteprima del video del sorriso generato con IA" className="w-full h-full object-cover object-[center_30%] opacity-95" loading="lazy" />
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/15">
-                    <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                      <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 ml-0.5 text-primary"><path d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" /></svg>
-                    </div>
-                  </div>
-                  <AiBadge className="top-2 right-2" />
-                </div>
+              <motion.div variants={passo(1.2)} className="absolute left-[33%] bottom-[2%] w-[38%] z-30">
+                <VideoAlTocco src={sorrisoVideo} poster={sorrisoVideoPoster} width={480} height={658} etichetta="il video del sorriso generato con IA" className="rounded-3xl shadow-2xl ring-4 ring-white aspect-[4/5]" />
                 <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 z-10 px-3 py-1 rounded-full bg-gold text-[11px] font-bold text-white shadow whitespace-nowrap">Video Realistico AI</span>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
 
             {/* ── Testo ── */}
             <div>
@@ -548,7 +596,7 @@ const Hero = () => {
         </motion.div>
   );
   return (
-  <section data-v5-section="hero" className="relative overflow-hidden bg-gradient-to-b from-white via-white to-sky-50/50 pt-[calc(var(--header-h,7rem)+0.5rem)] md:pt-[calc(var(--header-h,7rem)+2.5rem)] pb-20 md:pb-28">
+  <section data-sez="apertura" data-v5-section="hero" className="relative overflow-hidden bg-gradient-to-b from-white via-white to-sky-50/50 pt-[calc(var(--header-h,7rem)+0.5rem)] md:pt-[calc(var(--header-h,7rem)+2.5rem)] pb-20 md:pb-28">
     {/* Background — glow azzurro morbido e diffuso su base bianca (niente griglia) */}
     <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(72% 62% at 86% 44%, rgba(56,189,248,0.16), transparent 72%), radial-gradient(64% 58% at 18% 92%, rgba(99,179,237,0.08), transparent 76%)' }}></div>
     {/* Cerchio morbido dietro al telefono (come nello screen) */}
@@ -588,8 +636,8 @@ const Hero = () => {
         <motion.h1 variants={fadeUp} className="text-2xl sm:text-5xl md:text-6xl font-headline font-bold tracking-tight leading-[1.15] sm:leading-[1.1] text-text-main">
           {isV5 ? (
             <>
-              <span className="block">Simulazione del sorriso con IA.</span>
-              <span className="block text-primary">In prima visita, in foto e in video.</span>
+              <span className="block">Più preventivi accettati,</span>
+              <span className="block text-primary">a partire da una foto.</span>
             </>
           ) : (
             <>
@@ -610,7 +658,7 @@ const Hero = () => {
       >
         <motion.p variants={fadeUp} className="text-lg text-text-muted leading-relaxed max-w-lg">
           {isV5 ? (
-            <>In circa un minuto crei una preview personale da discutere durante la consulenza. Poi preventivo, firma, reminder e gestione dello studio nello stesso software.</>
+            <>Simulazione del sorriso con IA: scatti una foto e in circa un minuto il paziente vede il possibile risultato sul suo viso, in foto e in video. Poi preventivo, firma, reminder e gestione dello studio nello stesso software.</>
           ) : (
             <>Ogni giorno escono dallo studio pazienti che volevano cambiare il loro sorriso. Non li hai persi perche' il prezzo era troppo alto. Li hai persi perche' <strong className="text-text-main font-semibold">non riuscivano a immaginarlo.</strong><br /><br />SmileLive mostra loro il risultato. Prima che escano dalla porta. Inizi gratis: 5 anteprime in omaggio.</>
           )}
@@ -636,17 +684,6 @@ const Hero = () => {
         {!isV5 && proofBlock}
       </motion.div>
 
-      {/* Loghi degli studi (versione in linea): sotto l'immagine prima/dopo da telefono, sotto il bottone da computer */}
-      {isV5 && (
-        <motion.div
-          variants={staggerContainer}
-          initial={false}
-          animate="visible"
-          className="hero-proof-wrap order-5 lg:order-none lg:col-start-1 lg:row-start-4 relative z-10"
-        >
-          {proofBlock}
-        </motion.div>
-      )}
 
       {/* Phone mockup — mobile: order-2 (tra titolo e descrizione) */}
       <motion.div
@@ -903,7 +940,7 @@ const WhyChoose = () => {
     { icon: TrendUp, title: "Più casi accettati", desc: "Più chiarezza per il paziente, più decisioni prese, più trattamenti accettati." },
   ];
   return (
-    <section className="relative pt-4 md:pt-8 pb-16 md:pb-24 bg-white overflow-hidden">
+    <section data-sez="perche" className="relative pt-4 md:pt-8 pb-16 md:pb-24 bg-white overflow-hidden">
       <div className="whychoose-dot absolute left-0 top-1/2 -translate-y-1/2 w-28 h-28 pointer-events-none opacity-50 hidden md:block" style={{ backgroundImage: 'radial-gradient(circle, rgba(2,132,199,0.20) 1.5px, transparent 1.5px)', backgroundSize: '15px 15px' }} aria-hidden="true"></div>
       <div className="whychoose-dot absolute right-0 top-1/2 -translate-y-1/2 w-28 h-28 pointer-events-none opacity-50 hidden md:block" style={{ backgroundImage: 'radial-gradient(circle, rgba(2,132,199,0.20) 1.5px, transparent 1.5px)', backgroundSize: '15px 15px' }} aria-hidden="true"></div>
       <div className="max-w-7xl mx-auto px-6 relative">
@@ -933,7 +970,7 @@ const WhyChoose = () => {
 const ReviewsSection = () => {
   const isV5 = useIsV5();
   return (
-  <section className="relative py-16 md:py-24 bg-gradient-to-b from-[#eaf3fb] via-[#e9f1fb] to-[#eef2fc] rounded-t-[2.5rem] overflow-hidden">
+  <section data-sez="recensioni" className="relative py-16 md:py-24 bg-gradient-to-b from-[#eaf3fb] via-[#e9f1fb] to-[#eef2fc] rounded-t-[2.5rem] overflow-hidden">
     <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="max-w-7xl mx-auto px-6 text-center mb-10">
       <span className="text-xs font-bold tracking-[0.18em] uppercase text-primary">Studi che già usano SmileLive</span>
       <h2 className="mt-3 text-3xl md:text-5xl font-headline font-bold tracking-tight text-text-main">
@@ -1219,7 +1256,7 @@ const ProblemSection = () => {
   }, []);
 
   return (
-    <section className="py-16 md:py-28 bg-white">
+    <section data-sez="problema" className="py-16 md:py-28 bg-white">
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid lg:grid-cols-[1.15fr_0.85fr] gap-10 lg:gap-14 items-center">
           {/* copy — solo il dolore */}
@@ -1351,12 +1388,12 @@ const OtSlider = ({ prima, dopo, alt, focus = "center", aspect = "aspect-[16/9]"
   return (
     <div
       ref={ref}
-      className={`group relative ${aspect} overflow-hidden cursor-ew-resize select-none bg-slate-100 touch-none`}
+      className={`group relative ${aspect} overflow-hidden cursor-ew-resize select-none bg-slate-100 touch-pan-y`}
       onPointerDown={onDown}
       onPointerMove={onMove}
       onPointerUp={onUp}
       onPointerCancel={onUp}
-      style={{ touchAction: "none", contain: "paint" }}
+      style={{ touchAction: "pan-y", contain: "paint" }}
     >
       <img src={dopo} width={width} height={height} alt={altDopo ?? `${alt} dopo`} className="absolute inset-0 w-full h-full object-cover" draggable="false" decoding="async" {...(priority ? { fetchPriority: "high" as const } : {})} style={{ objectPosition: focus, transform: "translateZ(0)" }} />
       <img ref={primaRef} src={prima} width={width} height={height} alt={altPrima ?? `${alt} prima`} className="absolute inset-0 w-full h-full object-cover" draggable="false" decoding="async" {...(priority ? { fetchPriority: "high" as const } : {})}
@@ -1368,6 +1405,72 @@ const OtSlider = ({ prima, dopo, alt, focus = "center", aspect = "aspect-[16/9]"
         <span className="ot-handle"><ArrowsHorizontal size={16} weight="bold" /></span>
       </div>
     </div>
+  );
+};
+
+// ─── Esempi (simulazioni già pubblicate sui canali SmileLive) ────────────────
+// Tre riquadri alti uguali: una coppia foto/simulazione con la linea e due video brevi.
+const Esempi = () => {
+  const riquadro = "rounded-3xl overflow-hidden shadow-xl ring-1 ring-slate-200 w-full lg:w-auto lg:h-[320px] xl:h-[400px]";
+  const didascalia = "mt-3 text-sm font-semibold text-text-main text-center";
+  return (
+    <section data-sez="esempi" className="py-16 md:py-24 bg-slate-50">
+      <div className="max-w-7xl mx-auto px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="max-w-2xl mx-auto text-center mb-10 md:mb-14"
+        >
+          <h2 className="text-3xl md:text-5xl font-headline font-bold tracking-tight text-text-main">Esempi di <span className="text-primary">simulazioni</span>.</h2>
+          <p className="mt-4 text-lg text-text-muted leading-relaxed">Fatte con SmileLive e già pubblicate sui nostri canali. I volti sono generati con IA, non sono pazienti reali: ogni immagine mostra un possibile risultato, da valutare con il dentista.</p>
+        </motion.div>
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.15 }}
+          className="flex flex-col lg:flex-row lg:justify-center items-center lg:items-start gap-8 lg:gap-6"
+        >
+          <motion.figure variants={fadeUp} className="m-0 w-full max-w-sm lg:w-auto lg:max-w-none lg:shrink-0">
+            <div className={`${riquadro} aspect-[4/5]`}>
+              <OtSlider
+                prima={esempioFotoPrima}
+                dopo={esempioFotoDopo}
+                alt="Esempio di simulazione"
+                altPrima="Volto generato con IA, prima della simulazione"
+                altDopo="Lo stesso volto con il possibile risultato simulato con IA"
+                focus="center 40%"
+                aspect="h-full"
+                width={720}
+                height={1280}
+              />
+            </div>
+            <figcaption className={didascalia}>Foto e simulazione: trascina la linea.</figcaption>
+          </motion.figure>
+          <motion.figure variants={fadeUp} className="m-0 w-full max-w-sm lg:w-auto lg:max-w-none lg:shrink-0">
+            <VideoAlTocco src={esempioSorriso} poster={esempioSorrisoPoster} width={560} height={494} etichetta="l'esempio di video del sorriso" className={`${riquadro} aspect-[560/494]`} />
+            <figcaption className={didascalia}>Dalla foto al video del sorriso.</figcaption>
+          </motion.figure>
+          <motion.figure variants={fadeUp} className="m-0 w-full max-w-sm lg:w-auto lg:max-w-none lg:shrink-0">
+            <VideoAlTocco src={esempioLinea} poster={esempioLineaPoster} width={560} height={570} etichetta="l'esempio di confronto prima e dopo" className={`${riquadro} aspect-[560/570]`} />
+            <figcaption className={didascalia}>Il confronto prima e dopo, dentro SmileLive.</figcaption>
+          </motion.figure>
+        </motion.div>
+        <p className="mt-10 text-center">
+          <a
+            href="https://www.instagram.com/smilelive.it/"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => trackCta("instagram", "esempi")}
+            className="inline-flex items-center gap-2 min-h-[44px] font-bold text-primary underline underline-offset-4 hover:text-sky-700 transition-colors"
+          >
+            <InstagramLogo size={20} weight="bold" /> Altri esempi su Instagram
+          </a>
+        </p>
+      </div>
+    </section>
   );
 };
 
@@ -1384,7 +1487,7 @@ const EveryTreatment = () => {
     { name: "Implantologia", price: "Da €1.500 a €5.000", copy: "Il vuoto che lo blocca da mesi. Mostragli il sorriso completo e il preventivo si sblocca.", prima: implantologiaPrima, dopo: implantologiaDopo, focus: "center 60%" },
   ];
   return (
-    <section className="relative overflow-hidden pt-10 md:pt-14 pb-24 md:pb-32 bg-slate-50">
+    <section data-sez="trattamenti" className="relative overflow-hidden pt-10 md:pt-14 pb-24 md:pb-32 bg-slate-50">
       <div className="max-w-6xl mx-auto px-6">
         <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
           <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-primary mb-4">Su qualsiasi trattamento</span>
@@ -1442,7 +1545,7 @@ const EveryTreatment = () => {
 const ManifestoBand = () => {
   const isV5 = useIsV5();
   return (
-  <section className="py-20 md:py-28 relative overflow-hidden bg-gradient-to-b from-[#020c1a] via-[#041020] to-[#071830]">
+  <section data-sez="manifesto" className="py-20 md:py-28 relative overflow-hidden bg-gradient-to-b from-[#020c1a] via-[#041020] to-[#071830]">
     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[620px] h-[620px] bg-primary/20 blur-[150px] rounded-full pointer-events-none" />
     <motion.div
       initial={{ opacity: 0, y: 24 }}
@@ -1540,7 +1643,7 @@ const HowItWorks = () => {
   ];
 
   return (
-    <section id="come-funziona" className="py-16 md:py-28 bg-white relative overflow-hidden isolate">
+    <section data-sez="come-funziona" id="come-funziona" className="py-16 md:py-28 bg-white relative overflow-hidden isolate">
       <div className="max-w-7xl mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -1744,7 +1847,7 @@ const WhatYouGet = () => {
 
 
   return (
-    <section className="py-20 md:py-32 relative overflow-hidden isolate bg-[#07111f] text-white font-body">
+    <section data-sez="gestionale" className="py-20 md:py-32 relative overflow-hidden isolate bg-[#07111f] text-white font-body">
       <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(900px_520px_at_82%_10%,rgba(38,167,198,0.22),transparent_64%),radial-gradient(760px_420px_at_9%_82%,rgba(2,132,199,0.16),transparent_68%),radial-gradient(620px_420px_at_78%_86%,rgba(217,119,6,0.10),transparent_70%)]" />
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
@@ -1878,7 +1981,7 @@ const ROICalculator = () => {
   const extraRevenue = monthlyPatients * ticket;
 
   return (
-    <section className="py-16 md:py-28 relative overflow-hidden bg-gradient-to-b from-sky-50/60 via-white to-white">
+    <section data-sez="calcolatore" className="py-16 md:py-28 relative overflow-hidden bg-gradient-to-b from-sky-50/60 via-white to-white">
       <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-[760px] h-[220px] bg-gold/15 blur-[130px] rounded-full pointer-events-none"></div>
       <motion.div
         initial={{ opacity: 0, y: 30 }}
@@ -1968,7 +2071,7 @@ const IntermediateCTA = () => {
   ];
 
   return (
-    <section className="py-20 md:py-28 relative overflow-hidden bg-gradient-to-b from-sky-50/60 via-white to-white">
+    <section data-sez="invito" className="py-20 md:py-28 relative overflow-hidden bg-gradient-to-b from-sky-50/60 via-white to-white">
       <WaveField className="absolute top-0 inset-x-0 h-full z-0" style={{ WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, #000 24%, #000 58%, transparent 90%)', maskImage: 'linear-gradient(to bottom, transparent 0%, #000 24%, #000 58%, transparent 90%)' }} focusX={1.03} focusY={-0.05} spreadX={0} opacity={0.22} />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[620px] h-[620px] bg-primary/10 blur-[150px] rounded-full pointer-events-none" />
       <motion.div
@@ -2047,7 +2150,7 @@ const Pricing = () => {
   );
 
   return (
-    <section id="pricing" className="py-16 md:py-28 bg-white relative overflow-hidden" style={{ scrollMarginTop: 'var(--header-h, 7rem)' }}>
+    <section data-sez="prezzi" id="pricing" className="py-16 md:py-28 bg-white relative overflow-hidden" style={{ scrollMarginTop: 'var(--header-h, 7rem)' }}>
       {/* Sfondo che cambia al toggle annuale/mensile (crossfade, dà senso di cambiamento) */}
       <div aria-hidden="true" className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-500 ease-out" style={{ opacity: isAnnual ? 1 : 0, backgroundImage: 'radial-gradient(50% 55% at 12% 18%, rgba(56,189,248,0.20), transparent 70%), radial-gradient(48% 55% at 88% 22%, rgba(129,140,248,0.20), transparent 70%), radial-gradient(60% 60% at 50% 108%, rgba(59,130,246,0.14), transparent 68%)' }} />
       <div aria-hidden="true" className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-500 ease-out" style={{ opacity: isAnnual ? 0 : 1, backgroundImage: 'radial-gradient(52% 55% at 85% 16%, rgba(251,191,36,0.16), transparent 70%), radial-gradient(48% 55% at 10% 26%, rgba(56,189,248,0.15), transparent 70%), radial-gradient(60% 62% at 50% 110%, rgba(129,140,248,0.10), transparent 68%)' }} />
@@ -2061,6 +2164,7 @@ const Pricing = () => {
         >
           <h2 className="text-4xl md:text-5xl font-headline font-bold text-center mb-4 tracking-tight">Scegli il tuo <span className="text-gold">piano</span></h2>
           <p className="text-xl text-text-muted text-center mb-4">Inizia gratis con 5 foto e 2 video. Poi scegli il piano giusto per il tuo studio.</p>
+          <p className="text-lg font-semibold text-text-main text-center max-w-2xl mb-4">Studio Piccolo costa {studioPlans[0].monthly} € al mese. Basta un piano di cura accettato in più per ripagare anni di abbonamento.</p>
           <p className="text-base text-text-muted text-center max-w-2xl mb-2">L'abbonamento sblocca tutto il software e le generazioni incluse ogni mese. L'opzione annuale si paga in un'unica soluzione, al prezzo più basso.</p>
           <p className="text-sm text-text-muted text-center mb-8">Prezzi IVA inclusa.</p>
           <div className="inline-flex items-center gap-1 bg-slate-50 border border-slate-200 rounded-full p-1.5">
@@ -2208,7 +2312,7 @@ const Testimonials = () => {
   ];
 
   return (
-    <section className="py-16 md:py-28 bg-[#e8f3fb]">
+    <section data-sez="testimonianze" className="py-16 md:py-28 bg-[#e8f3fb]">
       <div className="max-w-7xl mx-auto px-6">
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
@@ -2276,7 +2380,7 @@ const ForWho = () => {
     { icon: <Pulse size={28} weight="light" className="text-primary shrink-0" />, title: "Ortodontista / implantologo", desc: "Vuoi integrare la visualizzazione nel percorso di accettazione del piano." },
   ];
   return (
-  <section className="py-16 md:py-28 bg-white relative overflow-hidden isolate">
+  <section data-sez="ruoli" className="py-16 md:py-28 bg-white relative overflow-hidden isolate">
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -2315,7 +2419,7 @@ const ForWho = () => {
 const FutureVision = () => {
   const isV5 = useIsV5();
   return (
-  <section id="future" className="py-16 md:py-28 bg-slate-50 relative overflow-hidden">
+  <section data-sez="futuro" id="future" className="py-16 md:py-28 bg-slate-50 relative overflow-hidden">
     <WaveField className="absolute bottom-0 inset-x-0 h-full z-0" style={{ WebkitMaskImage: 'linear-gradient(to top, transparent 0%, #000 24%, #000 58%, transparent 90%)', maskImage: 'linear-gradient(to top, transparent 0%, #000 24%, #000 58%, transparent 90%)' }} focusX={-0.03} focusY={1.05} spreadX={1} opacity={0.2} />
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -2370,14 +2474,13 @@ const FAQ = () => {
     isV5
       ? { q: "La preview sostituisce una simulazione diagnostica?", a: "No. SmileLive è uno strumento di comunicazione e non sostituisce diagnosi, progettazione clinica o consenso informato. La preview aiuta il paziente a comprendere il cambiamento proposto, che resta sempre da valutare e spiegare dal professionista." }
       : { q: "Il 70% di accuratezza visiva non e' troppo basso?", a: "SmileLive non e' uno strumento diagnostico: e' uno strumento di desiderio. Il suo compito non e' garantire il risultato clinico, quello e' il tuo. Il suo compito e' far nascere nel paziente la voglia di iniziare. Per i casi riproducibili, la preview e' molto accurata. Per i casi complessi, sblocca la conversazione. Funziona in entrambi i casi." },
-    { q: "Posso usarlo per l'implantologia o solo per l'estetica?", a: "SmileLive lavora sui trattamenti che cambiano visibilmente il sorriso: sbiancamento, faccette, ricostruzioni conservative, protesi mobile e riabilitazioni su impianti dell'intera arcata (Toronto, All-on-4). Se il risultato si vede, SmileLive lo può mostrare." },
     { q: "Quanto tempo serve per una simulazione del sorriso?", a: "Circa un minuto per la simulazione in foto. Il video del sorriso richiede qualche minuto in più." },
     { q: "Serve installare un programma?", a: "No. SmileLive si usa dal browser, su computer, tablet e telefono. Chi vuole può aggiungerlo alla schermata iniziale come un'app, senza passare dagli store." },
     { q: "Come funziona la prescrizione al laboratorio?", a: "La detti a voce e SmileLive la compila. Il laboratorio la riceve nel suo portale, insieme alle scansioni, e può scrivere allo studio in una chat: studio e laboratorio lavorano sullo stesso caso." },
   ];
 
   return (
-    <section id="faq" className="py-16 md:py-28 bg-white relative overflow-hidden isolate">
+    <section data-sez="domande" id="faq" className="py-16 md:py-28 bg-white relative overflow-hidden isolate">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -2433,7 +2536,7 @@ const FAQ = () => {
 const FinalCTA = () => {
   const isV5 = useIsV5();
   return (
-  <section className="py-20 md:py-40 relative overflow-hidden text-center bg-gradient-to-b from-white via-sky-50/50 to-sky-50">
+  <section data-sez="chiusura" className="py-20 md:py-40 relative overflow-hidden text-center bg-gradient-to-b from-white via-sky-50/50 to-sky-50">
     <WaveField className="absolute top-0 inset-x-0 h-full z-0" style={{ WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, #000 24%, #000 60%, transparent 92%)', maskImage: 'linear-gradient(to bottom, transparent 0%, #000 24%, #000 60%, transparent 92%)' }} focusX={-0.03} focusY={-0.05} spreadX={1} opacity={0.2} />
     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[500px] bg-primary/10 blur-[160px] rounded-full pointer-events-none"></div>
     <div className="absolute top-0 left-1/4 w-[400px] h-[300px] bg-primary/[0.06] blur-[120px] rounded-full pointer-events-none"></div>
@@ -2643,22 +2746,20 @@ export default function IndexV3({ variant = "v3" }: { variant?: SmileLiveLanding
     <main data-landing-version={variant} className={`min-h-screen w-full overflow-x-clip bg-white text-text-main selection:bg-primary/20 selection:text-text-main font-['Inter'] ${variant === "v5" ? "smilelive-v5" : ""}`}>
       <TopBar />
       {/* ── Hormozi spine: Hook → Dolore (€ poi emotivo) → Reframe → Meccanismo → Prova → Facilità → CTA → Value stack → Prova → Ancora prezzo → Offerta → Qualifica → Urgenza → Obiezioni → Chiusura ── */}
-      <Hero />                {/* Hook / dream outcome */}
-      <WhyChoose />           {/* Perché scegliere: 4 icone (come screen) */}
-      <ReviewsSection />      {/* Recensioni: heading + carosello attuale */}
-      <ProblemSection />      {/* Dolore in €: costo dell'inazione (apre la ferita) */}
+      {/* Ordine: apertura → video → preventivi → come funziona → studio → laboratorio → prezzi → domande → chiusura.
+          Fuori dalla pagina, per ora: recensioni e testimonianze, trattamenti, calcolatore, sezione sul futuro. */}
+      <Hero />                {/* Apertura: prima e dopo con la linea */}
+      <AISimShowcase />       {/* Dalla foto al video del sorriso */}
+      <DemoVideo />           {/* Il software vero, 2 minuti con voce */}
+      <Esempi />              {/* Simulazioni già pubblicate sui canali SmileLive */}
+      <WhyChoose />           {/* Perché scegliere: 4 icone */}
+      <ProblemSection />      {/* Preventivi: il costo del «ci penso» */}
       <ManifestoBand />       {/* Reframe: "compra l'immagine di sé" */}
       <EmotionalVideo />      {/* Effetto Wow + slider — la soluzione */}
-      <AISimShowcase />       {/* "Non solo una foto": video realistico (assieme all'Effetto Wow) */}
-      <DemoVideo />           {/* Il software vero, 2 minuti con voce */}
-      <EveryTreatment />     {/* Su ogni trattamento: crolla "il mio caso e' diverso" */}
-      <IntermediateCTA />     {/* CTA contestuale + prova numerica: se vede il risultato, non esce indeciso */}
+      <IntermediateCTA />     {/* CTA contestuale */}
       <HowItWorks />          {/* Facilità: quanto è semplice */}
-      <WhatYouGet />          {/* Value stack: cosa ottieni */}
-      <Testimonials />        {/* Prova sociale prima del prezzo */}
-      <ROICalculator />       {/* Ancora prezzo: il costo di aspettare */}
-      <Pricing />             {/* L'offerta */}
-      {/* Teaser demo prescrizione vocale — div, non section: non deve spostare gli nth-of-type del CSS V5 */}
+      <WhatYouGet />          {/* Per lo studio: tutto in un posto */}
+      {/* Per il laboratorio: prescrizione vocale */}
       <div className="bg-[#07111f] text-white">
         <div className="max-w-5xl mx-auto px-6 py-12 md:py-14 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
           <div className="flex flex-col md:flex-row items-center gap-4">
@@ -2679,8 +2780,8 @@ export default function IndexV3({ variant = "v3" }: { variant?: SmileLiveLanding
           </a>
         </div>
       </div>
+      <Pricing />             {/* L'offerta */}
       <ForWho />              {/* Qualifica / esclusività */}
-      <FutureVision />        {/* Urgenza: primo nella tua città */}
       <FAQ />                 {/* Gestione obiezioni */}
       <FinalCTA />            {/* Chiusura */}
       <Footer />

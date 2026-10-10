@@ -25,6 +25,14 @@ const FILES = [
   `${A}/steps/step-3-sorriso.webp`,
   `${A}/steps/step-4-dentista.webp`,
   `${A}/video per SITO 1080p FINITO.mp4`,
+  `${A}/sorriso-video/sorriso-video.mp4`,
+  `${A}/sorriso-video/sorriso-video-poster.webp`,
+  `${A}/esempi/esempio-foto-prima.webp`,
+  `${A}/esempi/esempio-foto-dopo.webp`,
+  `${A}/esempi/esempio-sorriso.mp4`,
+  `${A}/esempi/esempio-sorriso-poster.webp`,
+  `${A}/esempi/esempio-linea.mp4`,
+  `${A}/esempi/esempio-linea-poster.webp`,
 ];
 
 const SRC_TYPE = "http://cv.iptc.org/newscodes/digitalsourcetype/trainedAlgorithmicMedia";

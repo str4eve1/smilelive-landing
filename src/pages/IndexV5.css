@@ -127,7 +127,7 @@
   padding-bottom: clamp(80px, 9vw, 132px) !important;
 }
 
-.smilelive-v5 > section:nth-of-type(12) {
+.smilelive-v5 > section[data-sez="testimonianze"] {
   padding-top: 56px !important;
 }
 
@@ -140,62 +140,62 @@
   margin-top: -2px;
 }
 
-.smilelive-v5 > section:nth-of-type(7),
-.smilelive-v5 > section:nth-of-type(13),
-.smilelive-v5 > section:nth-of-type(16) {
+.smilelive-v5 > section[data-sez="video-sorriso"],
+.smilelive-v5 > section[data-sez="calcolatore"],
+.smilelive-v5 > section[data-sez="futuro"] {
   background: var(--v5-canvas) !important;
 }
 
-.smilelive-v5 > section:nth-of-type(2) {
+.smilelive-v5 > section[data-sez="perche"] {
   padding-top: 32px !important;
   padding-bottom: 96px !important;
   background: #fff !important;
 }
 
-.smilelive-v5 > section:nth-of-type(3),
-.smilelive-v5 > section:nth-of-type(8),
-.smilelive-v5 > section:nth-of-type(12) {
+.smilelive-v5 > section[data-sez="recensioni"],
+.smilelive-v5 > section[data-sez="trattamenti"],
+.smilelive-v5 > section[data-sez="testimonianze"] {
   background: var(--v5-soft) !important;
 }
 
-.smilelive-v5 > section:nth-of-type(9) {
+.smilelive-v5 > section[data-sez="invito"] {
   background: linear-gradient(180deg, rgba(240, 249, 255, 0.68) 0%, #fff 55%, var(--v5-canvas) 100%) !important;
 }
 
-.smilelive-v5 > section:nth-of-type(5) {
+.smilelive-v5 > section[data-sez="manifesto"] {
   color: #fff !important;
   background:
     radial-gradient(70% 140% at 12% 50%, rgba(2, 132, 199, 0.24), transparent 65%),
     linear-gradient(180deg, #020c1a 0%, #041020 52%, #071830 100%) !important;
 }
 
-.smilelive-v5 > section:nth-of-type(5) h2 {
+.smilelive-v5 > section[data-sez="manifesto"] h2 {
   color: #fff !important;
 }
 
-.smilelive-v5 > section:nth-of-type(5) h2 span,
-.smilelive-v5 > section:nth-of-type(5) .max-w-3xl > span {
+.smilelive-v5 > section[data-sez="manifesto"] h2 span,
+.smilelive-v5 > section[data-sez="manifesto"] .max-w-3xl > span {
   color: #7dd3fc !important;
 }
 
-.smilelive-v5 > section:nth-of-type(5) .max-w-3xl > p {
+.smilelive-v5 > section[data-sez="manifesto"] .max-w-3xl > p {
   color: rgba(255, 255, 255, 0.68) !important;
 }
 
-.smilelive-v5 > section:nth-of-type(5) .max-w-3xl > p:last-child {
+.smilelive-v5 > section[data-sez="manifesto"] .max-w-3xl > p:last-child {
   color: #f97316 !important;
 }
 
-.smilelive-v5 > section:nth-of-type(6) {
+.smilelive-v5 > section[data-sez="anteprima"] {
   padding-top: clamp(96px, 11vw, 160px) !important;
   padding-bottom: clamp(96px, 11vw, 160px) !important;
 }
 
-.smilelive-v5 > section:nth-of-type(11) {
+.smilelive-v5 > section[data-sez="gestionale"] {
   background: #071623 !important;
 }
 
-.smilelive-v5 > section:nth-of-type(18) {
+.smilelive-v5 > section[data-sez="chiusura"] {
   padding-top: clamp(112px, 13vw, 184px) !important;
   padding-bottom: clamp(112px, 13vw, 184px) !important;
 }
@@ -223,13 +223,13 @@
   box-shadow: 0 24px 60px -44px rgba(7, 17, 31, 0.42) !important;
 }
 
-.smilelive-v5 > section:nth-of-type(10) .grid > *,
-.smilelive-v5 > section:nth-of-type(15) .grid > * {
+.smilelive-v5 > section[data-sez="come-funziona"] .grid > *,
+.smilelive-v5 > section[data-sez="ruoli"] .grid > * {
   border-color: rgba(2, 119, 181, 0.12) !important;
   box-shadow: none !important;
 }
 
-.smilelive-v5 > section:nth-of-type(14) [class*="rounded-3xl"] {
+.smilelive-v5 > section[data-sez="prezzi"] [class*="rounded-3xl"] {
   border-color: rgba(2, 119, 181, 0.14) !important;
 }
 
@@ -252,8 +252,8 @@
 
   .smilelive-v5 .hero-kicker { order: 1; }
   .smilelive-v5 .hero-title { order: 2; }
-  .smilelive-v5 .hero-copy { order: 3; }
-  .smilelive-v5 .hero-visual { order: 4; margin-top: 8px; }
+  .smilelive-v5 .hero-copy { order: 4; }
+  .smilelive-v5 .hero-visual { order: 3; margin-top: 0; }
 
   .smilelive-v5 .hero-title h1 {
     max-width: none;
@@ -293,7 +293,7 @@
 
   .smilelive-v5 .hero-title h1 {
     max-width: none;
-    font-size: clamp(2.35rem, 11.5vw, 3.25rem) !important;
+    font-size: clamp(1.6rem, 7.4vw, 2.1rem) !important;
   }
 
   .smilelive-v5 .hero-copy {
@@ -346,45 +346,45 @@
     padding-bottom: 84px !important;
   }
 
-  .smilelive-v5 > section:nth-of-type(12) {
+  .smilelive-v5 > section[data-sez="testimonianze"] {
     padding-top: 32px !important;
   }
 
-  .smilelive-v5 > section:nth-of-type(2) {
+  .smilelive-v5 > section[data-sez="perche"] {
     padding-top: 24px !important;
     padding-bottom: 72px !important;
   }
 
-  .smilelive-v5 > section:nth-of-type(2) .whychoose-dot {
+  .smilelive-v5 > section[data-sez="perche"] .whychoose-dot {
     display: block !important;
     width: 72px;
     height: 108px;
     opacity: 0.28;
   }
 
-  .smilelive-v5 > section:nth-of-type(2) .grid {
+  .smilelive-v5 > section[data-sez="perche"] .grid {
     gap: 36px 12px;
   }
 
-  .smilelive-v5 > section:nth-of-type(2) .grid > * {
+  .smilelive-v5 > section[data-sez="perche"] .grid > * {
     padding-inline: 4px;
   }
 
-  .smilelive-v5 > section:nth-of-type(2) .grid h3 {
+  .smilelive-v5 > section[data-sez="perche"] .grid h3 {
     font-size: 1rem;
   }
 
-  .smilelive-v5 > section:nth-of-type(2) .grid p {
+  .smilelive-v5 > section[data-sez="perche"] .grid p {
     font-size: 0.8125rem;
   }
 
-  .smilelive-v5 > section:nth-of-type(5) h2 {
+  .smilelive-v5 > section[data-sez="manifesto"] h2 {
     font-size: clamp(1.85rem, 8.7vw, 2.25rem) !important;
     line-height: 1.12 !important;
     overflow-wrap: anywhere;
   }
 
-  .smilelive-v5 > section:nth-of-type(5) p {
+  .smilelive-v5 > section[data-sez="manifesto"] p {
     max-width: 30ch;
     margin-inline: auto;
   }
