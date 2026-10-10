@@ -13,10 +13,19 @@ import sorrisoVideo from '../assets/sorriso-video/sorriso-video.mp4';
 import sorrisoVideoPoster from '../assets/sorriso-video/sorriso-video-poster.webp';
 import esempioFotoPrima from '../assets/esempi/esempio-foto-prima.webp';
 import esempioFotoDopo from '../assets/esempi/esempio-foto-dopo.webp';
-import esempioSorriso from '../assets/esempi/esempio-sorriso.mp4';
-import esempioSorrisoPoster from '../assets/esempi/esempio-sorriso-poster.webp';
-import esempioLinea from '../assets/esempi/esempio-linea.mp4';
-import esempioLineaPoster from '../assets/esempi/esempio-linea-poster.webp';
+import caso1Mini from '../assets/esempi/caso1-mini.webp';
+import caso1Video from '../assets/esempi/caso1-video.mp4';
+import caso1VideoPoster from '../assets/esempi/caso1-video-poster.webp';
+import caso2Mini from '../assets/esempi/caso2-mini.webp';
+import caso2Prima from '../assets/esempi/caso2-prima.webp';
+import caso2Dopo from '../assets/esempi/caso2-dopo.webp';
+import caso2Video from '../assets/esempi/caso2-video.mp4';
+import caso2VideoPoster from '../assets/esempi/caso2-video-poster.webp';
+import caso3Mini from '../assets/esempi/caso3-mini.webp';
+import caso3App from '../assets/esempi/caso3-app.mp4';
+import caso3AppPoster from '../assets/esempi/caso3-app-poster.webp';
+import caso3Video from '../assets/esempi/caso3-video.mp4';
+import caso3VideoPoster from '../assets/esempi/caso3-video-poster.webp';
 import prevSbiancamento from '../assets/WEBP/Sbiancamento prima e dopo2.webp';
 import prevFaccette from '../assets/WEBP/FACCETTE (1).jpeg';
 import prevOrtodonzia from '../assets/WEBP/TERMOSTAMPATA-CrUanAGb.jpg';
@@ -312,8 +321,8 @@ const WaveField = ({ className = "", style, focusX = -0.03, focusY = -0.05, spre
 
 // Un video breve e muto dentro una card: parte e si ferma al tocco.
 // Il tasto è solo un anello trasparente, così non copre il volto, e sparisce mentre il video va.
-type VideoAlToccoProps = { src: string; poster: string; width: number; height: number; etichetta: string; className: string };
-const VideoAlTocco = ({ src, poster, width, height, etichetta, className }: VideoAlToccoProps) => {
+type VideoAlToccoProps = { src: string; poster: string; width: number; height: number; etichetta: string; className: string; style?: React.CSSProperties };
+const VideoAlTocco = ({ src, poster, width, height, etichetta, className, style }: VideoAlToccoProps) => {
   const ref = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
   const toggle = () => {
@@ -323,7 +332,7 @@ const VideoAlTocco = ({ src, poster, width, height, etichetta, className }: Vide
     else v.pause();
   };
   return (
-    <div className={`relative overflow-hidden bg-slate-900 group ${className}`}>
+    <div className={`relative overflow-hidden bg-slate-900 group ${className}`} style={style}>
       <video
         ref={ref}
         src={src}
@@ -1408,10 +1417,39 @@ const OtSlider = ({ prima, dopo, alt, focus = "center", aspect = "aspect-[16/9]"
   );
 };
 
-// ─── Esempi (simulazioni già pubblicate sui canali SmileLive) ────────────────
-// Tre riquadri alti uguali: una coppia foto/simulazione con la linea e due video brevi.
+// ─── Esempi (simulazioni fatte con SmileLive: un caso alla volta) ─────────────
+// Ogni caso ha un confronto (la foto con la linea, oppure la registrazione dell'app sul telefono)
+// e il suo video del sorriso. Si vede un caso solo: gli altri si caricano quando li si sceglie.
+type Caso = {
+  mini: string;
+  confronto:
+    | { tipo: "linea"; prima: string; dopo: string; width: number; height: number; focus: string }
+    | { tipo: "app"; src: string; poster: string; width: number; height: number };
+  video: { src: string; poster: string; width: number; height: number };
+};
+const CASI: Caso[] = [
+  {
+    mini: caso1Mini,
+    confronto: { tipo: "linea", prima: esempioFotoPrima, dopo: esempioFotoDopo, width: 720, height: 1280, focus: "center 40%" },
+    video: { src: caso1Video, poster: caso1VideoPoster, width: 432, height: 768 },
+  },
+  {
+    mini: caso2Mini,
+    confronto: { tipo: "linea", prima: caso2Prima, dopo: caso2Dopo, width: 1104, height: 760, focus: "center" },
+    video: { src: caso2Video, poster: caso2VideoPoster, width: 478, height: 414 },
+  },
+  {
+    mini: caso3Mini,
+    confronto: { tipo: "app", src: caso3App, poster: caso3AppPoster, width: 432, height: 924 },
+    video: { src: caso3Video, poster: caso3VideoPoster, width: 432, height: 768 },
+  },
+];
+
 const Esempi = () => {
-  const riquadro = "rounded-3xl overflow-hidden shadow-xl ring-1 ring-slate-200 w-full lg:w-auto lg:h-[320px] xl:h-[400px]";
+  const [scelto, setScelto] = useState(0);
+  const caso = CASI[scelto];
+  // Riquadri alti uguali: la larghezza segue le proporzioni del contenuto, senza superare la colonna.
+  const riquadro = "rounded-3xl overflow-hidden shadow-xl ring-1 ring-slate-200 h-[380px] lg:h-[400px] max-w-full";
   const didascalia = "mt-3 text-sm font-semibold text-text-main text-center";
   return (
     <section data-sez="esempi" className="py-16 md:py-24 bg-slate-50">
@@ -1421,50 +1459,83 @@ const Esempi = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="max-w-2xl mx-auto text-center mb-10 md:mb-14"
+          className="max-w-2xl mx-auto text-center"
         >
           <h2 className="text-3xl md:text-5xl font-headline font-bold tracking-tight text-text-main">Esempi di <span className="text-primary">simulazioni</span>.</h2>
-          <p className="mt-4 text-lg text-text-muted leading-relaxed">Fatte con SmileLive e già pubblicate sui nostri canali. I volti sono generati con IA, non sono pazienti reali: ogni immagine mostra un possibile risultato, da valutare con il dentista.</p>
+          <p className="mt-4 text-lg text-text-muted leading-relaxed">Fatte con SmileLive. I volti sono generati con IA, non sono pazienti reali: ogni immagine mostra un possibile risultato, da valutare con il dentista.</p>
         </motion.div>
+
+        <div role="group" aria-label="Scegli l'esempio" className="mt-8 flex justify-center gap-4">
+          {CASI.map((c, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => setScelto(i)}
+              aria-pressed={i === scelto}
+              aria-label={`Esempio ${i + 1} di ${CASI.length}`}
+              className={`h-14 w-14 rounded-full overflow-hidden ring-2 ring-offset-2 ring-offset-slate-50 transition-[transform,box-shadow,opacity] duration-150 ease-out active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary ${i === scelto ? "ring-primary" : "ring-transparent opacity-70 [@media(hover:hover)]:hover:opacity-100"}`}
+            >
+              <img src={c.mini} alt="" width="128" height="128" className="h-full w-full object-cover" />
+            </button>
+          ))}
+        </div>
+
         <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.15 }}
-          className="flex flex-col lg:flex-row lg:justify-center items-center lg:items-start gap-8 lg:gap-6"
+          key={scelto}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.25, ease: EASE_OUT }}
+          className="mt-8 flex flex-wrap justify-center items-start gap-x-6 gap-y-8"
         >
-          <motion.figure variants={fadeUp} className="m-0 w-full max-w-sm lg:w-auto lg:max-w-none lg:shrink-0">
-            <div className={`${riquadro} aspect-[4/5]`}>
-              <OtSlider
-                prima={esempioFotoPrima}
-                dopo={esempioFotoDopo}
-                alt="Esempio di simulazione"
-                altPrima="Volto generato con IA, prima della simulazione"
-                altDopo="Lo stesso volto con il possibile risultato simulato con IA"
-                focus="center 40%"
-                aspect="h-full"
-                width={720}
-                height={1280}
+          <figure className="m-0 max-w-full">
+            {caso.confronto.tipo === "linea" ? (
+              <div className={`${riquadro} aspect-[4/5]`}>
+                <OtSlider
+                  prima={caso.confronto.prima}
+                  dopo={caso.confronto.dopo}
+                  alt="Esempio di simulazione"
+                  altPrima="Volto generato con IA, prima della simulazione"
+                  altDopo="Lo stesso volto con il possibile risultato simulato con IA"
+                  focus={caso.confronto.focus}
+                  aspect="h-full"
+                  width={caso.confronto.width}
+                  height={caso.confronto.height}
+                />
+              </div>
+            ) : (
+              <VideoAlTocco
+                src={caso.confronto.src}
+                poster={caso.confronto.poster}
+                width={caso.confronto.width}
+                height={caso.confronto.height}
+                etichetta="la registrazione del confronto prima e dopo dentro SmileLive"
+                className={riquadro}
+                style={{ aspectRatio: `${caso.confronto.width} / ${caso.confronto.height}` }}
               />
-            </div>
-            <figcaption className={didascalia}>Foto e simulazione: trascina la linea.</figcaption>
-          </motion.figure>
-          <motion.figure variants={fadeUp} className="m-0 w-full max-w-sm lg:w-auto lg:max-w-none lg:shrink-0">
-            <VideoAlTocco src={esempioSorriso} poster={esempioSorrisoPoster} width={560} height={494} etichetta="l'esempio di video del sorriso" className={`${riquadro} aspect-[560/494]`} />
-            <figcaption className={didascalia}>Dalla foto al video del sorriso.</figcaption>
-          </motion.figure>
-          <motion.figure variants={fadeUp} className="m-0 w-full max-w-sm lg:w-auto lg:max-w-none lg:shrink-0">
-            <VideoAlTocco src={esempioLinea} poster={esempioLineaPoster} width={560} height={570} etichetta="l'esempio di confronto prima e dopo" className={`${riquadro} aspect-[560/570]`} />
-            <figcaption className={didascalia}>Il confronto prima e dopo, dentro SmileLive.</figcaption>
-          </motion.figure>
+            )}
+            <figcaption className={didascalia}>{caso.confronto.tipo === "linea" ? "Foto e simulazione: trascina la linea." : "Il confronto dentro SmileLive, sul telefono."}</figcaption>
+          </figure>
+          <figure className="m-0 max-w-full">
+            <VideoAlTocco
+              src={caso.video.src}
+              poster={caso.video.poster}
+              width={caso.video.width}
+              height={caso.video.height}
+              etichetta="il video del sorriso di questo esempio"
+              className={riquadro}
+              style={{ aspectRatio: `${caso.video.width} / ${caso.video.height}` }}
+            />
+            <figcaption className={didascalia}>Il video del sorriso.</figcaption>
+          </figure>
         </motion.div>
+
         <p className="mt-10 text-center">
           <a
             href="https://www.instagram.com/smilelive.it/"
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => trackCta("instagram", "esempi")}
-            className="inline-flex items-center gap-2 min-h-[44px] font-bold text-primary underline underline-offset-4 hover:text-sky-700 transition-colors"
+            className="inline-flex items-center gap-2 min-h-[44px] font-bold text-primary underline underline-offset-4 hover:opacity-80 transition-opacity"
           >
             <InstagramLogo size={20} weight="bold" /> Altri esempi su Instagram
           </a>
