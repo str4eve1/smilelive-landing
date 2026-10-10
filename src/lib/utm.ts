@@ -15,9 +15,11 @@ export function readUtm(search: string = window.location.search): Utm {
 }
 
 // Link all'app che porta con sé gli UTM con cui si è arrivati sulla pagina.
-export function appLink(search: string = window.location.search): string {
+// Se l'indirizzo non ne ha nessuno si usano quelli di riserva, quando la pagina li passa.
+export function appLink(search: string = window.location.search, fallback: Utm = {}): string {
+  const utm = readUtm(search);
   const url = new URL(APP_URL);
-  for (const [key, value] of Object.entries(readUtm(search))) {
+  for (const [key, value] of Object.entries(Object.keys(utm).length > 0 ? utm : fallback)) {
     url.searchParams.set(`utm_${key}`, value);
   }
   return url.toString();

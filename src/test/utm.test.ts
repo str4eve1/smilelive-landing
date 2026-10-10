@@ -35,4 +35,16 @@ describe("appLink", () => {
   it("codifica i valori", () => {
     expect(appLink("?utm_campaign=a%26b%20c")).toBe("https://app.smilelive.it/?utm_campaign=a%26b+c");
   });
+
+  it("senza UTM usa quelli di riserva, se la pagina li passa", () => {
+    expect(appLink("?fbclid=abc", { source: "sito", medium: "dentisti" })).toBe(
+      "https://app.smilelive.it/?utm_source=sito&utm_medium=dentisti",
+    );
+  });
+
+  it("con almeno un UTM quelli di riserva non si usano", () => {
+    expect(appLink("?utm_campaign=dentisti-pagina", { source: "sito", medium: "dentisti" })).toBe(
+      "https://app.smilelive.it/?utm_campaign=dentisti-pagina",
+    );
+  });
 });
