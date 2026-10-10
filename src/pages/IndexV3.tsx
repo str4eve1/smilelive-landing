@@ -1077,7 +1077,6 @@ const ProblemSection = () => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const SVG = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><circle cx="8.5" cy="9" r="1.3"/><path d="M4 16l4.5-4 3 2.5L15 10l5 5"/><line x1="3" y1="20" x2="21" y2="4"/></svg>';
     const POOL = [
-      { n: "0231", line: "Percorso ortodontico", qty: "compl.", total: "€ 6.000" },
       { n: "0239", line: "Impianto + corona", qty: "×2", total: "€ 8.000" },
       { n: "0247", line: "Faccette in ceramica", qty: "×6", total: "€ 12.000" },
       { n: "0253", line: "Sbiancamento professionale", qty: "×1", total: "€ 800" },
@@ -1349,7 +1348,7 @@ const EveryTreatment = () => {
               <p className="mt-1 text-sm text-text-muted leading-relaxed">Questi sono solo tre esempi: la preview accompagna ogni trattamento con un cambiamento estetico visibile, sempre con la stessa qualità.</p>
             </div>
             <div className="flex flex-wrap gap-2 md:justify-end md:max-w-[280px]">
-              {["Ortodonzia", "Protesi", "Ricostruzioni", "Zirconio", "Igiene estetica"].map((t) => (
+              {["Protesi", "Ricostruzioni", "Zirconio", "Igiene estetica"].map((t) => (
                 <span key={t} className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-bold text-text-muted">{t}</span>
               ))}
             </div>
