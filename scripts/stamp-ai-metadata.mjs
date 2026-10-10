@@ -18,6 +18,8 @@ const FILES = [
   `${A}/trattamenti/faccetta-dopo.webp`,
   `${A}/trattamenti/implantologia-prima.webp`,
   `${A}/trattamenti/implantologia-dopo.webp`,
+  `${A}/apertura/apertura-prima.webp`,
+  `${A}/apertura/apertura-dopo.webp`,
   `${A}/steps/step-1-poster.webp`,
   `${A}/steps/step-2-preview.webp`,
   `${A}/steps/step-3-sorriso.webp`,

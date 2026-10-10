@@ -18,6 +18,8 @@ import faccettePrima from '../assets/trattamenti/faccetta-prima.webp';
 import faccetteDopo from '../assets/trattamenti/faccetta-dopo.webp';
 import implantologiaPrima from '../assets/trattamenti/implantologia-prima.webp';
 import implantologiaDopo from '../assets/trattamenti/implantologia-dopo.webp';
+import aperturaPrima from '../assets/apertura/apertura-prima.webp';
+import aperturaDopo from '../assets/apertura/apertura-dopo.webp';
 import emotionalVideo from '../assets/video per SITO 1080p FINITO.mp4';
 import demoVideo from '../assets/demo-smilelive-4x5.mp4';
 import demoPoster from '../assets/demo-smilelive-poster.jpg';
@@ -528,6 +530,23 @@ const TopBar = () => {
 // ─── Hero ────────────────────────────────────────────────────────────────────
 const Hero = () => {
   const isV5 = useIsV5();
+  const proofBlock = (
+        <motion.div variants={fadeUp} className="hero-proof pt-3 flex items-center gap-5">
+          <div className="flex -space-x-2.5">
+            {[logoBerlinesi, logoFerretti, logoLaterza, logoRanieri].map((logo, i) => (
+              <div key={i} className="w-9 h-9 rounded-full border-2 border-white bg-white flex items-center justify-center overflow-hidden shadow-sm ring-1 ring-slate-200">
+                <img src={logo} alt={`Logo ${["Studi Associati Berlinesi", "Dr. Giacomo Ferretti", "Studio Dentistico Laterza", "Studio Dentistico Ranieri"][i]}`} className="w-full h-full object-cover rounded-full" width="36" height="36" loading="lazy" />
+              </div>
+            ))}
+          </div>
+          <div className="text-sm">
+            <div className="flex gap-0.5 text-gold mb-0.5">
+              {[1, 2, 3, 4, 5].map((i) => <Star key={i} size={14} weight="fill" />)}
+            </div>
+            <span className="text-slate-500">Usato da oltre <strong className="text-slate-900">50</strong> studi in Italia</span>
+          </div>
+        </motion.div>
+  );
   return (
   <section data-v5-section="hero" className="relative overflow-hidden bg-gradient-to-b from-white via-white to-sky-50/50 pt-[calc(var(--header-h,7rem)+0.5rem)] md:pt-[calc(var(--header-h,7rem)+2.5rem)] pb-20 md:pb-28">
     {/* Background — glow azzurro morbido e diffuso su base bianca (niente griglia) */}
@@ -587,7 +606,7 @@ const Hero = () => {
         variants={staggerContainer}
         initial={false}
         animate="visible"
-        className="hero-copy order-4 lg:order-none lg:col-start-1 lg:row-start-3 lg:-mt-4 space-y-8 relative z-10"
+        className={`hero-copy ${isV5 ? "order-3" : "order-4"} lg:order-none lg:col-start-1 lg:row-start-3 lg:-mt-4 space-y-8 relative z-10`}
       >
         <motion.p variants={fadeUp} className="text-lg text-text-muted leading-relaxed max-w-lg">
           {isV5 ? (
@@ -614,30 +633,78 @@ const Hero = () => {
           <div className="flex items-center gap-2 text-sm font-medium text-text-muted"><ShieldCheck size={16} weight="fill" className="text-primary shrink-0" /><span>Senza carta di credito. Nessuna installazione.</span></div>
         </motion.div>
 
-        <motion.div variants={fadeUp} className="hero-proof pt-3 flex items-center gap-5">
-          <div className="flex -space-x-2.5">
-            {[logoBerlinesi, logoFerretti, logoLaterza, logoRanieri].map((logo, i) => (
-              <div key={i} className="w-9 h-9 rounded-full border-2 border-white bg-white flex items-center justify-center overflow-hidden shadow-sm ring-1 ring-slate-200">
-                <img src={logo} alt={`Logo ${["Studi Associati Berlinesi", "Dr. Giacomo Ferretti", "Studio Dentistico Laterza", "Studio Dentistico Ranieri"][i]}`} className="w-full h-full object-cover rounded-full" width="36" height="36" loading="lazy" />
-              </div>
-            ))}
-          </div>
-          <div className="text-sm">
-            <div className="flex gap-0.5 text-gold mb-0.5">
-              {[1, 2, 3, 4, 5].map((i) => <Star key={i} size={14} weight="fill" />)}
-            </div>
-            <span className="text-slate-500">Usato da oltre <strong className="text-slate-900">50</strong> studi in Italia</span>
-          </div>
-        </motion.div>
+        {!isV5 && proofBlock}
       </motion.div>
+
+      {/* Loghi degli studi (versione in linea): sotto l'immagine prima/dopo da telefono, sotto il bottone da computer */}
+      {isV5 && (
+        <motion.div
+          variants={staggerContainer}
+          initial={false}
+          animate="visible"
+          className="hero-proof-wrap order-5 lg:order-none lg:col-start-1 lg:row-start-4 relative z-10"
+        >
+          {proofBlock}
+        </motion.div>
+      )}
 
       {/* Phone mockup — mobile: order-2 (tra titolo e descrizione) */}
       <motion.div
         initial={{ opacity: 0, y: 60 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-        className="hero-visual order-3 lg:order-none lg:col-start-2 lg:row-start-1 lg:row-span-3 lg:self-center relative z-10 flex justify-center pb-6 lg:pb-0"
+        className={`hero-visual ${isV5 ? "order-4 lg:row-span-4 pb-8" : "order-3 lg:row-span-3 pb-6"} lg:order-none lg:col-start-2 lg:row-start-1 lg:self-center relative z-10 flex justify-center lg:pb-0`}
       >
+        {isV5 ? (
+          <div className="relative w-full max-w-[340px] sm:max-w-[400px] lg:max-w-[480px]">
+            <div className="relative rounded-3xl overflow-hidden border border-slate-200 bg-white p-2 shadow-[0_24px_80px_rgba(2,132,199,0.18)]">
+              <div className="rounded-2xl overflow-hidden">
+                <OtSlider
+                  prima={aperturaPrima}
+                  dopo={aperturaDopo}
+                  alt="Sorriso"
+                  altPrima="Sorriso prima della simulazione"
+                  altDopo="Lo stesso sorriso nella simulazione con IA"
+                  focus="center 40%"
+                  aspect="aspect-[1060/1094]"
+                  width={1060}
+                  height={1094}
+                  priority
+                  tagClass="!text-[11px] !px-2.5 !py-1"
+                  badgeClass="top-3 left-1/2 -translate-x-1/2"
+                />
+              </div>
+            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.9, type: "spring", stiffness: 180, damping: 18 }}
+              className="card-float-a absolute -bottom-5 left-3 lg:-left-8 lg:bottom-auto lg:top-[16%] flex items-center gap-2 sm:gap-3 bg-white rounded-xl sm:rounded-2xl px-3 py-2 sm:px-4 sm:py-3 border border-slate-200 shadow-md"
+            >
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                <Camera size={16} weight="fill" className="text-primary" />
+              </div>
+              <div>
+                <div className="text-xs sm:text-sm font-bold text-text-main num-tabular leading-none">5 + 2</div>
+                <div className="text-[10px] text-text-muted font-medium mt-0.5">foto e video gratis</div>
+              </div>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.1, type: "spring", stiffness: 180, damping: 18 }}
+              className="card-float-b absolute -bottom-5 right-3 lg:-right-6 lg:bottom-[14%] flex items-center gap-2 sm:gap-3 bg-white rounded-xl sm:rounded-2xl px-3 py-2 sm:px-4 sm:py-3 border border-slate-200 shadow-md"
+            >
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-gold/10 flex items-center justify-center shrink-0">
+                <Lightning size={16} weight="fill" className="text-gold" />
+              </div>
+              <div>
+                <div className="text-xs sm:text-sm font-bold text-text-main num-tabular leading-none">~1 min</div>
+                <div className="text-[10px] text-text-muted font-medium mt-0.5">per simulazione</div>
+              </div>
+            </motion.div>
+          </div>
+        ) : (
         <div className="phone-wrap relative w-[240px] sm:w-[290px] md:w-[310px]">
           <div className="phone-frame relative rounded-[3.5rem] bg-[#080810] p-[10px] shadow-[0_0_0_1px_rgba(255,255,255,0.07),inset_0_1px_0_rgba(255,255,255,0.05)] overflow-hidden -rotate-[5deg] lg:rotate-[5deg] origin-center transition-transform duration-500 ease-out">
             <div className="absolute top-[10px] left-1/2 -translate-x-1/2 w-[88px] h-[26px] bg-[#080810] rounded-full z-20 flex items-center justify-center gap-2">
@@ -766,6 +833,7 @@ const Hero = () => {
             </div>
           </motion.div>
         </div>
+        )}
       </motion.div>
     </div>
 
@@ -1231,7 +1299,17 @@ const ProblemSection = () => {
 };
 
 // ─── OtSlider (mini prima/dopo trascinabile per le card trattamento) ──────────
-const OtSlider = ({ prima, dopo, alt, focus = "center" }: { prima: string; dopo: string; alt: string; focus?: string }) => {
+type OtSliderProps = {
+  prima: string; dopo: string; alt: string; focus?: string;
+  /** Proporzioni e dimensioni dichiarate delle immagini (di default 16/9 e 800x800, come nelle card dei trattamenti). */
+  aspect?: string; width?: number; height?: number;
+  /** Testi alternativi completi: se assenti si usa `${alt} prima` / `${alt} dopo`. */
+  altPrima?: string; altDopo?: string;
+  /** Immagine sopra la piega: caricamento con priorità alta. */
+  priority?: boolean;
+  tagClass?: string; badgeClass?: string;
+};
+const OtSlider = ({ prima, dopo, alt, focus = "center", aspect = "aspect-[16/9]", width = 800, height = 800, altPrima, altDopo, priority = false, tagClass = "", badgeClass = "bottom-2 right-2" }: OtSliderProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const primaRef = useRef<HTMLImageElement>(null);
   const lineRef = useRef<HTMLDivElement>(null);
@@ -1273,19 +1351,19 @@ const OtSlider = ({ prima, dopo, alt, focus = "center" }: { prima: string; dopo:
   return (
     <div
       ref={ref}
-      className="group relative aspect-[16/9] overflow-hidden cursor-ew-resize select-none bg-slate-100 touch-none"
+      className={`group relative ${aspect} overflow-hidden cursor-ew-resize select-none bg-slate-100 touch-none`}
       onPointerDown={onDown}
       onPointerMove={onMove}
       onPointerUp={onUp}
       onPointerCancel={onUp}
       style={{ touchAction: "none", contain: "paint" }}
     >
-      <img src={dopo} width="800" height="800" alt={`${alt} dopo`} className="absolute inset-0 w-full h-full object-cover" draggable="false" decoding="async" style={{ objectPosition: focus, transform: "translateZ(0)" }} />
-      <img ref={primaRef} src={prima} width="800" height="800" alt={`${alt} prima`} className="absolute inset-0 w-full h-full object-cover" draggable="false" decoding="async"
+      <img src={dopo} width={width} height={height} alt={altDopo ?? `${alt} dopo`} className="absolute inset-0 w-full h-full object-cover" draggable="false" decoding="async" {...(priority ? { fetchPriority: "high" as const } : {})} style={{ objectPosition: focus, transform: "translateZ(0)" }} />
+      <img ref={primaRef} src={prima} width={width} height={height} alt={altPrima ?? `${alt} prima`} className="absolute inset-0 w-full h-full object-cover" draggable="false" decoding="async" {...(priority ? { fetchPriority: "high" as const } : {})}
         style={{ objectPosition: focus, clipPath: "inset(0 50% 0 0)", willChange: "clip-path", transform: "translateZ(0)", backfaceVisibility: "hidden" }} />
-      <span ref={primaTagRef} className="ot-tag ot-prima">Prima</span>
-      <span ref={dopoTagRef} className="ot-tag ot-dopo">Dopo</span>
-      <AiBadge className="bottom-2 right-2" />
+      <span ref={primaTagRef} className={`ot-tag ot-prima ${tagClass}`}>Prima</span>
+      <span ref={dopoTagRef} className={`ot-tag ot-dopo ${tagClass}`}>Dopo</span>
+      <AiBadge className={badgeClass} />
       <div ref={lineRef} className="pointer-events-none absolute top-0 bottom-0 -ml-px w-0.5 bg-white shadow" style={{ left: "50%" }}>
         <span className="ot-handle"><ArrowsHorizontal size={16} weight="bold" /></span>
       </div>
