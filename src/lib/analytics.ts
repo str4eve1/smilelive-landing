@@ -1,4 +1,4 @@
-import posthog from "posthog-js";
+import type { PostHog } from "posthog-js";
 import { getConsent, onConsentChange } from "./consent";
 
 const POSTHOG_TOKEN = "phc_rDyX79RGSjPVPyjJNUBJmKHMv5dzmJyxfQEXAi7cAqsG";
@@ -7,17 +7,27 @@ const META_PIXEL_ID = "2010529443232237";
 const META_PIXEL_SRC = "https://connect.facebook.net/en_US/fbevents.js";
 
 let posthogInitialized = false;
+let ph: PostHog | null = null;
 let pixelInitialized = false;
 
 function initPostHog() {
   if (posthogInitialized) return;
-  posthog.init(POSTHOG_TOKEN, {
-    api_host: POSTHOG_HOST,
-    defaults: "2026-01-30",
-    person_profiles: "identified_only",
-    cross_subdomain_cookie: true,
-  });
   posthogInitialized = true;
+  // La libreria si scarica solo adesso, dopo il sì ai cookie di statistica:
+  // chi non accetta non la scarica affatto.
+  import("posthog-js")
+    .then(({ default: posthog }) => {
+      posthog.init(POSTHOG_TOKEN, {
+        api_host: POSTHOG_HOST,
+        defaults: "2026-01-30",
+        person_profiles: "identified_only",
+        cross_subdomain_cookie: true,
+      });
+      ph = posthog;
+    })
+    .catch(() => {
+      posthogInitialized = false; // rete caduta: si riprova al prossimo cambio di consenso
+    });
 }
 
 type Fbq = ((...args: unknown[]) => void) & {
@@ -68,9 +78,9 @@ if (typeof window !== "undefined") {
 
 export function trackCta(cta: string, section: string) {
   const consent = getConsent();
-  if (consent?.choices.statistics && posthogInitialized) {
+  if (consent?.choices.statistics && ph) {
     try {
-      posthog.capture("cta_click", { cta, section });
+      ph.capture("cta_click", { cta, section });
     } catch {
       /* posthog not ready */
     }

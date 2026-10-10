@@ -17,7 +17,7 @@ export default {
         background: "#fafafa", // Grigio quasi bianco, molto luminoso
         surface: "#ffffff", // Bianco puro
         "surface-elevated": "#f1f5f9", // Grigio platino chiarissimo
-        primary: "#0284c7", // Azzurro cielo, più saturo per risaltare sul chiaro
+        primary: "rgb(var(--sl-primary, 2 132 199) / <alpha-value>)", // Azzurro cielo, più saturo per risaltare sul chiaro
         "primary-glow": "rgba(2, 132, 199, 0.2)", // Bagliore più leggero
         secondary: "#64748b", // Grigio ardesia (argento) per dettagli secondari
         gold: "#d97706", // Oro più scuro/ambra per contrasto sul bianco

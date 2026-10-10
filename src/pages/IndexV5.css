@@ -1,9 +1,19 @@
+/* Il carattere del marchio, servito dal sito stesso (un solo file, pesi da 200 a 800). */
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url("../assets/fonts/plus-jakarta-sans-latin.woff2") format("woff2");
+}
+
 .smilelive-v5 {
-  --v5-blue: #0277b5;
-  --v5-blue-deep: #075985;
-  --v5-ink: #0b1f33;
+  --v5-blue: #2563eb;
+  --v5-blue-deep: #1d4ed8;
+  --v5-ink: #0b1120;
   --v5-copy: #40556a;
-  --v5-canvas: #f7fbfd;
+  --v5-canvas: #f8fafc;
+  --sl-primary: 37 99 235;
   --v5-soft: #eaf5fa;
   --v5-line: rgba(2, 119, 181, 0.14);
   --v5-ease: cubic-bezier(0.16, 1, 0.3, 1);
@@ -14,7 +24,7 @@
 .smilelive-v5 .site-header .announcement-bar {
   min-height: 36px;
   padding-block: 7px;
-  background: linear-gradient(180deg, #0ea5e9 0%, var(--v5-blue) 58%, #0369a1 100%);
+  background: linear-gradient(180deg, #3b82f6 0%, var(--v5-blue) 58%, #1d4ed8 100%);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.28),
     inset 0 -1px 0 rgba(3, 105, 161, 0.72),
@@ -205,9 +215,15 @@
   line-height: 1.04;
 }
 
-/* Niente font wide (Syne): titoli e numeri in Inter stretto */
-.smilelive-v5 .font-headline {
-  font-family: "Inter", sans-serif !important;
+/* Carattere del marchio su tutta la pagina, titoli compresi */
+main.smilelive-v5,
+.smilelive-v5 .font-headline,
+.smilelive-v5 .font-body,
+.smilelive-v5 h1,
+.smilelive-v5 h2,
+.smilelive-v5 h3,
+.smilelive-v5 h4 {
+  font-family: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif !important;
 }
 
 /* Escluse le sezioni scure: lì valgono i colori chiari originali (slate-*) */

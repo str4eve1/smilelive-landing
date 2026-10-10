@@ -4,7 +4,7 @@ import {
   CaretRight, Sparkle, Pulse, ShieldCheck,
   Star, TrendUp, Users, Target, CheckCircle, Medal, Lightning, Camera, Check,
   ArrowsHorizontal, ClipboardText, Microphone, ChatCircle, Receipt, FileArrowDown, ChartLineUp,
-  List, X, VideoCamera, EyeSlash, Gift, Headset, Play,
+  List, X, VideoCamera, EyeSlash, Gift, Headset, Play, ArrowRight, ArrowBendRightDown, ArrowBendRightUp,
   InstagramLogo, FacebookLogo, WhatsappLogo, EnvelopeSimple
 } from "@phosphor-icons/react";
 import beforeImg from '../assets/WEBP/PRIMA (2).webp';
@@ -1474,6 +1474,104 @@ const Esempi = () => {
   );
 };
 
+// ─── ProtocolloLab (le sette fasi, tra studio e laboratorio) ─────────────────
+// I testi vengono dalla pagina /protocollo: se cambiano là, vanno cambiati anche qui.
+const FASI = [
+  { dove: "studio", titolo: "Acquisizione", testo: "Foto del volto e scansione intraorale, nella stessa seduta." },
+  { dove: "studio", titolo: "Simulazione", testo: "Il possibile risultato, generato dalla foto originale." },
+  { dove: "studio", titolo: "Fattibilità", testo: "Il clinico confronta situazione attuale e simulata, con la scansione sovrapposta alla foto." },
+  { dove: "lab", titolo: "Matching nel software CAD", testo: "Scansione, foto e simulazione sovrapposte: la scansione dà la scala millimetrica." },
+  { dove: "lab", titolo: "Ceratura digitale", testo: "Wax-up, dal nuovo piano occlusale." },
+  { dove: "studio", titolo: "Mock-up o snap-on", testo: "Prova in bocca." },
+  { dove: "lab", titolo: "Manufatto definitivo", testo: "Con CAD/CAM o stampa 3D." },
+] as const;
+
+const ProtocolloLab = () => (
+  <section data-sez="protocollo" id="come-funziona" className="py-16 md:py-24 bg-white" style={{ scrollMarginTop: "var(--header-h, 7rem)" }}>
+    <div className="max-w-7xl mx-auto px-6">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="max-w-3xl"
+      >
+        <h2 className="text-3xl md:text-5xl font-headline font-bold tracking-tight text-text-main">Prima si verifica, <span className="text-primary">poi si mostra</span>.</h2>
+        <p className="mt-4 text-lg text-text-muted leading-relaxed">Il protocollo SmileLive porta dalla foto al manufatto definitivo in sette fasi: quattro in studio, tre in laboratorio. Al paziente arriva solo un caso che il clinico ha giudicato fattibile.</p>
+      </motion.div>
+
+      {/* Da computer largo: due corsie, studio sopra e laboratorio sotto, e le fasi che passano dall'una all'altra */}
+      <motion.ol
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        className="mt-12 hidden xl:grid grid-cols-[9rem_repeat(7,minmax(0,1fr))] grid-rows-2 list-none p-0 m-0"
+      >
+        <li aria-hidden="true" className="col-start-1 col-end-[-1] row-start-1 rounded-t-3xl bg-sky-50/70" />
+        <li aria-hidden="true" className="col-start-1 col-end-[-1] row-start-2 rounded-b-3xl bg-slate-100" />
+        <li aria-hidden="true" className="col-start-1 row-start-1 self-center pl-5 whitespace-nowrap text-sm font-bold text-primary">In studio</li>
+        <li aria-hidden="true" className="col-start-1 row-start-2 self-center pl-5 whitespace-nowrap text-sm font-bold text-text-main">In laboratorio</li>
+        {FASI.map((f, i) => {
+          const prossima = FASI[i + 1];
+          const Freccia = !prossima ? null : prossima.dove === f.dove ? ArrowRight : f.dove === "studio" ? ArrowBendRightDown : ArrowBendRightUp;
+          return (
+            <motion.li
+              key={f.titolo}
+              variants={fadeUp}
+              style={{ gridColumnStart: i + 2 }}
+              className={`relative px-3 py-7 ${f.dove === "studio" ? "row-start-1" : "row-start-2"}`}
+            >
+              <span className="sr-only">{f.dove === "studio" ? "In studio. " : "In laboratorio. "}</span>
+              <span className={`flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold text-white ${f.dove === "studio" ? "bg-primary" : "bg-[#0b1120]"}`}>{i + 1}</span>
+              {Freccia && <Freccia size={18} weight="bold" aria-hidden="true" className="absolute right-1 top-9 text-slate-400" />}
+              <h3 className="mt-3 text-base font-bold leading-snug text-text-main">{f.titolo}</h3>
+              <span className="mt-1.5 block text-sm leading-relaxed text-text-muted">{f.testo}</span>
+            </motion.li>
+          );
+        })}
+      </motion.ol>
+
+      {/* Da telefono e tablet: una colonna, con il luogo scritto accanto a ogni fase */}
+      <motion.ol
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.1 }}
+        className="mt-10 xl:hidden max-w-2xl list-none p-0 m-0"
+      >
+        {FASI.map((f, i) => (
+          <motion.li key={f.titolo} variants={fadeUp} className="relative flex gap-4 pb-7 last:pb-0">
+            {i < FASI.length - 1 && <span aria-hidden="true" className="absolute left-[17px] top-9 bottom-0 w-0.5 bg-slate-200" />}
+            <span className={`relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white ${f.dove === "studio" ? "bg-primary" : "bg-[#0b1120]"}`}>{i + 1}</span>
+            <div className="pt-1">
+              <h3 className="text-lg font-bold leading-snug text-text-main">
+                {f.titolo} <span className={`ml-1 whitespace-nowrap text-sm font-semibold ${f.dove === "studio" ? "text-primary" : "text-slate-500"}`}>{f.dove === "studio" ? "in studio" : "in laboratorio"}</span>
+              </h3>
+              <span className="mt-1 block text-base leading-relaxed text-text-muted">{f.testo}</span>
+            </div>
+          </motion.li>
+        ))}
+      </motion.ol>
+
+      <div className="mt-12 rounded-3xl border border-slate-200 bg-slate-50 p-7 md:p-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-7">
+        <div className="max-w-2xl">
+          <h3 className="text-2xl md:text-3xl font-headline font-bold tracking-tight text-text-main">Studio e laboratorio sullo stesso caso.</h3>
+          <p className="mt-3 text-lg text-text-muted leading-relaxed">La prescrizione la detti a voce e SmileLive la compila. Il laboratorio la riceve nel suo portale insieme alle scansioni e può scrivere allo studio in chat.</p>
+        </div>
+        <div className="flex flex-col sm:flex-row lg:flex-col gap-3 shrink-0">
+          <a href="https://app.smilelive.it/?open=lab" onClick={() => trackCta("demo_prescrizione", "protocollo_home")} className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 font-bold text-white transition-[transform,opacity] duration-150 ease-out active:scale-[0.97] hover:opacity-90">
+            <Microphone size={18} weight="fill" /> Prova la prescrizione vocale
+          </a>
+          <a href="/protocollo" onClick={() => trackCta("protocollo", "protocollo_home")} className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full border-2 border-slate-300 px-6 py-3 font-bold text-text-main transition-colors hover:border-slate-500">
+            Leggi il protocollo completo
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
 // ─── EveryTreatment (Hormozi: su ogni trattamento, crolla "il mio caso e' diverso") ──
 const EveryTreatment = () => {
   const isV5 = useIsV5();
@@ -2746,42 +2844,16 @@ export default function IndexV3({ variant = "v3" }: { variant?: SmileLiveLanding
     <main data-landing-version={variant} className={`min-h-screen w-full overflow-x-clip bg-white text-text-main selection:bg-primary/20 selection:text-text-main font-['Inter'] ${variant === "v5" ? "smilelive-v5" : ""}`}>
       <TopBar />
       {/* ── Hormozi spine: Hook → Dolore (€ poi emotivo) → Reframe → Meccanismo → Prova → Facilità → CTA → Value stack → Prova → Ancora prezzo → Offerta → Qualifica → Urgenza → Obiezioni → Chiusura ── */}
-      {/* Ordine: apertura → video → preventivi → come funziona → studio → laboratorio → prezzi → domande → chiusura.
-          Fuori dalla pagina, per ora: recensioni e testimonianze, trattamenti, calcolatore, sezione sul futuro. */}
+      {/* Ordine: apertura → video → esempi → protocollo e laboratorio → studio → prezzi → domande → chiusura.
+          Fuori dalla pagina, per ora (il codice resta più su): perché sceglierlo, problema, manifesto, anteprima con slider,
+          invito intermedio, i quattro passi, ruoli, recensioni e testimonianze, trattamenti, calcolatore, futuro. */}
       <Hero />                {/* Apertura: prima e dopo con la linea */}
       <AISimShowcase />       {/* Dalla foto al video del sorriso */}
       <DemoVideo />           {/* Il software vero, 2 minuti con voce */}
       <Esempi />              {/* Simulazioni già pubblicate sui canali SmileLive */}
-      <WhyChoose />           {/* Perché scegliere: 4 icone */}
-      <ProblemSection />      {/* Preventivi: il costo del «ci penso» */}
-      <ManifestoBand />       {/* Reframe: "compra l'immagine di sé" */}
-      <EmotionalVideo />      {/* Effetto Wow + slider — la soluzione */}
-      <IntermediateCTA />     {/* CTA contestuale */}
-      <HowItWorks />          {/* Facilità: quanto è semplice */}
+      <ProtocolloLab />       {/* Le sette fasi tra studio e laboratorio, e la prescrizione vocale */}
       <WhatYouGet />          {/* Per lo studio: tutto in un posto */}
-      {/* Per il laboratorio: prescrizione vocale */}
-      <div className="bg-[#07111f] text-white">
-        <div className="max-w-5xl mx-auto px-6 py-12 md:py-14 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
-          <div className="flex flex-col md:flex-row items-center gap-4">
-            <div className="w-12 h-12 shrink-0 rounded-2xl grid place-items-center bg-gradient-to-br from-orange-400 to-amber-600 text-white shadow-[0_18px_48px_-24px_rgba(249,115,22,0.95)]">
-              <Microphone size={22} weight="fill" />
-            </div>
-            <div>
-              <h3 className="text-xl md:text-2xl font-bold tracking-tight">Prova la prescrizione vocale</h3>
-              <p className="mt-1 text-sm text-slate-300">Detti la lavorazione a voce e SmileLive compila la prescrizione da mandare al laboratorio. Provala subito: la dettatura è aperta anche in prova gratuita.</p>
-            </div>
-          </div>
-          <a
-            href="https://app.smilelive.it/?open=lab"
-            onClick={() => trackCta("demo_prescrizione", "teaser_pricing")}
-            className="shrink-0 inline-flex min-h-[46px] items-center gap-2 rounded-full bg-gradient-to-br from-orange-400 to-amber-600 px-6 py-3 font-extrabold text-white shadow-[0_24px_64px_-28px_rgba(249,115,22,0.95)] transition hover:-translate-y-0.5 active:scale-[0.98]"
-          >
-            Provala ora <CaretRight size={16} weight="bold" />
-          </a>
-        </div>
-      </div>
       <Pricing />             {/* L'offerta */}
-      <ForWho />              {/* Qualifica / esclusività */}
       <FAQ />                 {/* Gestione obiezioni */}
       <FinalCTA />            {/* Chiusura */}
       <Footer />
