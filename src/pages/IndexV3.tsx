@@ -543,7 +543,7 @@ const Hero = () => {
             <div className="flex gap-0.5 text-gold mb-0.5">
               {[1, 2, 3, 4, 5].map((i) => <Star key={i} size={14} weight="fill" />)}
             </div>
-            <span className="text-slate-500">Usato da oltre <strong className="text-slate-900">50</strong> studi in Italia</span>
+            <span className="text-slate-500">{isV5 ? "In uso in studi dentistici italiani" : <>Usato da oltre <strong className="text-slate-900">50</strong> studi in Italia</>}</span>
           </div>
         </motion.div>
   );
@@ -860,7 +860,7 @@ const TrustMarquee = () => {
     { logo: logoBerlinesi, text: "Fantastico, il team e' giovane e professionale. Nel primo mese abbiamo fatto circa 30 preview che ci hanno portato in poltrona 3 casi extra: 6 faccette e 2 mock-up.", author: "Studi Associati Berlinesi" },
     { logo: logoLaterza, text: "La media e' stabile: su 15 preview fatte dalla mia assistente in sala d'attesa, almeno un paziente prenota la visita estetica. Ottimo per aumentare le richieste spontanee.", author: "Studio Dentistico Laterza" },
     { logo: logoFerretti, text: "Quello che apprezzo di piu' e' che il software continua a migliorare. Le ragazze in reception lo propongono come se fosse un gioco, e noi ci troviamo i preventivi firmati sulla scrivania.", author: "Dr. Giacomo Ferretti" },
-    { logo: logoRanieri, text: "La nostra ASO ormai lo propone a chiunque entri per una detartrasi. Ci vogliono 10 secondi e il risultato lascia i pazienti a bocca aperta.", author: "Studio Dentistico Ranieri" },
+    { logo: logoRanieri, text: "La nostra ASO ormai lo propone a chiunque entri per una detartrasi. Il risultato lascia i pazienti a bocca aperta.", author: "Studio Dentistico Ranieri" },
   ];
   const items = [...reviews, ...reviews];
 
@@ -1956,7 +1956,7 @@ const ROICalculator = () => {
 const IntermediateCTA = () => {
   const isV5 = useIsV5();
   const stats = isV5 ? [
-    { icon: <Users size={22} weight="fill" className="text-gold" />, value: "50+", label: "Studi attivi in Italia" },
+    { icon: <ClipboardText size={22} weight="fill" className="text-gold" />, value: "7", label: "Fasi del protocollo clinico" },
     { icon: <Camera size={22} weight="fill" className="text-primary" />, value: "5 + 2", label: "Foto e video in prova gratuita" },
     { icon: <Gift size={22} weight="fill" className="text-text-main" />, value: "0 €", label: "Per iniziare, senza carta" },
     { icon: <Lightning size={22} weight="fill" className="text-text-main" />, value: "~1 min", label: "Per simulazione" },
@@ -2204,7 +2204,7 @@ const Testimonials = () => {
     { logo: logoBerlinesi, name: "Studi Associati Berlinesi", role: "Studio Dentistico", text: "Fantastico, il team di SmileLive e' giovane e professionale. In pochissimo tempo il sistema e' stato inserito nell'operativita' della segreteria, e nel primo mese abbiamo fatto circa 30 preview che ci hanno portato in poltrona 3 casi extra: 6 faccette e 2 mock-up. Sono molto soddisfatto.", highlight: "3 casi extra nel primo mese" },
     { logo: logoLaterza, name: "Studio Dentistico Laterza", role: "Studio Dentistico", text: "Uso SmileLive ormai da sei mesi e non potrei farne a meno. La media e' stabile: su 15 preview fatte dalla mia assistente in sala d'attesa, almeno un paziente prenota la visita estetica. Ora stiamo lavorando per migliorare la visibilita' del poster in studio.", highlight: "1 paziente nuovo ogni 15 preview" },
     { logo: logoFerretti, name: "Dr. Giacomo Ferretti", role: "Odontoiatra", text: "Quello che apprezzo di piu', oltre al fatto che mi genera conversioni in automatico, e' che il software continua a migliorare. L'ultimo aggiornamento ha reso i video ancora piu' realistici. Le ragazze in reception lo propongono come se fosse un gioco.", highlight: "Aggiornamenti continui e utili" },
-    { logo: logoRanieri, name: "Studio Dentistico Ranieri", role: "Studio Dentistico", text: "La nostra ASO ormai lo propone a chiunque entri per una detartrasi. Ci vogliono 10 secondi e il risultato sul tablet lascia i pazienti a bocca aperta. Il mese scorso abbiamo chiuso 2 sbiancamenti e un ponte solo grazie alle preview spontanee.", highlight: "Integrazione perfetta post-igiene" },
+    { logo: logoRanieri, name: "Studio Dentistico Ranieri", role: "Studio Dentistico", text: "La nostra ASO ormai lo propone a chiunque entri per una detartrasi. Il risultato sul tablet lascia i pazienti a bocca aperta. Il mese scorso abbiamo chiuso 2 sbiancamenti e un ponte solo grazie alle preview spontanee.", highlight: "Integrazione perfetta post-igiene" },
   ];
 
   return (
