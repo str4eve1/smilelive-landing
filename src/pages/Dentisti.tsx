@@ -5,6 +5,7 @@ import video from "@/assets/dentisti-video.mp4";
 import { trackCta } from "@/lib/analytics";
 import { openCookieBanner } from "@/lib/consent";
 import { appLink } from "@/lib/utm";
+import WhatsAppWidget from "@/components/WhatsAppWidget";
 import "./dentisti/dentisti.css";
 import ModuloRichiamata from "./dentisti/ModuloRichiamata";
 
@@ -175,6 +176,10 @@ export default function Dentisti() {
           </nav>
         </div>
       </footer>
+
+      <div className="dn-wa-float">
+        <WhatsAppWidget />
+      </div>
 
       <div className={`dn-bar${barVisible ? " is-visible" : ""}`} aria-hidden={!barVisible}>
         <a href={appUrl} onClick={onTry} className="dn-btn dn-btn--blue" tabIndex={barVisible ? 0 : -1}>

@@ -48,6 +48,8 @@
 .dn-btn--ghost:hover { background: #fff; color: var(--dn-blue-deep); }
 /* il secondo WhatsApp sta sotto il bottone principale solo da computer; su telefono c'è quello in testata */
 .dn-wa-hero { display: none; }
+/* bottone fluttuante: solo da computer, su telefono in basso c'e la barra fissa */
+.dn-wa-float { display: none; }
 .dn-btn--outline { background: #fff; color: var(--dn-navy); border: 2px solid var(--dn-navy); }
 .dn-btn--outline:hover { background: var(--dn-navy); color: #fff; }
 
@@ -93,6 +95,7 @@
   .dn-cta { max-width: 560px; margin-top: 28px; padding-bottom: 24px; }
   .dn-cta .dn-btn { min-height: 68px; font-size: 20px; }
   .dn-wa-hero { display: flex; margin-top: 14px; }
+  .dn-wa-float { display: contents; }
   .dn-video { align-self: center; }
   /* il video quadrato prende tutta la colonna, ma resta intero dentro lo schermo */
   .dn-video video { max-width: none; width: min(100%, max(480px, calc(100vh - 80px))); }
