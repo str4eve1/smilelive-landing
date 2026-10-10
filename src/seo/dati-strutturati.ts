@@ -3,21 +3,22 @@ import { SITO, paginaDi } from "./pagine";
 
 const descrizione = paginaDi("/")!.description;
 
-const prezzo = (valore: string) => ({
+// L'unità mensile c'è solo per i piani a pagamento: la prova gratuita non è un canone.
+const prezzo = (valore: string, mensile: boolean) => ({
   "@type": "UnitPriceSpecification",
   price: valore,
   priceCurrency: "EUR",
   valueAddedTaxIncluded: true,
-  unitCode: "MON",
+  ...(mensile ? { unitCode: "MON" } : {}),
 });
 
-const offerta = (name: string, valore: string, description: string) => ({
+const offerta = (name: string, valore: string, description: string, mensile = true) => ({
   "@type": "Offer",
   name,
   description,
   price: valore,
   priceCurrency: "EUR",
-  priceSpecification: prezzo(valore),
+  priceSpecification: prezzo(valore, mensile),
   url: `${SITO}/`,
 });
 
@@ -65,7 +66,7 @@ export const datiStrutturatiHome = {
         "Vista clinica: scansione 3D sovrapposta alla foto",
       ],
       offers: [
-        offerta("Prova gratuita", "0", "5 foto e 2 video, senza carta di credito."),
+        offerta("Prova gratuita", "0", "5 foto e 2 video, senza carta di credito.", false),
         offerta("Studio Piccolo", "57", "Al mese, IVA inclusa; 47 al mese con il piano annuale. 20 foto e 8 video al mese."),
         offerta("Studio Medio", "114", "Al mese, IVA inclusa; 94 al mese con il piano annuale. 50 foto e 18 video al mese."),
         offerta("Studio Grande", "157", "Al mese, IVA inclusa; 137 al mese con il piano annuale. 100 foto e 30 video al mese."),
