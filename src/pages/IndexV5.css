@@ -67,8 +67,9 @@
 }
 
 .smilelive-v5 .hero-title h1 {
-  max-width: 12.5ch;
-  font-size: clamp(2.75rem, 5.2vw, 4.75rem) !important;
+  max-width: none;
+  text-wrap: balance;
+  font-size: clamp(2.5rem, 4.3vw, 4.25rem) !important;
   line-height: 1.01 !important;
   letter-spacing: -0.05em;
 }
@@ -255,7 +256,7 @@
   .smilelive-v5 .hero-visual { order: 4; margin-top: 8px; }
 
   .smilelive-v5 .hero-title h1 {
-    max-width: 13ch;
+    max-width: none;
   }
 }
 

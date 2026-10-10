@@ -213,10 +213,12 @@ const EmotionalVideo = () => {
                 aria-valuenow={50}
                 style={{ touchAction: "none" }}
               >
-                <img src={afterImg} alt="Sorriso Dopo" className="absolute inset-0 w-full h-full object-cover object-[center_62%]" draggable="false" />
+                <img src={afterImg} width="1199" height="1600" alt="Sorriso Dopo" className="absolute inset-0 w-full h-full object-cover object-[center_62%]" draggable="false" />
                 <img
                   ref={beforeRef}
                   src={beforeImg}
+                  width="1199"
+                  height="1600"
                   alt="Sorriso Prima"
                   className="absolute inset-0 w-full h-full object-cover object-[center_62%]"
                   draggable="false"
@@ -341,17 +343,17 @@ const AISimShowcase = () => {
                 </g>
               </svg>
 
-              {/* callout 67%+ — dimensione fluida (cqw) così scala con l'illustrazione
+              {/* callout «Dalla foto al video» — dimensione fluida (cqw) così scala con l'illustrazione
                   e resta centrato/ancorato sopra il punto medio della freccia a ogni size */}
               <div className="absolute top-[24%] left-[46%] -translate-x-1/2 -translate-y-full z-20 leading-none text-center">
-                <div className="font-headline font-bold text-primary text-[11cqw]">67%+</div>
-                <div className="text-text-muted font-medium mt-[0.5em] leading-tight text-[2.7cqw]">Accettazione<br />preventivi</div>
+                <div className="font-headline font-bold text-primary text-[7cqw]">Dalla foto</div>
+                <div className="text-text-muted font-medium mt-[0.5em] leading-tight text-[2.7cqw]">al video<br />del sorriso</div>
               </div>
 
               {/* Prima */}
               <div className="absolute left-[1%] top-[24%] w-[31%] z-10">
                 <div className="relative rounded-full overflow-hidden shadow-lg ring-4 ring-white aspect-square">
-                  <img src={beforeImg} alt="Prima" className="w-full h-full object-cover object-[center_28%]" loading="lazy" />
+                  <img src={beforeImg} width="1199" height="1600" alt="Foto del sorriso prima della simulazione" className="w-full h-full object-cover object-[center_28%]" loading="lazy" />
                   {/* in alto: l'etichetta "Prima" sta sotto al cerchio (-bottom-2) */}
                   <AiBadge className="top-2 left-1/2 -translate-x-1/2" />
                 </div>
@@ -361,7 +363,7 @@ const AISimShowcase = () => {
               {/* Dopo */}
               <div className="absolute right-[2%] top-[4%] w-[34%] z-10">
                 <div className="relative rounded-full overflow-hidden shadow-xl ring-4 ring-white aspect-square">
-                  <img src={afterImg} alt="Dopo" className="w-full h-full object-cover object-[center_28%]" loading="lazy" />
+                  <img src={afterImg} width="1199" height="1600" alt="Sorriso simulato con IA, dopo" className="w-full h-full object-cover object-[center_28%]" loading="lazy" />
                   <AiBadge className="bottom-2 left-1/2 -translate-x-1/2" />
                 </div>
                 <span className="absolute -top-2 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-primary text-[11px] font-bold text-white shadow">Dopo</span>
@@ -370,7 +372,7 @@ const AISimShowcase = () => {
               {/* AI Video (in primo piano) — rettangolare, più grande */}
               <div className="absolute left-[33%] bottom-[2%] w-[38%] z-30">
                 <div className="relative rounded-3xl overflow-hidden shadow-2xl ring-4 ring-white aspect-[4/5] bg-slate-900 group cursor-pointer">
-                  <img src={afterImg} alt="AI Video" className="w-full h-full object-cover object-[center_30%] opacity-95" loading="lazy" />
+                  <img src={afterImg} width="1199" height="1600" alt="Anteprima del video del sorriso generato con IA" className="w-full h-full object-cover object-[center_30%] opacity-95" loading="lazy" />
                   <div className="absolute inset-0 flex items-center justify-center bg-black/15">
                     <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
                       <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 ml-0.5 text-primary"><path d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" /></svg>
@@ -390,7 +392,7 @@ const AISimShowcase = () => {
               </h2>
               <p className="mt-5 text-xl text-text-muted leading-relaxed">
                 {isV5 ? <>
-                  SmileLive genera una <strong className="text-text-main font-semibold">sequenza video personale</strong> a partire dalla preview. Il paziente osserva il suo cambiamento in modo naturale; nei dati raccolti dagli studi attivi, l'accettazione dei preventivi arriva <strong className="text-text-main font-semibold">oltre il 67%</strong>.
+                  SmileLive genera una <strong className="text-text-main font-semibold">sequenza video personale</strong> a partire dalla preview. Il paziente osserva il suo cambiamento in modo naturale.
                 </> : <>
                   SmileLive non si limita a trasformare un'immagine: genera un <strong className="text-text-main font-semibold">video realistico</strong> del paziente con il suo nuovo sorriso. Vedersi, non doverlo solo immaginare, fa crollare l'esitazione e porta l'accettazione dei preventivi <strong className="text-text-main font-semibold">oltre il 67%</strong>.
                 </>}
@@ -545,7 +547,7 @@ const Hero = () => {
       {/* Pillola — mobile: order-1 (in alto) */}
       <motion.div
         variants={staggerContainer}
-        initial="hidden"
+        initial={false}
         animate="visible"
         className="hero-kicker order-1 lg:order-none lg:col-start-1 lg:row-start-1 relative z-10"
       >
@@ -560,15 +562,15 @@ const Hero = () => {
       {/* Titolo — mobile: order-4 (in fondo, sotto la descrizione) */}
       <motion.div
         variants={staggerContainer}
-        initial="hidden"
+        initial={false}
         animate="visible"
         className="hero-title order-2 lg:order-none lg:col-start-1 lg:row-start-2 lg:-mt-4 relative z-10"
       >
         <motion.h1 variants={fadeUp} className="text-2xl sm:text-5xl md:text-6xl font-headline font-bold tracking-tight leading-[1.15] sm:leading-[1.1] text-text-main">
           {isV5 ? (
             <>
-              <span className="block">1 foto. 1 video.</span>
-              <span className="block text-primary">Il paziente vede subito il risultato.</span>
+              <span className="block">Simulazione del sorriso con IA.</span>
+              <span className="block text-primary">In prima visita, in foto e in video.</span>
             </>
           ) : (
             <>
@@ -583,7 +585,7 @@ const Hero = () => {
       {/* Descrizione + CTA + social proof — mobile: order-3 (sopra il titolo) */}
       <motion.div
         variants={staggerContainer}
-        initial="hidden"
+        initial={false}
         animate="visible"
         className="hero-copy order-4 lg:order-none lg:col-start-1 lg:row-start-3 lg:-mt-4 space-y-8 relative z-10"
       >
@@ -609,14 +611,14 @@ const Hero = () => {
               <CaretRight size={14} weight="bold" />
             </span>
           </motion.a>
-          <div className="flex items-center gap-2 text-sm font-medium text-text-muted"><ShieldCheck size={16} weight="fill" className="text-primary shrink-0" /><span>Nessuna carta. Setup in 10 minuti.</span></div>
+          <div className="flex items-center gap-2 text-sm font-medium text-text-muted"><ShieldCheck size={16} weight="fill" className="text-primary shrink-0" /><span>Senza carta di credito. Nessuna installazione.</span></div>
         </motion.div>
 
         <motion.div variants={fadeUp} className="hero-proof pt-3 flex items-center gap-5">
           <div className="flex -space-x-2.5">
             {[logoBerlinesi, logoFerretti, logoLaterza, logoRanieri].map((logo, i) => (
               <div key={i} className="w-9 h-9 rounded-full border-2 border-white bg-white flex items-center justify-center overflow-hidden shadow-sm ring-1 ring-slate-200">
-                <img src={logo} alt={`Clinica ${i + 1}`} className="w-full h-full object-cover rounded-full" width="36" height="36" loading="lazy" />
+                <img src={logo} alt={`Logo ${["Studi Associati Berlinesi", "Dr. Giacomo Ferretti", "Studio Dentistico Laterza", "Studio Dentistico Ranieri"][i]}`} className="w-full h-full object-cover rounded-full" width="36" height="36" loading="lazy" />
               </div>
             ))}
           </div>
@@ -708,12 +710,12 @@ const Hero = () => {
             className="hero-badge hero-badge-conversion transition-opacity duration-700 ease-out card-float-a absolute flex -left-8 sm:-left-[6.5rem] top-[22%] bg-white rounded-xl sm:rounded-2xl px-2.5 py-1.5 sm:px-4 sm:py-3 border border-slate-200 items-center gap-1.5 sm:gap-3 min-w-[104px] sm:min-w-[130px]"
           >
             <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-              <TrendUp size={14} weight="fill" className="text-primary sm:hidden" />
-              <TrendUp size={16} weight="fill" className="text-primary hidden sm:block" />
+              <Camera size={14} weight="fill" className="text-primary sm:hidden" />
+              <Camera size={16} weight="fill" className="text-primary hidden sm:block" />
             </div>
             <div>
-              <div className="text-xs sm:text-sm font-bold text-text-main num-tabular leading-none">+67%</div>
-              <div className="text-[9px] sm:text-[10px] text-text-muted font-medium mt-0.5">conversione</div>
+              <div className="text-xs sm:text-sm font-bold text-text-main num-tabular leading-none">5 + 2</div>
+              <div className="text-[9px] sm:text-[10px] text-text-muted font-medium mt-0.5">foto e video gratis</div>
             </div>
           </motion.div>
 
@@ -728,8 +730,8 @@ const Hero = () => {
               <Lightning size={16} weight="fill" className="text-gold hidden sm:block" />
             </div>
             <div>
-              <div className="text-xs sm:text-sm font-bold text-text-main num-tabular leading-none">10 sec</div>
-              <div className="text-[9px] sm:text-[10px] text-text-muted font-medium mt-0.5">per preview</div>
+              <div className="text-xs sm:text-sm font-bold text-text-main num-tabular leading-none">~1 min</div>
+              <div className="text-[9px] sm:text-[10px] text-text-muted font-medium mt-0.5">per simulazione</div>
             </div>
           </motion.div>
 
@@ -753,9 +755,9 @@ const Hero = () => {
             className="hero-badge hero-badge-preview transition-opacity duration-700 ease-out card-float-d absolute -left-10 sm:-left-[130px] bottom-[9%] w-[132px] sm:w-[168px] rounded-2xl overflow-hidden bg-white p-1.5 shadow-[0_18px_46px_-16px_rgba(2,132,199,0.5)] ring-1 ring-slate-100"
           >
             <div className="relative rounded-xl overflow-hidden aspect-[3/2] bg-slate-100">
-              <img src={afterImg} alt="Denti dopo" className="absolute inset-0 w-full h-full object-cover origin-center" style={{ objectPosition: '51% 64%', transform: 'scale(3.95)' }} loading="lazy" />
+              <img src={afterImg} width="1199" height="1600" alt="Denti dopo" className="absolute inset-0 w-full h-full object-cover origin-center" style={{ objectPosition: '51% 64%', transform: 'scale(3.95)' }} loading="lazy" />
               <div className="absolute inset-0 overflow-hidden" style={{ clipPath: 'inset(0 50% 0 0)' }}>
-                <img src={beforeImg} alt="Denti prima" className="absolute inset-0 w-full h-full object-cover origin-center" style={{ objectPosition: '51% 64%', transform: 'scale(3.95)' }} loading="lazy" />
+                <img src={beforeImg} width="1199" height="1600" alt="Denti prima" className="absolute inset-0 w-full h-full object-cover origin-center" style={{ objectPosition: '51% 64%', transform: 'scale(3.95)' }} loading="lazy" />
               </div>
               <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-0.5 bg-white/95 shadow-[0_0_6px_rgba(0,0,0,0.35)]" />
               <span className="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded-full bg-black/45 text-white text-[8px] font-bold tracking-wide">PRIMA</span>
@@ -803,7 +805,7 @@ const TrustMarquee = () => {
           <div key={i} className="flex flex-col gap-3 bg-white p-6 rounded-2xl w-[380px] md:w-[420px] border border-slate-200 shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-300">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div className="h-9 w-9 flex-shrink-0 bg-slate-50 rounded-full flex items-center justify-center overflow-hidden border border-slate-200">
-                <img src={item.logo} alt="Logo" className="h-full w-full object-cover" width="36" height="36" loading="lazy" />
+                <img src={item.logo} alt={`Logo ${item.author}`} className="h-full w-full object-cover" width="36" height="36" loading="lazy" />
               </div>
               <div className="flex gap-0.5 text-gold">
                 {[1, 2, 3, 4, 5].map((s) => <Star key={s} size={13} weight="fill" />)}
@@ -876,7 +878,7 @@ const ReviewsSection = () => {
         Inizia gratis <CaretRight size={16} weight="bold" />
       </a>
       <div className="flex items-center gap-2 text-sm text-text-muted font-medium">
-        <ShieldCheck size={16} weight="fill" className="text-primary" /> Nessuna carta. Setup in 10 minuti.
+        <ShieldCheck size={16} weight="fill" className="text-primary" /> Senza carta di credito. Nessuna installazione.
       </div>
     </div>
     <SectionWave top="#eef2fc" fill="#ffffff" flip />
@@ -1187,7 +1189,7 @@ const ProblemSection = () => {
             </p>
             <p className="mt-4 text-text-muted leading-relaxed">
               {isV5 ? <>
-                È particolarmente rilevante nei trattamenti estetici, ortodontici e protesici, dove il paziente sostiene direttamente una parte importante dell'investimento.
+                È particolarmente rilevante nei trattamenti estetici e protesici, dove il paziente sostiene direttamente una parte importante dell'investimento.
               </> : <>
                 E parliamo proprio dei trattamenti che pesano di piu': quelli che il paziente paga di tasca sua, dove ogni <strong className="text-text-main">"ci penso" vale migliaia di euro</strong>.
               </>}
@@ -1279,8 +1281,8 @@ const OtSlider = ({ prima, dopo, alt, focus = "center" }: { prima: string; dopo:
       onPointerCancel={onUp}
       style={{ touchAction: "none", contain: "paint" }}
     >
-      <img src={dopo} alt={`${alt} dopo`} className="absolute inset-0 w-full h-full object-cover" draggable="false" decoding="async" style={{ objectPosition: focus, transform: "translateZ(0)" }} />
-      <img ref={primaRef} src={prima} alt={`${alt} prima`} className="absolute inset-0 w-full h-full object-cover" draggable="false" decoding="async"
+      <img src={dopo} width="800" height="800" alt={`${alt} dopo`} className="absolute inset-0 w-full h-full object-cover" draggable="false" decoding="async" style={{ objectPosition: focus, transform: "translateZ(0)" }} />
+      <img ref={primaRef} src={prima} width="800" height="800" alt={`${alt} prima`} className="absolute inset-0 w-full h-full object-cover" draggable="false" decoding="async"
         style={{ objectPosition: focus, clipPath: "inset(0 50% 0 0)", willChange: "clip-path", transform: "translateZ(0)", backfaceVisibility: "hidden" }} />
       <span ref={primaTagRef} className="ot-tag ot-prima">Prima</span>
       <span ref={dopoTagRef} className="ot-tag ot-dopo">Dopo</span>
@@ -1318,7 +1320,7 @@ const EveryTreatment = () => {
           </h2>
           <p className="mt-4 text-base text-text-muted leading-relaxed max-w-[58ch]">
             {isV5 ? <>
-              Sbiancamento, faccette, ortodonzia, impianti e protesi. La preview non sostituisce diagnosi o piano clinico: <strong className="text-text-main">aiuta il paziente a comprendere</strong> il cambiamento che state valutando insieme.
+              Sbiancamento, faccette, ricostruzioni conservative, protesi e riabilitazioni su impianti. La preview non sostituisce diagnosi o piano clinico: <strong className="text-text-main">aiuta il paziente a comprendere</strong> il cambiamento che state valutando insieme.
             </> : <>
               Sbiancamento, faccette, ortodonzia, impianti, protesi, zirconio. Se il risultato cambia il sorriso, SmileLive lo fa <strong className="text-text-main">vedere al paziente prima</strong> che dica “ci penso”. E chi si vede, firma.
             </>}
@@ -1503,6 +1505,8 @@ const HowItWorks = () => {
                 <div className="relative z-10 mt-auto -mx-7 -mb-7 aspect-[4/3] overflow-hidden bg-slate-100">
                   <img
                     src={step.image}
+                    width={900}
+                    height={step.image === stepSorriso ? 507 : step.image === stepPoster ? 675 : 600}
                     alt={step.title}
                     loading="lazy"
                     className="h-full w-full object-cover object-center"
@@ -1629,7 +1633,7 @@ const WhatYouGet = () => {
       title: "Preventivo intelligente",
       label: "Preventivi",
       body: "Lo studio prepara le voci, il paziente apre il link dal telefono, legge e firma senza carta.",
-      states: ["Bozza", "Invio link", "Firma digitale"],
+      states: ["Bozza", "Invio link", "Firma a schermo"],
     },
     {
       icon: ChatCircle,
@@ -1875,9 +1879,9 @@ const IntermediateCTA = () => {
   const isV5 = useIsV5();
   const stats = isV5 ? [
     { icon: <Users size={22} weight="fill" className="text-gold" />, value: "50+", label: "Studi attivi in Italia" },
-    { icon: <TrendUp size={22} weight="fill" className="text-primary" />, value: "+67%", label: "Conversione media" },
-    { icon: <Pulse size={22} weight="fill" className="text-text-main" />, value: "2-3", label: "Casi extra al mese" },
-    { icon: <Lightning size={22} weight="fill" className="text-text-main" />, value: "10s", label: "Per preview" },
+    { icon: <Camera size={22} weight="fill" className="text-primary" />, value: "5 + 2", label: "Foto e video in prova gratuita" },
+    { icon: <Gift size={22} weight="fill" className="text-text-main" />, value: "0 €", label: "Per iniziare, senza carta" },
+    { icon: <Lightning size={22} weight="fill" className="text-text-main" />, value: "~1 min", label: "Per simulazione" },
   ] : [
     { icon: <Users size={22} weight="fill" className="text-gold" />, value: "50+", label: "Studi Attivi in Italia" },
     { icon: <TrendUp size={22} weight="fill" className="text-primary" />, value: "+67%", label: "Conversione Media" },
@@ -1922,10 +1926,10 @@ const IntermediateCTA = () => {
         </div>
         <div className="mt-14 bg-white rounded-[2.5rem] shadow-[0_20px_60px_-30px_rgba(15,23,42,0.25)] border border-slate-200 grid grid-cols-2 md:grid-cols-4 gap-y-8 py-8 px-6 md:divide-x md:divide-slate-100">
           {stats.map((s, i) => (
-            <div key={i} className="flex flex-col items-center gap-1.5 text-center px-4">
+            <div key={i} className="flex flex-col items-center gap-1.5 text-center px-2 sm:px-4">
               <div className="flex items-center gap-2">
                 {s.icon}
-                <span className="text-2xl font-headline font-bold num-tabular text-text-main">{s.value}</span>
+                <span className="text-2xl whitespace-nowrap font-headline font-bold num-tabular text-text-main">{s.value}</span>
               </div>
               <div className="text-[11px] md:text-xs uppercase tracking-widest text-text-muted font-semibold">{s.label}</div>
             </div>
@@ -1949,8 +1953,8 @@ const Pricing = () => {
 
   const rules = [
     { icon: Sparkle, title: "Inizi gratis", body: "5 foto + 2 video in omaggio alla registrazione. Senza abbonamento generi ancora a 5€/foto e 5€/video, nessun canone fisso." },
-    { icon: ShieldCheck, title: "Errore nostro? Rigenerazione gratis entro 24h", body: "Se una generazione esce male la segnali con un tasto: la verifichiamo e, se l'errore e' nostro, la rifacciamo gratis entro 24 ore." },
-    { icon: Camera, title: "Le modifiche creative scalano dal piano", body: "Le modifiche che chiedi tu (es. 'piu' bianchi', forma diversa) contano come una generazione normale e scalano dalle quote del piano." },
+    { icon: ShieldCheck, title: "Errore nostro? Rigenerazione gratis entro 24h", body: "Se una generazione esce male la segnali con un tasto: la verifichiamo e, se l'errore è nostro, la rifacciamo gratis entro 24 ore." },
+    { icon: Camera, title: "Le modifiche creative scalano dal piano", body: "Le modifiche che chiedi tu (es. «più bianchi», forma diversa) contano come una generazione normale e scalano dalle quote del piano." },
     { icon: Lightning, title: "Mai un blocco in poltrona", body: "Al raggiungimento del limite non si blocca nulla: addebito automatico dell'extra o passaggio al piano superiore. Col paziente davanti non ti fermi mai." },
   ];
 
@@ -1978,8 +1982,9 @@ const Pricing = () => {
           className="flex flex-col items-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-headline font-bold text-center mb-4 tracking-tight">Scegli il tuo <span className="text-gold">piano</span></h2>
-          <p className="text-xl text-text-muted text-center mb-4">Inizia gratis con 5 anteprime. Poi scegli il piano giusto per il tuo studio.</p>
-          <p className="text-base text-text-muted text-center max-w-2xl mb-8">L'abbonamento sblocca tutto il software e le generazioni incluse ogni mese. L'opzione annuale si paga in un'unica soluzione, al prezzo piu' basso.</p>
+          <p className="text-xl text-text-muted text-center mb-4">Inizia gratis con 5 foto e 2 video. Poi scegli il piano giusto per il tuo studio.</p>
+          <p className="text-base text-text-muted text-center max-w-2xl mb-2">L'abbonamento sblocca tutto il software e le generazioni incluse ogni mese. L'opzione annuale si paga in un'unica soluzione, al prezzo più basso.</p>
+          <p className="text-sm text-text-muted text-center mb-8">Prezzi IVA inclusa.</p>
           <div className="inline-flex items-center gap-1 bg-slate-50 border border-slate-200 rounded-full p-1.5">
             <button onClick={() => setIsAnnual(false)} className={`px-5 py-2 rounded-full font-medium transition-all duration-200 ${!isAnnual ? 'bg-white shadow-sm text-text-main ring-2 ring-primary/60' : 'text-text-muted hover:text-text-main'}`}>Mensile</button>
             <button onClick={() => setIsAnnual(true)} className={`px-5 py-2 rounded-full font-medium transition-all duration-200 flex items-center gap-2 ${isAnnual ? 'bg-white shadow-sm text-text-main ring-2 ring-primary/60' : 'text-text-muted hover:text-text-main'}`}>
@@ -2047,7 +2052,7 @@ const Pricing = () => {
             if (plan.highlighted) {
               return (
                 <motion.div key={plan.name} variants={fadeUp} className="relative rounded-[26px] p-[2.5px] lg:scale-[1.04] lg:z-10" style={{ background: "conic-gradient(from 140deg,#38bdf8,#818cf8,#a855f7,#38bdf8)", boxShadow: "0 26px 60px rgba(99,102,241,0.35)" }}>
-                  <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-white text-xs font-bold uppercase tracking-wider px-4 py-1.5 rounded-full whitespace-nowrap" style={{ background: "linear-gradient(135deg,#38bdf8,#4f46e5)", boxShadow: "0 8px 20px rgba(37,99,235,0.45)" }}>Il piu' scelto</div>
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-white text-xs font-bold uppercase tracking-wider px-4 py-1.5 rounded-full whitespace-nowrap" style={{ background: "linear-gradient(135deg,#38bdf8,#4f46e5)", boxShadow: "0 8px 20px rgba(37,99,235,0.45)" }}>Il più scelto</div>
                   <div className="rounded-[23px] bg-white p-8 flex flex-col text-center h-full">{body}</div>
                 </motion.div>
               );
@@ -2106,7 +2111,7 @@ const Pricing = () => {
           <div>
             <p className="font-bold text-lg text-text-main mb-1">Senza abbonamento? Paghi solo quando usi.</p>
             <p className="text-text-muted text-base leading-relaxed">
-              Dopo le <strong className="text-text-main">5 anteprime in omaggio</strong> puoi generare a <strong className="text-text-main">5€/foto</strong> e <strong className="text-text-main">5€/video</strong>, senza canone fisso. Quando vedi che funziona, passi a un abbonamento.
+              Dopo le <strong className="text-text-main">5 foto e i 2 video in omaggio</strong> puoi generare a <strong className="text-text-main">5€/foto</strong> e <strong className="text-text-main">5€/video</strong>, senza canone fisso. Quando vedi che funziona, passi a un abbonamento.
             </p>
           </div>
         </motion.div>
@@ -2184,7 +2189,7 @@ const ForWho = () => {
     { icon: <Star size={28} weight="light" className="text-gold shrink-0" />, title: "Odontoiatra estetico", desc: "Vuoi integrare una preview personale in una consulenza clinica strutturata." },
     { icon: <Medal size={28} weight="light" className="text-secondary shrink-0" />, title: "Clinic manager", desc: "Cerchi un protocollo condiviso per preventivi, follow-up e gestione del paziente." },
     { icon: <TrendUp size={28} weight="light" className="text-primary shrink-0" />, title: "Studio in crescita", desc: "Vuoi unire comunicazione del piano di cura e organizzazione dello studio." },
-    { icon: <Pulse size={28} weight="light" className="text-primary shrink-0" />, title: "Ortodontista o implantologo", desc: "Vuoi supportare la comprensione dei casi in cui il risultato modifica visibilmente il sorriso." },
+    { icon: <Pulse size={28} weight="light" className="text-primary shrink-0" />, title: "Implantologo o protesista", desc: "Vuoi supportare la comprensione dei casi in cui il risultato modifica visibilmente il sorriso." },
   ] : [
     { icon: <Users size={28} weight="light" className="text-primary shrink-0" />, title: "Dentista generalista", desc: "Vuoi aumentare i casi estetici senza cambiare il tuo workflow." },
     { icon: <Star size={28} weight="light" className="text-gold shrink-0" />, title: "Specialista estetica", desc: "Hai gia' i pazienti. Ti manca lo strumento che li fa decidere." },
@@ -2279,15 +2284,18 @@ const FAQ = () => {
   const isV5 = useIsV5();
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const faqs = [
-    { q: "Posso provarlo senza abbonarmi?", a: "Si'. La registrazione e' gratuita e ti regaliamo 5 foto e 2 video in omaggio nella tab SmileLive Preview, senza carta e senza impegno. Il resto del software resta visibile e si sblocca quando attivi un abbonamento. Per generare ancora senza abbonarti, paghi 5€ a foto e 5€ a video." },
-    { q: "Meglio l'abbonamento o pagare a consumo?", a: "Dipende dal volume. Senza abbonamento generi a 5€/foto e 5€/video, comodo per testare. Con un abbonamento Studio hai foto e video inclusi ogni mese a un costo unitario molto piu' basso, piu' i promemoria WhatsApp/SMS e tutto il software sbloccato. Sul piano Studio Grande anche gli extra costano meno: 2€/foto e 3€/video." },
-    { q: "Cosa succede se una preview esce male (denti deformati, artefatti)?", a: "La generazione scala comunque dal piano, ma con un tasto la segnali: verifichiamo il caso e, se l'errore e' nostro, la rigeneriamo gratis entro 24 ore. Le modifiche creative che chiedi tu (piu' bianchi, forma diversa) contano invece come una generazione normale." },
+    { q: "Posso provarlo senza abbonarmi?", a: "Sì. La registrazione è gratuita e ti regaliamo 5 foto e 2 video in omaggio nella tab SmileLive Preview, senza carta e senza impegno. Il resto del software resta visibile e si sblocca quando attivi un abbonamento. Per generare ancora senza abbonarti, paghi 5€ a foto e 5€ a video." },
+    { q: "Meglio l'abbonamento o pagare a consumo?", a: "Dipende dal volume. Senza abbonamento generi a 5€/foto e 5€/video, comodo per testare. Con un abbonamento Studio hai foto e video inclusi ogni mese a un costo unitario molto più basso, più i promemoria WhatsApp/SMS e tutto il software sbloccato. Sul piano Studio Grande anche gli extra costano meno: 2€/foto e 3€/video." },
+    { q: "Cosa succede se una preview esce male (denti deformati, artefatti)?", a: "La generazione scala comunque dal piano, ma con un tasto la segnali: verifichiamo il caso e, se l'errore è nostro, la rigeneriamo gratis entro 24 ore. Le modifiche creative che chiedi tu (più bianchi, forma diversa) contano invece come una generazione normale." },
     { q: "E se finisco le foto o i video inclusi nel mese?", a: "Non ti blocchiamo mai, soprattutto col paziente in poltrona. Al raggiungimento del limite scatta l'addebito automatico dell'extra (5€/foto · 5€/video, 2€/foto · 3€/video sullo Studio Grande) oppure puoi passare al piano superiore. Decidi tu." },
-    { q: "Chi genera le preview? Devo farlo io?", a: "No. Il protocollo e' pensato per la segreteria o l'ASO. E' semplicissimo da usare: da quel momento lo staff lavora in autonomia e tu resti in poltrona." },
+    { q: "Chi genera le preview? Devo farlo io?", a: "No. Il protocollo è pensato per la segreteria o l'ASO. È semplicissimo da usare: da quel momento lo staff lavora in autonomia e tu resti in poltrona." },
     isV5
       ? { q: "La preview sostituisce una simulazione diagnostica?", a: "No. SmileLive è uno strumento di comunicazione e non sostituisce diagnosi, progettazione clinica o consenso informato. La preview aiuta il paziente a comprendere il cambiamento proposto, che resta sempre da valutare e spiegare dal professionista." }
       : { q: "Il 70% di accuratezza visiva non e' troppo basso?", a: "SmileLive non e' uno strumento diagnostico: e' uno strumento di desiderio. Il suo compito non e' garantire il risultato clinico, quello e' il tuo. Il suo compito e' far nascere nel paziente la voglia di iniziare. Per i casi riproducibili, la preview e' molto accurata. Per i casi complessi, sblocca la conversazione. Funziona in entrambi i casi." },
-    { q: "Posso usarlo per l'implantologia o solo per l'estetica?", a: "SmileLive lavora su qualsiasi trattamento che cambia visibilmente il sorriso: faccette, sbiancamento, ortodonzia, protesi, impianti su arcata. Se il risultato si vede, SmileLive lo puo' mostrare." },
+    { q: "Posso usarlo per l'implantologia o solo per l'estetica?", a: "SmileLive lavora sui trattamenti che cambiano visibilmente il sorriso: sbiancamento, faccette, ricostruzioni conservative, protesi mobile e riabilitazioni su impianti dell'intera arcata (Toronto, All-on-4). Se il risultato si vede, SmileLive lo può mostrare." },
+    { q: "Quanto tempo serve per una simulazione del sorriso?", a: "Circa un minuto per la simulazione in foto. Il video del sorriso richiede qualche minuto in più." },
+    { q: "Serve installare un programma?", a: "No. SmileLive si usa dal browser, su computer, tablet e telefono. Chi vuole può aggiungerlo alla schermata iniziale come un'app, senza passare dagli store." },
+    { q: "Come funziona la prescrizione al laboratorio?", a: "La detti a voce e SmileLive la compila. Il laboratorio la riceve nel suo portale, insieme alle scansioni, e può scrivere allo studio in una chat: studio e laboratorio lavorano sullo stesso caso." },
   ];
 
   return (
@@ -2315,6 +2323,7 @@ const FAQ = () => {
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
                 className="w-full text-left flex items-center justify-between gap-3 p-5 hover:bg-slate-50 transition-colors duration-200"
                 aria-expanded={openIndex === i}
+                aria-controls={`faq-risposta-${i}`}
               >
                 <span className="font-bold text-base text-text-main">{faq.q}</span>
                 <CaretRight
@@ -2323,20 +2332,17 @@ const FAQ = () => {
                   className={`text-primary shrink-0 transition-transform duration-300 ${openIndex === i ? 'rotate-90' : ''}`}
                 />
               </button>
-              <AnimatePresence initial={false}>
-                {openIndex === i && (
-                  <motion.div
-                    key="body"
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.25, ease: "easeInOut" }}
-                    className="overflow-hidden"
-                  >
-                    <p className="text-text-muted text-base leading-relaxed px-5 pb-5">{faq.a}</p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {/* Le risposte restano sempre nel DOM (anche chiuse) così sono presenti nell'HTML della pagina. */}
+              <motion.div
+                id={`faq-risposta-${i}`}
+                initial={false}
+                animate={{ height: openIndex === i ? "auto" : 0, opacity: openIndex === i ? 1 : 0 }}
+                transition={{ duration: 0.25, ease: "easeInOut" }}
+                className="overflow-hidden"
+                aria-hidden={openIndex !== i}
+              >
+                <p className="text-text-muted text-base leading-relaxed px-5 pb-5">{faq.a}</p>
+              </motion.div>
             </motion.div>
           ))}
         </div>
@@ -2386,7 +2392,7 @@ const FinalCTA = () => {
         </motion.a>
         <span className="text-sm text-text-muted">5 foto + 2 video in omaggio · senza carta richiesta</span>
       </div>
-      <p className="mt-6 text-sm text-text-muted/70">Setup in 10 minuti. Il tuo staff e' operativo oggi.</p>
+      <p className="mt-6 text-sm text-text-muted/70">Nessuna installazione: si usa dal browser, su computer, tablet e telefono.</p>
       <div className="mt-6 flex flex-wrap justify-center gap-4 text-sm text-text-muted font-medium">
         <span className="flex items-center gap-1"><ShieldCheck size={15} weight="light" className="text-primary" /> Accesso immediato</span>
         <span className="hidden md:inline text-slate-300">·</span>
@@ -2572,7 +2578,7 @@ export default function IndexV3({ variant = "v3" }: { variant?: SmileLiveLanding
             </div>
             <div>
               <h3 className="text-xl md:text-2xl font-bold tracking-tight">Prova la prescrizione vocale</h3>
-              <p className="mt-1 text-sm text-slate-300">Detti la lavorazione, SmileLive la struttura e la invia al laboratorio. Provala subito: la dettatura è aperta anche in prova gratuita.</p>
+              <p className="mt-1 text-sm text-slate-300">Detti la lavorazione a voce e SmileLive compila la prescrizione da mandare al laboratorio. Provala subito: la dettatura è aperta anche in prova gratuita.</p>
             </div>
           </div>
           <a
