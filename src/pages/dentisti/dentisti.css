@@ -86,7 +86,7 @@
   /* logo in alto a sinistra, video a destra per tutta l'altezza, testo e bottoni centrati rispetto al video */
   .dn-hero .dn-wrap { max-width: 1560px; padding: 0 32px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); grid-template-rows: auto minmax(0, 1fr) auto auto minmax(0, 1fr); grid-template-areas: "top video" ". video" "text video" "cta video" ". video"; column-gap: 56px; }
   .dn-top { grid-area: top; margin-bottom: 0; }
-  .dn-logo { height: clamp(64px, 6.5vw, 112px); }
+  .dn-logo { height: clamp(56px, 4.6vw, 80px); }
   .dn-wa-top { display: none; }
   .dn-grid { display: contents; }
   .dn-text { padding-top: 24px; }
