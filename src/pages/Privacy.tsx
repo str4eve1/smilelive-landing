@@ -6,7 +6,7 @@ export default function Privacy() {
     <LegalLayout
       title="Privacy Policy"
       subtitle="Informativa sul trattamento dei dati personali ai sensi dell'art. 13 del Regolamento (UE) 2016/679 (GDPR)."
-      lastUpdate="27 aprile 2026"
+      lastUpdate="10 ottobre 2026"
     >
       <p>
         La presente informativa descrive le modalità con cui i dati personali degli utenti che
@@ -19,6 +19,7 @@ export default function Privacy() {
         <p>Il Titolare del trattamento è:</p>
         <ul className="list-disc pl-6 space-y-1">
           <li><strong className="text-text-main">Giampiero Lombardi</strong> — Ditta Individuale</li>
+          <li>Partita IVA: 09125450727</li>
           <li>Attività: sviluppo e gestione della piattaforma SaaS SmileLive per studi odontoiatrici</li>
           <li>Sede: Casamassima (BA), Italia</li>
           <li>Email: <a href="mailto:privacy@smilelive.it" className="text-primary hover:underline">privacy@smilelive.it</a></li>
@@ -48,6 +49,13 @@ export default function Privacy() {
             l'utente ci contatta tramite email o moduli, conferisce volontariamente nome,
             indirizzo email e contenuto del messaggio.
           </li>
+          <li>
+            <strong className="text-text-main">Dati del modulo «Preferisci essere richiamato?»</strong> —
+            titolo professionale, nome, cognome, nome dello studio, città, numero di telefono e
+            indirizzo email, forniti dal professionista che chiede di essere richiamato. Insieme al
+            modulo registriamo la pagina da cui è stato inviato, la data e l'ora e, se è stata
+            spuntata la casella facoltativa, il testo del consenso prestato.
+          </li>
         </ul>
       </Section>
 
@@ -75,6 +83,22 @@ export default function Privacy() {
             delle email inviate al Titolare.<br />
             <em>Base giuridica:</em> esecuzione di misure precontrattuali su richiesta
             dell'interessato (art. 6.1.b GDPR).
+          </li>
+          <li>
+            <strong className="text-text-main">Richiamata su richiesta</strong> — contattare per
+            telefono o per email il professionista che ha compilato il modulo, per presentare
+            SmileLive e rispondere alle sue domande.<br />
+            <em>Base giuridica:</em> esecuzione di misure precontrattuali su richiesta
+            dell'interessato (art. 6.1.b GDPR).
+          </li>
+          <li>
+            <strong className="text-text-main">Chiamata dal segretario/a digitale</strong> — solo
+            per chi ha spuntato la casella facoltativa del modulo, la richiamata può essere fatta
+            da un sistema vocale automatico basato su intelligenza artificiale, senza operatore.<br />
+            <em>Base giuridica:</em> consenso dell'interessato (art. 6.1.a GDPR e art. 130 del
+            D.Lgs. 196/2003). Il consenso è facoltativo e si può revocare in qualsiasi momento
+            scrivendo a privacy@smilelive.it o chiedendolo durante la chiamata: da quel momento la
+            richiamata è fatta da una persona.
           </li>
         </ul>
         <p>
@@ -107,6 +131,16 @@ export default function Privacy() {
             Framework EU-USA e delle Clausole Contrattuali Standard.
           </li>
           <li>
+            <strong className="text-text-main">Supabase Inc.</strong> — fornitore del database in
+            cui sono conservati i contatti raccolti con il modulo. Sede: USA. Eventuali
+            trasferimenti extra-UE sono basati sulle Clausole Contrattuali Standard (SCC)
+            approvate dalla Commissione Europea.
+          </li>
+          <li>
+            <strong className="text-text-main">Fornitori del servizio telefonico e del sistema vocale automatico</strong> —
+            solo per le chiamate del segretario/a digitale.
+          </li>
+          <li>
             <strong className="text-text-main">Soggetti terzi</strong> a cui la comunicazione sia
             obbligatoria per legge o per ordine dell'Autorità (ad es. Autorità giudiziaria,
             Garante per la protezione dei dati personali).
@@ -137,7 +171,9 @@ export default function Privacy() {
           <li>Dati statistici (PostHog): fino a 12 mesi dall'ultima interazione;</li>
           <li>Dati marketing (Meta Pixel): fino a 13 mesi dall'ultima interazione;</li>
           <li>Comunicazioni email: per il tempo necessario a evadere la richiesta e per i
-            successivi 24 mesi a fini di archivio commerciale, salvo obblighi di legge differenti.</li>
+            successivi 24 mesi a fini di archivio commerciale, salvo obblighi di legge differenti;</li>
+          <li>Dati del modulo di richiamata: 24 mesi dall'ultimo contatto, salvo che ne nasca un
+            rapporto contrattuale.</li>
         </ul>
         <p>
           Decorsi i termini sopra indicati, i dati sono cancellati o anonimizzati in modo
