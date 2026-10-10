@@ -31,6 +31,46 @@ for (const p of pagine) {
   if (!h.includes('<div id="root"><')) ko(`${p.percorso}: la radice è vuota`);
 }
 
+// Pagine di contenuto (protocollo, guide): un solo JSON-LD valido, con Article e BreadcrumbList coerenti con la tabella.
+const decodifica = (t) =>
+  t.replace(/<[^>]+>/g, " ").replace(/&#x27;|&#39;/g, "'").replace(/&quot;/g, '"').replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&").replace(/\s+/g, " ").trim();
+const contenuti = pagine.filter((p) => p.articolo);
+for (const p of contenuti) {
+  const file = fileDi(p);
+  if (p.percorso.startsWith("/guide/") && file !== `guide/${p.percorso.slice("/guide/".length)}/index.html`) ko(`${p.percorso}: il file atteso è dist/guide/<slug>/index.html`);
+  if (!existsSync(join(dist, file))) continue;
+  const h = leggi(file);
+  const blocchi = [...h.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/gs)];
+  if (blocchi.length !== 1) {
+    ko(`${p.percorso}: ${blocchi.length} blocchi JSON-LD, ne serve uno`);
+    continue;
+  }
+  if (blocchi[0][1].includes("<")) ko(`${p.percorso}: il JSON-LD contiene un '<' non escapato`);
+  let dati;
+  try {
+    dati = JSON.parse(blocchi[0][1]);
+  } catch (e) {
+    ko(`${p.percorso}: JSON-LD non valido (${e.message})`);
+    continue;
+  }
+  const grafo = dati["@graph"] ?? [];
+  const art = grafo.find((n) => n["@type"] === "Article");
+  const brif = grafo.find((n) => n["@type"] === "BreadcrumbList");
+  if (!art) ko(`${p.percorso}: nel JSON-LD manca Article`);
+  else {
+    if (art.headline !== p.articolo.h1) ko(`${p.percorso}: headline diverso dall'h1 della tabella`);
+    if (art.inLanguage !== "it") ko(`${p.percorso}: inLanguage non è "it"`);
+    if (art.datePublished !== p.articolo.pubblicata || art.dateModified !== p.articolo.modificata) ko(`${p.percorso}: date dell'Article diverse dalla tabella`);
+    if (art.mainEntityOfPage !== canonicoDi(p.percorso)) ko(`${p.percorso}: mainEntityOfPage diverso dal canonico`);
+    if (!art.author?.["@id"] || !art.publisher?.["@id"]) ko(`${p.percorso}: author/publisher senza @id`);
+  }
+  const voci = brif?.itemListElement ?? [];
+  if (voci.length !== 2 || voci[0]?.name !== "Home" || voci[1]?.item !== canonicoDi(p.percorso)) ko(`${p.percorso}: BreadcrumbList non è Home → pagina`);
+  const h1 = decodifica(prendi(h, /<h1[^>]*>([\s\S]*?)<\/h1>/) ?? "");
+  if (h1 !== p.articolo.h1) ko(`${p.percorso}: il testo dell'<h1> è diverso da quello della tabella`);
+  if (!/<h2[^>]*>In breve<\/h2>/.test(h)) ko(`${p.percorso}: manca il riquadro «In breve» nell'HTML`);
+}
+
 if (existsSync(join(dist, "404.html"))) {
   const h = leggi("404.html");
   if (!/<meta name="robots" content="noindex"/.test(h)) ko("404.html: manca noindex");
@@ -70,4 +110,4 @@ if (errori.length) {
   console.error("Verifica prerender FALLITA:\n- " + errori.join("\n- "));
   process.exit(1);
 }
-console.log(`Verifica prerender ok (${pagine.length} pagine + 404, sitemap, spa.html)`);
+console.log(`Verifica prerender ok (${pagine.length} pagine, di cui ${contenuti.length} di contenuto con dati strutturati, + 404, sitemap, spa.html)`);

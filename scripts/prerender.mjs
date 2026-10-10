@@ -15,7 +15,7 @@ const spa = join(dist, "spa.html");
 if (!existsSync(spa)) copyFileSync(join(dist, "index.html"), spa);
 const modello = readFileSync(spa, "utf8");
 
-const { render, pagine, canonicoDi, SITO, datiStrutturatiHome } = await import(
+const { render, pagine, canonicoDi, SITO, datiStrutturatiHome, datiStrutturatiArticolo } = await import(
   pathToFileURL(join(radice, "dist-server", "entry-server.js")).href
 );
 
@@ -61,7 +61,7 @@ for (const p of pagine) {
     title: p.title,
     description: p.description,
     canonico: canonicoDi(p.percorso),
-    jsonLd: p.percorso === "/" ? datiStrutturatiHome : null,
+    jsonLd: p.percorso === "/" ? datiStrutturatiHome : p.articolo ? datiStrutturatiArticolo(p) : null,
     corpo,
   });
   scrivi(p.percorso === "/" ? join(dist, "index.html") : join(dist, p.percorso, "index.html"), html);

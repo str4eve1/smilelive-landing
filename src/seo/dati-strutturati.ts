@@ -1,5 +1,5 @@
 // Dati strutturati della home. Importato solo dal server della build: non entra nel codice del browser.
-import { SITO, paginaDi } from "./pagine";
+import { SITO, canonicoDi, paginaDi, type Pagina } from "./pagine";
 
 const descrizione = paginaDi("/")!.description;
 
@@ -73,4 +73,37 @@ export const datiStrutturatiHome = {
       ],
     },
   ],
+};
+
+// Dati strutturati delle pagine di contenuto (protocollo, guide): tutto viene dalla voce della tabella.
+// L'autore e l'editore sono l'organizzazione già descritta nella home, richiamata con il suo @id.
+export const datiStrutturatiArticolo = (pagina: Pagina) => {
+  const a = pagina.articolo;
+  if (!a) throw new Error(`${pagina.percorso}: manca "articolo" nella tabella delle pagine`);
+  const canonico = canonicoDi(pagina.percorso);
+  const organizzazione = { "@id": `${SITO}/#organizzazione` };
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": `${canonico}#articolo`,
+        headline: a.h1,
+        description: pagina.description,
+        inLanguage: "it",
+        datePublished: a.pubblicata,
+        dateModified: a.modificata,
+        author: organizzazione,
+        publisher: organizzazione,
+        mainEntityOfPage: canonico,
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: `${SITO}/` },
+          { "@type": "ListItem", position: 2, name: a.nome, item: canonico },
+        ],
+      },
+    ],
+  };
 };

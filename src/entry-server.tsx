@@ -4,7 +4,7 @@ import { Writable } from "node:stream";
 import { AppRoutes, Provider } from "./App";
 
 export { pagine, canonicoDi, SITO } from "./seo/pagine";
-export { datiStrutturatiHome } from "./seo/dati-strutturati";
+export { datiStrutturatiHome, datiStrutturatiArticolo } from "./seo/dati-strutturati";
 
 // HTML della pagina già scritto. Si aspetta che tutto sia pronto (pagine lazy comprese):
 // renderToString si fermerebbe al segnaposto.

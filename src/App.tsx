@@ -19,6 +19,11 @@ const caricaSimulazione = () => import("./pages/Simulazione.tsx");
 const caricaDentisti = () => import("./pages/Dentisti.tsx");
 const caricaCookiePolicy = () => import("./pages/CookiePolicy.tsx");
 const caricaTerms = () => import("./pages/Terms.tsx");
+const caricaProtocollo = () => import("./pages/Protocollo.tsx");
+const caricaProgettazione = () => import("./pages/guide/ProgettazioneDigitaleDelSorriso.tsx");
+const caricaMockUp = () => import("./pages/guide/MockUpDigitaleInjectionTechnique.tsx");
+const caricaPreventivi = () => import("./pages/guide/FarAccettarePiuPreventivi.tsx");
+const caricaFaccette = () => import("./pages/guide/SimulazioneFaccetteImplantologiaProtesi.tsx");
 
 const Index = lazy(caricaIndex);
 const IndexV2 = lazy(caricaIndexV2);
@@ -31,6 +36,11 @@ const Simulazione = lazy(caricaSimulazione);
 const Dentisti = lazy(caricaDentisti);
 const CookiePolicy = lazy(caricaCookiePolicy);
 const Terms = lazy(caricaTerms);
+const Protocollo = lazy(caricaProtocollo);
+const Progettazione = lazy(caricaProgettazione);
+const MockUp = lazy(caricaMockUp);
+const Preventivi = lazy(caricaPreventivi);
+const Faccette = lazy(caricaFaccette);
 
 const caricatori: Record<string, () => Promise<unknown>> = {
   "/": caricaIndexV5,
@@ -44,6 +54,11 @@ const caricatori: Record<string, () => Promise<unknown>> = {
   "/privacy": caricaPrivacy,
   "/cookie-policy": caricaCookiePolicy,
   "/terms": caricaTerms,
+  "/protocollo": caricaProtocollo,
+  "/guide/progettazione-digitale-del-sorriso": caricaProgettazione,
+  "/guide/mock-up-digitale-injection-technique": caricaMockUp,
+  "/guide/far-accettare-piu-preventivi": caricaPreventivi,
+  "/guide/simulazione-faccette-implantologia-protesi": caricaFaccette,
 };
 
 // Scarica il file della pagina richiesta prima di idratare l'HTML già scritto,
@@ -78,6 +93,11 @@ export const AppRoutes = () => (
       <Route path="/privacy" element={<Privacy />} />
       <Route path="/cookie-policy" element={<CookiePolicy />} />
       <Route path="/terms" element={<Terms />} />
+      <Route path="/protocollo" element={<Protocollo />} />
+      <Route path="/guide/progettazione-digitale-del-sorriso" element={<Progettazione />} />
+      <Route path="/guide/mock-up-digitale-injection-technique" element={<MockUp />} />
+      <Route path="/guide/far-accettare-piu-preventivi" element={<Preventivi />} />
+      <Route path="/guide/simulazione-faccette-implantologia-protesi" element={<Faccette />} />
       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
       <Route path="*" element={<NotFound />} />
     </Routes>

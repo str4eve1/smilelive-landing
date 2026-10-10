@@ -19,19 +19,7 @@ export default function LegalLayout({ title, subtitle, lastUpdate, children }: L
 
   return (
     <main className="min-h-screen w-full bg-background text-text-main font-['Inter']">
-      <header className="border-b border-secondary/10">
-        <div className="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-            <img src={logoFinale} alt="SmileLive" className="h-12 w-auto" width="160" height="48" />
-          </Link>
-          <Link
-            to="/"
-            className="flex items-center gap-1 text-sm text-text-muted hover:text-primary transition-colors"
-          >
-            <ChevronLeft className="w-4 h-4" /> Torna alla home
-          </Link>
-        </div>
-      </header>
+      <TestataSito />
 
       <article className="max-w-3xl mx-auto px-6 py-12 md:py-16">
         <div className="mb-10 pb-8 border-b border-secondary/10">
@@ -53,25 +41,50 @@ export default function LegalLayout({ title, subtitle, lastUpdate, children }: L
         </div>
       </article>
 
-      <footer className="py-10 border-t border-secondary/10 text-sm text-text-muted">
-        <div className="max-w-3xl mx-auto px-6 flex flex-col items-center gap-4">
-          <div className="flex flex-wrap justify-center gap-x-5 gap-y-2">
-            <Link to="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
-            <span>·</span>
-            <Link to="/cookie-policy" className="hover:text-primary transition-colors">Cookie Policy</Link>
-            <span>·</span>
-            <Link to="/terms" className="hover:text-primary transition-colors">Termini di Servizio</Link>
-            <span>·</span>
-            <button type="button" onClick={openCookieBanner} className="hover:text-primary transition-colors">
-              Gestione cookie
-            </button>
-            <span>·</span>
-            <a href="mailto:supporto@smilelive.it" className="hover:text-primary transition-colors">Contatti</a>
-          </div>
-          <p className="text-xs text-text-muted/60">© {new Date().getFullYear()} SmileLive · P.IVA 09125450727. Tutti i diritti riservati.</p>
-        </div>
-      </footer>
+      <PiedeSito />
     </main>
+  );
+}
+
+// Testata e piede comuni a tutte le pagine di testo (legali e guide).
+export function TestataSito() {
+  return (
+    <header className="border-b border-secondary/10">
+      <div className="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
+        <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+          <img src={logoFinale} alt="SmileLive" className="h-12 w-auto" width="160" height="48" />
+        </Link>
+        <Link
+          to="/"
+          className="flex items-center gap-1 text-sm text-text-muted hover:text-primary transition-colors"
+        >
+          <ChevronLeft className="w-4 h-4" /> Torna alla home
+        </Link>
+      </div>
+    </header>
+  );
+}
+
+export function PiedeSito() {
+  return (
+    <footer className="py-10 border-t border-secondary/10 text-sm text-text-muted">
+      <div className="max-w-3xl mx-auto px-6 flex flex-col items-center gap-4">
+        <div className="flex flex-wrap justify-center gap-x-5 gap-y-2">
+          <Link to="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
+          <span>·</span>
+          <Link to="/cookie-policy" className="hover:text-primary transition-colors">Cookie Policy</Link>
+          <span>·</span>
+          <Link to="/terms" className="hover:text-primary transition-colors">Termini di Servizio</Link>
+          <span>·</span>
+          <button type="button" onClick={openCookieBanner} className="hover:text-primary transition-colors">
+            Gestione cookie
+          </button>
+          <span>·</span>
+          <a href="mailto:supporto@smilelive.it" className="hover:text-primary transition-colors">Contatti</a>
+        </div>
+        <p className="text-xs text-text-muted/60">© {new Date().getFullYear()} SmileLive · P.IVA 09125450727. Tutti i diritti riservati.</p>
+      </div>
+    </footer>
   );
 }
 

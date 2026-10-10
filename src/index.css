@@ -234,3 +234,20 @@
 @media (max-width:768px){.wa-widget{bottom:20px}.wa-button{width:50px;height:50px}.wa-icon{width:26px;height:26px}.wa-bubble{max-width:260px;font-size:12px;padding:10px 14px}.wa-nudge a{font-size:12px;padding:10px 14px}}
 @media (max-width:480px){.wa-bubble{max-width:calc(100vw - 80px)}}
 @media (prefers-reduced-motion:reduce){.wa-button{animation:none}.wa-widget.open .wa-bubble{animation:none;opacity:1;transform:none}.wa-nudge{animation:none;opacity:1}}
+
+/* Tabelle delle guide: tabella normale da 640 px in su; sotto, una scheda per riga (nessuno scorrimento orizzontale). */
+.guida-tabella-contenitore { overflow-x: auto; }
+.guida-tabella { width: 100%; border-collapse: collapse; font-size: 0.875rem; line-height: 1.5; }
+.guida-tabella th, .guida-tabella td { text-align: left; vertical-align: top; padding: 0.625rem 0.75rem; border-bottom: 1px solid rgba(100, 116, 139, 0.2); }
+.guida-tabella thead th { background: rgba(2, 132, 199, 0.06); color: #0f172a; font-weight: 700; border-bottom: 2px solid rgba(2, 132, 199, 0.3); }
+.guida-tabella tbody th { color: #0f172a; font-weight: 600; }
+@media (max-width: 639px) {
+  .guida-tabella, .guida-tabella tbody, .guida-tabella tr, .guida-tabella th, .guida-tabella td { display: block; }
+  .guida-tabella thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .guida-tabella tbody tr { margin-bottom: 0.75rem; border: 1px solid rgba(100, 116, 139, 0.25); border-radius: 0.75rem; background: #fff; overflow: hidden; }
+  .guida-tabella th, .guida-tabella td { padding: 0.5rem 0.875rem; border-bottom: 0; }
+  .guida-tabella tbody th { background: rgba(2, 132, 199, 0.06); padding-top: 0.625rem; padding-bottom: 0.625rem; }
+  .guida-tabella td { overflow-wrap: anywhere; }
+  .guida-tabella td::before { content: attr(data-etichetta); display: block; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.02em; color: #64748b; }
+  .guida-tabella td[data-etichetta=""]::before { display: none; }
+}
