@@ -36,7 +36,6 @@ export default function SimulazioneFaccetteImplantologiaProtesi() {
 
       <Section title="Come usarla nelle faccette?">
         <p>Le faccette sono il caso in cui la simulazione dà più da discutere: forma, lunghezza, colore, proporzioni. Il paziente guarda il prima/dopo con il cursore e può confrontare più versioni, perché l'app lavora con due motori di IA e tu scegli quella più vicina al piano.</p>
-        <p>Usala per decidere insieme la direzione, non per fissare un risultato. Una simulazione è un'immagine 2D: non mostra volumi né spessori. Per questo la prova in bocca resta il passaggio che conferma; ne parliamo nella <LinkInterno to="/guide/mock-up-digitale-injection-technique">guida sul mock-up digitale</LinkInterno>.</p>
       </Section>
 
       <Section title="Come usarla nelle riabilitazioni su impianti?">
@@ -63,8 +62,6 @@ export default function SimulazioneFaccetteImplantologiaProtesi() {
         <Elenco>
           <li><LinkInterno to="/guide/far-accettare-piu-preventivi">Come far capire (e accettare) un preventivo in prima visita</LinkInterno></li>
           <li><LinkInterno to="/protocollo">Il protocollo: dalla foto al manufatto</LinkInterno></li>
-          <li><LinkInterno to="/guide/progettazione-digitale-del-sorriso">Progettazione digitale del sorriso</LinkInterno></li>
-          <li><LinkInterno to="/guide/mock-up-digitale-injection-technique">Mock-up digitale e injection technique</LinkInterno></li>
         </Elenco>
       </Section>
     </GuidaLayout>

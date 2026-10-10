@@ -2747,8 +2747,6 @@ const Footer = () => {
         {isV5 && (
           <FooterCol title="Guide">
             <li><a href="/protocollo" className={footerLink}>Il protocollo SmileLive in sette fasi</a></li>
-            <li><a href="/guide/progettazione-digitale-del-sorriso" className={footerLink}>Progettazione digitale del sorriso</a></li>
-            <li><a href="/guide/mock-up-digitale-injection-technique" className={footerLink}>Mock-up digitale e injection technique</a></li>
             <li><a href="/guide/far-accettare-piu-preventivi" className={footerLink}>Far accettare i preventivi in prima visita</a></li>
             <li><a href="/guide/simulazione-faccette-implantologia-protesi" className={footerLink}>La simulazione caso per caso</a></li>
           </FooterCol>
