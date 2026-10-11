@@ -54,6 +54,8 @@ export default function FarAccettarePiuPreventivi() {
       <Section title="Per approfondire">
         <Elenco>
           <li><LinkInterno to="/protocollo">Il protocollo: dalla foto al manufatto</LinkInterno></li>
+          <li><LinkInterno to="/guide/progettazione-digitale-del-sorriso">Progettazione digitale del sorriso</LinkInterno></li>
+          <li><LinkInterno to="/guide/mock-up-digitale-injection-technique">Mock-up digitale, mock-up fisico e injection technique</LinkInterno></li>
           <li><LinkInterno to="/guide/simulazione-faccette-implantologia-protesi">Simulazione per faccette, protesi e arcate su impianti</LinkInterno></li>
         </Elenco>
       </Section>

@@ -67,6 +67,32 @@ export const pagine: Pagina[] = [
     },
   },
   {
+    percorso: "/guide/progettazione-digitale-del-sorriso",
+    title: "Progettazione digitale del sorriso: come si fa in studio",
+    description:
+      "Cos'è la progettazione digitale del sorriso, quali dati servono, come si imposta in studio e dove la simulazione da foto si ferma. Per odontoiatri.",
+    sitemap: true,
+    articolo: {
+      h1: "Cos'è la progettazione digitale del sorriso e come si fa in studio?",
+      nome: "Progettazione digitale del sorriso",
+      pubblicata: "2026-10-11",
+      modificata: "2026-10-11",
+    },
+  },
+  {
+    percorso: "/guide/mock-up-digitale-injection-technique",
+    title: "Mock-up digitale, mock-up fisico e injection technique",
+    description:
+      "Cosa sono mock-up digitale, mock-up fisico e injection technique, come si collegano e in che ordine si usano: dalla simulazione al manufatto finale.",
+    sitemap: true,
+    articolo: {
+      h1: "Mock-up digitale, mock-up fisico e injection technique: cosa sono e come si collegano?",
+      nome: "Mock-up digitale, mock-up fisico e injection technique",
+      pubblicata: "2026-10-11",
+      modificata: "2026-10-11",
+    },
+  },
+  {
     percorso: "/guide/far-accettare-piu-preventivi",
     title: "Accettazione del preventivo odontoiatrico in prima visita",
     description:
