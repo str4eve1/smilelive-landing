@@ -44,7 +44,9 @@ function stileDi(percorso) {
     visti.add(chiave);
     if (voce.file) js.add(voce.file);
     (voce.css ?? []).forEach((f) => css.add(f));
-    (voce.assets ?? []).filter((f) => f.endsWith(".woff2")).forEach((f) => font.add(f));
+    // si precarica solo il carattere proprio della pagina: quelli comuni servono più in basso
+    // e toglierebbero banda all'immagine d'apertura
+    if (chiave === SORGENTE_DI[percorso]) (voce.assets ?? []).filter((f) => f.endsWith(".woff2")).forEach((f) => font.add(f));
     (voce.imports ?? []).forEach(visita);
   };
   if (SORGENTE_DI[percorso]) visita(SORGENTE_DI[percorso]);
