@@ -9,6 +9,8 @@ const A = "src/assets";
 const FILES = [
   `${A}/WEBP/PRIMA (2).webp`,
   `${A}/WEBP/DOPO (2).webp`,
+  `${A}/prima-mini.webp`,
+  `${A}/dopo-mini.webp`,
   `${A}/WEBP/Sbiancamento prima e dopo2.webp`,
   `${A}/WEBP/FACCETTE (1).jpeg`,
   `${A}/WEBP/TERMOSTAMPATA-CrUanAGb.jpg`,

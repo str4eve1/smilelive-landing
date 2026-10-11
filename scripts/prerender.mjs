@@ -36,24 +36,28 @@ const manifest = JSON.parse(readFileSync(join(dist, ".vite", "manifest.json"), "
 function stileDi(percorso) {
   const css = new Set();
   const font = new Set();
+  const js = new Set();
   const visti = new Set();
   const visita = (chiave) => {
     const voce = manifest[chiave];
     if (!voce || visti.has(chiave)) return;
     visti.add(chiave);
+    if (voce.file) js.add(voce.file);
     (voce.css ?? []).forEach((f) => css.add(f));
     (voce.assets ?? []).filter((f) => f.endsWith(".woff2")).forEach((f) => font.add(f));
     (voce.imports ?? []).forEach(visita);
   };
   if (SORGENTE_DI[percorso]) visita(SORGENTE_DI[percorso]);
   return [
+    // il programma della pagina e quello che importa, caricati subito invece che a cascata dopo il primo
+    ...[...js].filter((f) => !modello.includes(f)).map((f) => `<link rel="modulepreload" crossorigin href="/${encodeURI(f)}" />`),
     ...[...font].map((f) => `<link rel="preload" as="font" type="font/woff2" crossorigin href="/${f}" />`),
     // il foglio comune è già nel modello: qui solo quelli in più, che così restano dopo di lui
     ...[...css].filter((f) => !modello.includes(f)).map((f) => `<link rel="stylesheet" crossorigin href="/${f}" />`),
   ];
 }
 
-function impagina({ title, description, canonico, jsonLd, corpo, noindex, percorso }) {
+function impagina({ title, description, canonico, jsonLd, corpo, noindex, percorso, articolo }) {
   let h = modello;
   h = sostituisci(h, /<title>.*?<\/title>/, `<title>${testoHtml(title)}</title>`);
   h = sostituisci(h, /<meta name="description" content="[^"]*" \/>/, `<meta name="description" content="${attr(description)}" />`);
@@ -61,6 +65,7 @@ function impagina({ title, description, canonico, jsonLd, corpo, noindex, percor
   h = sostituisci(h, /<meta property="og:description" content="[^"]*" \/>/, `<meta property="og:description" content="${attr(description)}" />`);
   h = sostituisci(h, /<meta name="twitter:title" content="[^"]*" \/>/, `<meta name="twitter:title" content="${attr(title)}" />`);
   h = sostituisci(h, /<meta name="twitter:description" content="[^"]*" \/>/, `<meta name="twitter:description" content="${attr(description)}" />`);
+  if (articolo) h = sostituisci(h, /<meta property="og:type" content="website" \/>/, '<meta property="og:type" content="article" />');
   if (canonico) {
     h = sostituisci(h, /<meta property="og:url" content="[^"]*" \/>/, `<meta property="og:url" content="${attr(canonico)}" />`);
     h = sostituisci(h, /<link rel="canonical" href="[^"]*" \/>/, `<link rel="canonical" href="${attr(canonico)}" />`);
@@ -89,6 +94,7 @@ for (const p of pagine) {
     jsonLd: p.percorso === "/" ? datiStrutturatiHome : p.articolo ? datiStrutturatiArticolo(p) : null,
     corpo,
     percorso: p.percorso,
+    articolo: Boolean(p.articolo),
   });
   scrivi(p.percorso === "/" ? join(dist, "index.html") : join(dist, p.percorso, "index.html"), html);
   console.log(`prerender ${p.percorso} (${html.length} byte)`);
@@ -106,7 +112,9 @@ const nonTrovata = impagina({
 scrivi(join(dist, "404.html"), nonTrovata);
 console.log("prerender 404.html");
 
-const voci = pagine.filter((p) => p.sitemap).map((p) => `  <url><loc>${canonicoDi(p.percorso)}</loc></url>`);
+const voci = pagine
+  .filter((p) => p.sitemap)
+  .map((p) => `  <url><loc>${canonicoDi(p.percorso)}</loc>${p.articolo ? `<lastmod>${p.articolo.modificata}</lastmod>` : ""}</url>`);
 scrivi(
   join(dist, "sitemap.xml"),
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${voci.join("\n")}\n</urlset>\n`,

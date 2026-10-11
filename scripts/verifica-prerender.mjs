@@ -31,6 +31,12 @@ for (const p of pagine) {
   if (!h.includes('<div id="root"><')) ko(`${p.percorso}: la radice è vuota`);
 }
 
+// La home deve restare sulla frase che si vuole presidiare: se sparisce dal titolo, la build si ferma.
+if (existsSync(join(dist, "index.html"))) {
+  const titoloHome = (prendi(leggi("index.html"), /<h1[^>]*>(.*?)<\/h1>/s) ?? "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  if (!/simulazione del sorriso/i.test(titoloHome)) ko(`/: l'<h1> della home deve contenere «simulazione del sorriso», ora dice «${titoloHome}»`);
+}
+
 // Pagine di contenuto (protocollo, guide): un solo JSON-LD valido, con Article e BreadcrumbList coerenti con la tabella.
 const decodifica = (t) =>
   t.replace(/<[^>]+>/g, " ").replace(/&#x27;|&#39;/g, "'").replace(/&quot;/g, '"').replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&").replace(/\s+/g, " ").trim();

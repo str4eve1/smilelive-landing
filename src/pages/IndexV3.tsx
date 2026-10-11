@@ -9,6 +9,8 @@ import {
 } from "@phosphor-icons/react";
 import beforeImg from '../assets/WEBP/PRIMA (2).webp';
 import afterImg from '../assets/WEBP/DOPO (2).webp';
+import beforeMini from '../assets/prima-mini.webp';
+import afterMini from '../assets/dopo-mini.webp';
 import sorrisoVideo from '../assets/sorriso-video/sorriso-video.mp4';
 import sorrisoVideoPoster from '../assets/sorriso-video/sorriso-video-poster.webp';
 import esempioFotoPrima from '../assets/esempi/esempio-foto-prima.webp';
@@ -349,6 +351,7 @@ const VideoAlTocco = ({ src, poster, width, height, etichetta, className, style 
       <video
         ref={ref}
         src={src}
+        aria-label={etichetta}
         poster={poster}
         width={width}
         height={height}
@@ -433,7 +436,7 @@ const AISimShowcase = () => {
               {/* Prima */}
               <motion.div variants={passo(0)} className="absolute left-[1%] top-[24%] w-[31%] z-10">
                 <div className="relative rounded-full overflow-hidden shadow-lg ring-4 ring-white aspect-square">
-                  <img src={beforeImg} width="1199" height="1600" alt="Foto del sorriso prima della simulazione" className="w-full h-full object-cover object-[center_28%]" loading="lazy" />
+                  <img src={beforeMini} width="320" height="427" alt="Foto del sorriso prima della simulazione" className="w-full h-full object-cover object-[center_28%]" loading="lazy" />
                   {/* in alto: l'etichetta "Prima" sta sotto al cerchio (-bottom-2) */}
                   <AiBadge className="top-2 left-1/2 -translate-x-1/2" />
                 </div>
@@ -443,7 +446,7 @@ const AISimShowcase = () => {
               {/* Dopo */}
               <motion.div variants={passo(0.6)} className="absolute right-[2%] top-[4%] w-[34%] z-10">
                 <div className="relative rounded-full overflow-hidden shadow-xl ring-4 ring-white aspect-square">
-                  <img src={afterImg} width="1199" height="1600" alt="Sorriso simulato con IA, dopo" className="w-full h-full object-cover object-[center_28%]" loading="lazy" />
+                  <img src={afterMini} width="320" height="427" alt="Sorriso simulato con IA, dopo" className="w-full h-full object-cover object-[center_28%]" loading="lazy" />
                   <AiBadge className="bottom-2 left-1/2 -translate-x-1/2" />
                 </div>
                 <span className="absolute -top-2 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-primary text-[11px] font-bold text-white shadow">Dopo</span>
@@ -464,7 +467,7 @@ const AISimShowcase = () => {
               </h2>
               <p className="mt-5 text-xl text-text-muted leading-relaxed">
                 {isV5 ? <>
-                  SmileLive genera una <strong className="text-text-main font-semibold">sequenza video personale</strong> a partire dalla preview. Il paziente osserva il suo cambiamento in modo naturale.
+                  SmileLive genera una <strong className="text-text-main font-semibold">sequenza video personale</strong> a partire dalla simulazione. Il paziente osserva il suo cambiamento in modo naturale.
                 </> : <>
                   SmileLive non si limita a trasformare un'immagine: genera un <strong className="text-text-main font-semibold">video realistico</strong> del paziente con il suo nuovo sorriso. Vedersi, non doverlo solo immaginare, fa crollare l'esitazione e porta l'accettazione dei preventivi <strong className="text-text-main font-semibold">oltre il 67%</strong>.
                 </>}
@@ -643,7 +646,7 @@ const Hero = () => {
         <motion.div variants={fadeUp}>
           <span className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-primary/25 bg-white/95 shadow-[0_6px_20px_rgba(2,132,199,0.18)] backdrop-blur-sm pl-2 sm:pl-2.5 pr-3 sm:pr-4 py-1.5 sm:py-2 text-xs sm:text-sm font-bold text-primary">
             <Sparkle size={16} weight="fill" className="text-gold" />
-            {isV5 ? "Preview AI e gestionale per studi dentistici" : "Il miglior strumento AI per dentisti"}
+            {isV5 ? "Software per studi dentistici" : "Il miglior strumento AI per dentisti"}
           </span>
         </motion.div>
       </motion.div>
@@ -658,8 +661,8 @@ const Hero = () => {
         <motion.h1 variants={fadeUp} className="text-2xl sm:text-5xl md:text-6xl font-headline font-bold tracking-tight leading-[1.15] sm:leading-[1.1] text-text-main">
           {isV5 ? (
             <>
-              <span className="block">Più preventivi accettati,</span>
-              <span className="block text-primary">a partire da una foto.</span>
+              <span className="block">Simulazione del sorriso con IA.</span>
+              <span className="block text-primary">In prima visita, in foto e in video.</span>
             </>
           ) : (
             <>
@@ -680,7 +683,7 @@ const Hero = () => {
       >
         <motion.p variants={fadeUp} className="text-lg text-text-muted leading-relaxed max-w-lg">
           {isV5 ? (
-            <>Simulazione del sorriso con IA: scatti una foto e in circa un minuto il paziente vede il possibile risultato sul suo viso, in foto e in video. Poi preventivo, firma, reminder e gestione dello studio nello stesso software.</>
+            <>Scatti una foto e in circa un minuto il paziente vede il possibile risultato sul suo viso. Poi preventivo, firma, reminder e gestione dello studio nello stesso software.</>
           ) : (
             <>Ogni giorno escono dallo studio pazienti che volevano cambiare il loro sorriso. Non li hai persi perche' il prezzo era troppo alto. Li hai persi perche' <strong className="text-text-main font-semibold">non riuscivano a immaginarlo.</strong><br /><br />SmileLive mostra loro il risultato. Prima che escano dalla porta. Inizi gratis: 5 anteprime in omaggio.</>
           )}
@@ -709,7 +712,7 @@ const Hero = () => {
 
       {/* Phone mockup — mobile: order-2 (tra titolo e descrizione) */}
       <motion.div
-        initial={{ opacity: 0, y: 60 }}
+        initial={false}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
         className={`hero-visual ${isV5 ? "order-4 lg:row-span-4 pb-8" : "order-3 lg:row-span-3 pb-6"} lg:order-none lg:col-start-2 lg:row-start-1 lg:self-center relative z-10 flex justify-center lg:pb-0`}
@@ -1499,7 +1502,7 @@ const Esempi = () => {
           transition={{ duration: 0.6 }}
           className="max-w-2xl mx-auto text-center"
         >
-          <h2 className="text-3xl md:text-5xl font-headline font-bold tracking-tight text-text-main">Esempi di <span className="text-primary">simulazioni</span>.</h2>
+          <h2 className="text-3xl md:text-5xl font-headline font-bold tracking-tight text-text-main">Esempi di <span className="text-primary">simulazioni del sorriso</span>.</h2>
           <p className="mt-4 text-lg text-text-muted leading-relaxed">Fatte con SmileLive: ogni immagine mostra un possibile risultato, da valutare con il dentista.</p>
         </motion.div>
 
@@ -2019,12 +2022,12 @@ const DemoVideo = () => (
         </h2>
         <p className="mt-5 text-lg text-text-muted leading-relaxed max-w-lg">
           Due minuti, raccontati a voce, dentro il software vero: dalla foto del paziente
-          alla preview, poi preventivo, firma, prescrizione al laboratorio e follow-up.
+          alla simulazione, poi preventivo, firma, prescrizione al laboratorio e follow-up.
           Nessuna slide: è la UI che userebbe il tuo staff.
         </p>
         <ul className="mt-7 space-y-3">
           {[
-            "Come nasce una preview, passaggio per passaggio",
+            "Come nasce una simulazione, passaggio per passaggio",
             "Cosa vede il paziente e cosa resta allo studio",
             "Dove finiscono preventivi, firme e reminder",
           ].map((voce) => (
@@ -2075,7 +2078,7 @@ const WhatYouGet = () => {
       span: "lg:col-span-4",
       title: "Scheda paziente unica",
       label: "Pazienti",
-      body: "Preview, preventivi, note, stato del trattamento e cronologia raccolti in una vista chiara.",
+      body: "Simulazioni, preventivi, note, stato del trattamento e cronologia raccolti in una vista chiara.",
       states: ["Timeline", "Stato pratica", "Note cliniche"],
     },
     {
@@ -2131,10 +2134,10 @@ const WhatYouGet = () => {
           <div>
             <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-orange-500 mb-4">Gestionale completo</span>
             <h2 className="text-3xl md:text-5xl font-headline font-bold tracking-tight leading-[1.05] text-balance">
-              <span className="text-orange-500">Aspetta.</span><br className="sm:hidden" /> SmileLive non è solo l'anteprima del sorriso.
+              <span className="text-orange-500">Aspetta.</span><br className="sm:hidden" /> SmileLive non è solo la simulazione del sorriso.
             </h2>
             <p className="mt-5 text-base md:text-lg leading-relaxed text-slate-300 max-w-2xl">
-              Oltre all'anteprima, segue il resto del percorso: scheda paziente, preventivi, promemoria degli appuntamenti e adempimenti fiscali. Meno strumenti separati, meno tempo in segreteria, tutto in un unico posto.
+              Oltre alla simulazione, segue il resto del percorso: scheda paziente, preventivi, promemoria degli appuntamenti e adempimenti fiscali. Meno strumenti separati, meno tempo in segreteria, tutto in un unico posto.
             </p>
           </div>
           <aside className="relative overflow-hidden rounded-2xl border border-orange-300/50 bg-[linear-gradient(150deg,rgba(249,115,22,0.34),rgba(217,70,20,0.14))] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_30px_78px_-58px_rgba(0,0,0,0.88)] backdrop-blur">
@@ -2473,7 +2476,7 @@ const Pricing = () => {
             const price = isAnnual ? plan.annualMonthly : plan.monthly;
             const saving = (plan.monthly - plan.annualMonthly) * 12;
             const feats = [
-              { icon: Camera, node: <><strong className="text-text-main">{plan.foto} foto</strong> (preview)/mese</> },
+              { icon: Camera, node: <><strong className="text-text-main">{plan.foto} foto</strong> (simulazioni)/mese</> },
               { icon: VideoCamera, node: <><strong className="text-text-main">{plan.video} video</strong>/mese</> },
               { icon: ChatCircle, node: <><strong className="text-text-main">{plan.promemoria} promemoria</strong> WhatsApp/SMS</> },
             ];
@@ -2737,13 +2740,15 @@ const FAQ = () => {
   const isV5 = useIsV5();
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const faqs = [
+    { q: "Che cos'è SmileLive?", a: "SmileLive è un software per studi dentistici: da una foto del paziente genera con l'intelligenza artificiale una simulazione del sorriso, in foto e in video, in circa un minuto, da mostrare in prima visita. Nello stesso strumento ci sono preventivo, firma a schermo, fattura e prescrizione vocale al laboratorio." },
+    { q: "Quanto costa SmileLive?", a: "La prova è gratuita: 5 foto e 2 video, senza carta di credito. Poi puoi pagare a consumo, 5 € a foto e 5 € a video senza canone, oppure scegliere un piano: Studio Piccolo a 57 € al mese (47 € con il piano annuale), Studio Medio a 114 € (94 €), Studio Grande a 157 € (137 €). Tutti i prezzi sono IVA inclusa." },
     { q: "Posso provarlo senza abbonarmi?", a: "Sì. La registrazione è gratuita e ti regaliamo 5 foto e 2 video in omaggio nella tab SmileLive Preview, senza carta e senza impegno. Il resto del software resta visibile e si sblocca quando attivi un abbonamento. Per generare ancora senza abbonarti, paghi 5€ a foto e 5€ a video." },
     { q: "Meglio l'abbonamento o pagare a consumo?", a: "Dipende dal volume. Senza abbonamento generi a 5€/foto e 5€/video, comodo per testare. Con un abbonamento Studio hai foto e video inclusi ogni mese a un costo unitario molto più basso, più i promemoria WhatsApp/SMS e tutto il software sbloccato. Sul piano Studio Grande anche gli extra costano meno: 2€/foto e 3€/video." },
-    { q: "Cosa succede se una preview esce male (denti deformati, artefatti)?", a: "La generazione scala comunque dal piano, ma con un tasto la segnali: verifichiamo il caso e, se l'errore è nostro, la rigeneriamo gratis entro 24 ore. Le modifiche creative che chiedi tu (più bianchi, forma diversa) contano invece come una generazione normale." },
+    { q: "Cosa succede se una simulazione esce male (denti deformati, artefatti)?", a: "La generazione scala comunque dal piano, ma con un tasto la segnali: verifichiamo il caso e, se l'errore è nostro, la rigeneriamo gratis entro 24 ore. Le modifiche creative che chiedi tu (più bianchi, forma diversa) contano invece come una generazione normale." },
     { q: "E se finisco le foto o i video inclusi nel mese?", a: "Non ti blocchiamo mai, soprattutto col paziente in poltrona. Al raggiungimento del limite scatta l'addebito automatico dell'extra (5€/foto · 5€/video, 2€/foto · 3€/video sullo Studio Grande) oppure puoi passare al piano superiore. Decidi tu." },
-    { q: "Chi genera le preview? Devo farlo io?", a: "No. Il protocollo è pensato per la segreteria o l'ASO. È semplicissimo da usare: da quel momento lo staff lavora in autonomia e tu resti in poltrona." },
+    { q: "Chi genera le simulazioni? Devo farlo io?", a: "No. Il protocollo è pensato per la segreteria o l'ASO. È semplicissimo da usare: da quel momento lo staff lavora in autonomia e tu resti in poltrona." },
     isV5
-      ? { q: "La preview sostituisce una simulazione diagnostica?", a: "No. SmileLive è uno strumento di comunicazione e non sostituisce diagnosi, progettazione clinica o consenso informato. La preview aiuta il paziente a comprendere il cambiamento proposto, che resta sempre da valutare e spiegare dal professionista." }
+      ? { q: "La simulazione sostituisce la diagnosi?", a: "No. SmileLive è uno strumento di comunicazione e non sostituisce diagnosi, progettazione clinica o consenso informato. La simulazione aiuta il paziente a comprendere il cambiamento proposto, che resta sempre da valutare e spiegare dal professionista." }
       : { q: "Il 70% di accuratezza visiva non e' troppo basso?", a: "SmileLive non e' uno strumento diagnostico: e' uno strumento di desiderio. Il suo compito non e' garantire il risultato clinico, quello e' il tuo. Il suo compito e' far nascere nel paziente la voglia di iniziare. Per i casi riproducibili, la preview e' molto accurata. Per i casi complessi, sblocca la conversazione. Funziona in entrambi i casi." },
     { q: "Quanto tempo serve per una simulazione del sorriso?", a: "Circa un minuto per la simulazione in foto. Il video del sorriso richiede qualche minuto in più." },
     { q: "Serve installare un programma?", a: "No. SmileLive si usa dal browser, su computer, tablet e telefono. Chi vuole può aggiungerlo alla schermata iniziale come un'app, senza passare dagli store." },
@@ -2818,7 +2823,7 @@ const FinalCTA = () => {
       transition={{ duration: 0.8 }}
       className="max-w-4xl mx-auto px-6 relative z-10"
     >
-      <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-primary mb-5">{isV5 ? "Inizia con una preview" : "Pronto a partire"}</span>
+      <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-primary mb-5">{isV5 ? "Inizia con una simulazione" : "Pronto a partire"}</span>
       <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-headline font-bold mb-6 leading-tight text-text-main tracking-tight text-balance">
         {isV5 ? <>Rendi più chiara la <span className="text-gold">prossima consulenza.</span></> : <>Il tuo prossimo paziente <span className="text-gold">indeciso</span> e' gia' in sala d'attesa.</>}
       </h2>
@@ -2866,7 +2871,7 @@ const SOCIALS = [
 
 const FooterCol = ({ title, children }: { title: string; children: React.ReactNode }) => (
   <motion.div variants={fadeUp} className="flex flex-col gap-3">
-    <h4 className="text-[11px] font-semibold text-slate-500 uppercase tracking-widest">{title}</h4>
+    <h3 className="text-[11px] font-semibold text-slate-500 uppercase tracking-widest">{title}</h3>
     <ul className="flex flex-col gap-2.5 text-sm text-slate-400">{children}</ul>
   </motion.div>
 );
@@ -2889,12 +2894,12 @@ const Footer = () => {
         <motion.div variants={fadeUp} className="flex flex-col gap-5">
           <img src={logoFinale} alt="SmileLive" className="h-11 w-auto object-contain object-left brightness-0 invert" width="120" height="44" loading="lazy" />
           <p className="text-sm text-slate-400 leading-relaxed max-w-[260px]">
-            {isV5 ? "Preview AI e strumenti gestionali per accompagnare la consulenza e il lavoro quotidiano dello studio dentistico." : "Il convertitore di pazienti indecisi: simulazioni del sorriso con l'AI che aumentano l'accettazione dei preventivi."}
+            {isV5 ? "Simulazione del sorriso con IA e strumenti gestionali per accompagnare la consulenza e il lavoro quotidiano dello studio dentistico." : "Il convertitore di pazienti indecisi: simulazioni del sorriso con l'AI che aumentano l'accettazione dei preventivi."}
           </p>
           <div className="flex items-center gap-3">
             {SOCIALS.map(({ label, href, Icon, wip }) =>
               wip ? (
-                <span key={label} aria-label={`${label} — Work in progress`} title="Work in progress"
+                <span key={label} role="img" aria-label={`${label} — Work in progress`} title="Work in progress"
                   className="w-9 h-9 rounded-full flex items-center justify-center bg-white/5 border border-white/10 text-slate-500 cursor-not-allowed">
                   <Icon size={16} weight="fill" />
                 </span>
