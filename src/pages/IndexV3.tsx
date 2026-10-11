@@ -1570,6 +1570,7 @@ const Esempi = () => {
 const STRUMENTI_DESIGNER = [
   { nome: "Posizione, larghezza, lunghezza.", testo: "Tocchi un dente e lo sposti, lo allarghi, lo allunghi o lo ruoti con le maniglie." },
   { nome: "Forma.", testo: "Con il pennello arrotondi o squadri gli angoli e modelli il bordo; con il lazo ridisegni il contorno." },
+  { nome: "Deforma.", testo: "Tiri una maniglia e si muove solo lei: gli angoli spostano l'angolo, i lati incurvano il lato." },
   { nome: "Specchia.", testo: "Copi un dente ribaltato al posto di un altro, oppure una metà dell'arcata superiore sull'altra." },
   { nome: "Colore.", testo: "Scegli la tinta del sorriso, da 0M1 ad A3,5." },
   { nome: "Rifinitura con IA e video.", testo: "Quando la forma ti convince, l'IA la rende realistica sul viso. Dalla foto modificata crei il video del sorriso." },
