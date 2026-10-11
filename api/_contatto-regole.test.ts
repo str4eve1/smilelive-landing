@@ -35,15 +35,18 @@ const CONTATTO = {
     inviato_at: "2026-10-10T08:15:00.000Z",
     utm: { source: "facebook", medium: "paid", campaign: "dentisti-pagina" },
     consenso_assistente: true,
-    testo_consenso: "Acconsento a essere chiamato dal segretario/a digitale di SmileLive.",
-    versione_testo: "2026-10-10-bozza",
+    testo_consenso:
+      "Acconsento a essere chiamato dal segretario/a digitale di SmileLive, un assistente vocale automatico con intelligenza artificiale.",
+    versione_testo: "2026-10-11",
   },
 };
 
 describe("testo del consenso", () => {
   it("è quello approvato, con la sua versione", () => {
-    expect(TESTO_CONSENSO).toBe("Acconsento a essere chiamato dal segretario/a digitale di SmileLive.");
-    expect(VERSIONE_TESTO).toBe("2026-10-10-bozza");
+    expect(TESTO_CONSENSO).toBe(
+      "Acconsento a essere chiamato dal segretario/a digitale di SmileLive, un assistente vocale automatico con intelligenza artificiale.",
+    );
+    expect(VERSIONE_TESTO).toBe("2026-10-11");
   });
 });
 
