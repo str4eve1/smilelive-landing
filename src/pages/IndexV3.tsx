@@ -2105,7 +2105,7 @@ const WhatYouGet = () => {
       span: "lg:col-span-5",
       title: "Fatturazione self-service integrata TS",
       label: "Fisco",
-      body: "Fatturazione integrata col Sistema Tessera Sanitaria: prepari e invii le fatture al Sistema TS direttamente dal software, in autonomia. Senza gestionali esterni.",
+      body: "Fatturazione integrata col Sistema Tessera Sanitaria: prepari e invii le fatture al Sistema TS direttamente dal software, in autonomia. Senza gestionali esterni. Nei piani Studio Medio e Studio Grande.",
       states: ["Crea fattura", "Invio a Sistema TS", "Inviata"],
     },
     {
@@ -2143,7 +2143,7 @@ const WhatYouGet = () => {
           <aside className="relative overflow-hidden rounded-2xl border border-orange-300/50 bg-[linear-gradient(150deg,rgba(249,115,22,0.34),rgba(217,70,20,0.14))] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_30px_78px_-58px_rgba(0,0,0,0.88)] backdrop-blur">
             <strong className="block text-2xl font-headline font-bold tracking-tight leading-none text-white">Sì, tutto incluso.</strong>
             <span className="block mt-3 text-sm leading-relaxed text-slate-200">
-              CRM, preventivi, firma, reminder, fisco e prescrizione vocale nello stesso flusso commerciale.
+              CRM, preventivi, firma, reminder e prescrizione vocale nello stesso flusso commerciale. Fatture e Sistema TS nei piani Studio Medio e Studio Grande.
             </span>
           </aside>
         </motion.div>
@@ -2408,9 +2408,9 @@ const Pricing = () => {
 
   const rules = [
     { icon: Sparkle, title: "Inizi gratis", body: "5 foto + 2 video in omaggio alla registrazione. Senza abbonamento generi ancora a 5€/foto e 5€/video, nessun canone fisso." },
-    { icon: ShieldCheck, title: "Errore nostro? Rigenerazione gratis entro 24h", body: "Se una generazione esce male la segnali con un tasto: la verifichiamo e, se l'errore è nostro, la rifacciamo gratis entro 24 ore." },
+    { icon: ShieldCheck, title: "Errore nostro? Rigenerazione gratis entro 24h", body: "Se una generazione esce male ce la segnali: la verifichiamo e, se l'errore è nostro, la rifacciamo gratis entro 24 ore." },
     { icon: Camera, title: "Le modifiche creative scalano dal piano", body: "Le modifiche che chiedi tu (es. «più bianchi», forma diversa) contano come una generazione normale e scalano dalle quote del piano." },
-    { icon: Lightning, title: "Mai un blocco in poltrona", body: "Al raggiungimento del limite non si blocca nulla: addebito automatico dell'extra o passaggio al piano superiore. Col paziente davanti non ti fermi mai." },
+    { icon: Lightning, title: "Mai un blocco in poltrona", body: "Al raggiungimento del limite non si blocca nulla: acquisti l'extra con un clic o passi al piano superiore. Col paziente davanti non ti fermi mai." },
   ];
 
   const freeTokens = { accent: "#64748b", grad: "linear-gradient(135deg,#94a3b8,#64748b)" };
@@ -2744,8 +2744,8 @@ const FAQ = () => {
     { q: "Quanto costa SmileLive?", a: "La prova è gratuita: 5 foto e 2 video, senza carta di credito. Poi puoi pagare a consumo, 5 € a foto e 5 € a video senza canone, oppure scegliere un piano: Studio Piccolo a 57 € al mese (47 € con il piano annuale), Studio Medio a 114 € (94 €), Studio Grande a 157 € (137 €). Tutti i prezzi sono IVA inclusa." },
     { q: "Posso provarlo senza abbonarmi?", a: "Sì. La registrazione è gratuita e ti regaliamo 5 foto e 2 video in omaggio nella tab SmileLive Preview, senza carta e senza impegno. Il resto del software resta visibile e si sblocca quando attivi un abbonamento. Per generare ancora senza abbonarti, paghi 5€ a foto e 5€ a video." },
     { q: "Meglio l'abbonamento o pagare a consumo?", a: "Dipende dal volume. Senza abbonamento generi a 5€/foto e 5€/video, comodo per testare. Con un abbonamento Studio hai foto e video inclusi ogni mese a un costo unitario molto più basso, più i promemoria WhatsApp/SMS e tutto il software sbloccato. Sul piano Studio Grande anche gli extra costano meno: 2€/foto e 3€/video." },
-    { q: "Cosa succede se una simulazione esce male (denti deformati, artefatti)?", a: "La generazione scala comunque dal piano, ma con un tasto la segnali: verifichiamo il caso e, se l'errore è nostro, la rigeneriamo gratis entro 24 ore. Le modifiche creative che chiedi tu (più bianchi, forma diversa) contano invece come una generazione normale." },
-    { q: "E se finisco le foto o i video inclusi nel mese?", a: "Non ti blocchiamo mai, soprattutto col paziente in poltrona. Al raggiungimento del limite scatta l'addebito automatico dell'extra (5€/foto · 5€/video, 2€/foto · 3€/video sullo Studio Grande) oppure puoi passare al piano superiore. Decidi tu." },
+    { q: "Cosa succede se una simulazione esce male (denti deformati, artefatti)?", a: "La generazione scala comunque dal piano, ma ce la puoi segnalare: verifichiamo il caso e, se l'errore è nostro, la rigeneriamo gratis entro 24 ore. Le modifiche creative che chiedi tu (più bianchi, forma diversa) contano invece come una generazione normale." },
+    { q: "E se finisco le foto o i video inclusi nel mese?", a: "Non ti blocchiamo mai, soprattutto col paziente in poltrona. Al raggiungimento del limite acquisti l'extra con un clic (5€/foto · 5€/video, 2€/foto · 3€/video sullo Studio Grande) oppure puoi passare al piano superiore. Decidi tu." },
     { q: "Chi genera le simulazioni? Devo farlo io?", a: "No. Il protocollo è pensato per la segreteria o l'ASO. È semplicissimo da usare: da quel momento lo staff lavora in autonomia e tu resti in poltrona." },
     isV5
       ? { q: "La simulazione sostituisce la diagnosi?", a: "No. SmileLive è uno strumento di comunicazione e non sostituisce diagnosi, progettazione clinica o consenso informato. La simulazione aiuta il paziente a comprendere il cambiamento proposto, che resta sempre da valutare e spiegare dal professionista." }
