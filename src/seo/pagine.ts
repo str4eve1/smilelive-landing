@@ -102,7 +102,7 @@ export const pagine: Pagina[] = [
       h1: "Accettazione del preventivo odontoiatrico: come farlo capire in prima visita",
       nome: "Far accettare più preventivi",
       pubblicata: "2026-10-10",
-      modificata: "2026-10-10",
+      modificata: "2026-10-11",
     },
   },
   {

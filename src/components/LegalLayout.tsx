@@ -52,7 +52,8 @@ export function TestataSito() {
     <header className="border-b border-secondary/10">
       <div className="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-          <img src={logoFinale} alt="SmileLive" className="h-12 w-auto" width="160" height="48" />
+          {/* Il file del logo ha molto margine: si ritaglia come nella testata della home, alla stessa grandezza. */}
+          <img src={logoFinale} alt="SmileLive" className="w-[clamp(104px,30vw,128px)] h-[clamp(34px,9.77vw,42px)] sm:w-[172px] sm:h-[56px] object-cover object-[center_55%]" width="172" height="56" />
         </Link>
         <Link
           to="/"

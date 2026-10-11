@@ -12,13 +12,13 @@ const NotFound = () => {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background text-text-main px-6 text-center">
-      <img src={logoFinale} alt="SmileLive" className="h-12 w-auto mb-12 opacity-60" width="160" height="48" />
+      <img src={logoFinale} alt="SmileLive" className="w-[clamp(104px,30vw,128px)] h-[clamp(34px,9.77vw,42px)] sm:w-[172px] sm:h-[56px] object-cover object-[center_55%] mb-12 opacity-60" width="172" height="56" />
       <p className="text-xs font-bold uppercase tracking-widest text-primary mb-4">Errore 404</p>
       <h1 className="text-5xl md:text-7xl font-headline font-bold mb-4 tracking-display">
         Pagina non trovata
       </h1>
       <p className="text-xl text-text-muted max-w-md mb-10 leading-relaxed">
-        Questa pagina non esiste o l'URL non e' corretto.
+        Questa pagina non esiste o l'URL non è corretto.
       </p>
       <Link
         to="/"

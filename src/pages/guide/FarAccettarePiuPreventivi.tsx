@@ -4,7 +4,7 @@ export default function FarAccettarePiuPreventivi() {
   return (
     <GuidaLayout
       titolo="Accettazione del preventivo odontoiatrico: come farlo capire in prima visita"
-      aggiornato="10 ottobre 2026"
+      aggiornato="11 ottobre 2026"
       posizione="guida_far_accettare_preventivi"
       inBreve="Un preventivo viene accettato quando il paziente capisce che cosa gli stai proponendo. In prima visita la simulazione del sorriso sul suo viso, in foto e in video, gli dà qualcosa di concreto da guardare e di cui parlare con te. La prepara la segreteria o l'assistente in circa un minuto, mentre tu resti in poltrona, e il preventivo, la firma a schermo e la fattura vivono nello stesso strumento."
     >
@@ -16,13 +16,14 @@ export default function FarAccettarePiuPreventivi() {
 
       <Section title="Perché il prima/dopo deve essere sul viso del paziente?">
         <p>Perché il paziente non decide su un'immagine generica: decide guardando sé stesso. Un caso da catalogo parla di un altro sorriso. La simulazione parte da una foto scattata in studio e mostra il possibile risultato sullo stesso viso, con un cursore da trascinare tra prima e dopo.</p>
-        <p>Dalla stessa foto si può ottenere anche un breve video, circa 6 secondi e senza audio, in cui il paziente sorride e muove la testa. L'app lavora con due motori di IA in parallelo: tu confronti le versioni e scegli quella che somiglia di più al piano di cura. Se serve, puoi ritoccare il risultato con una richiesta a testo.</p>
+        <p>Dalla stessa foto si può ottenere anche un breve video, circa 6 secondi e senza audio, in cui il paziente sorride e muove la testa. L'app lavora con due motori di IA in parallelo: tu confronti le versioni e scegli quella che somiglia di più al piano di cura. Se serve, puoi ritoccare il risultato nella modalità Designer, dente per dente, oppure con una richiesta a testo, e rifinirlo con l'IA (AI Refine).</p>
+        <p>Prima di mostrarla al paziente, verifica che il risultato simulato sia realizzabile: è l'analisi di fattibilità, la terza fase del <LinkInterno to="/protocollo">protocollo</LinkInterno>. Nella «Vista clinica» puoi sovrapporre la scansione 3D alla foto, per facilitare l'analisi. Al paziente arriva solo una proposta che si può realizzare.</p>
         <p>Il paziente guarda, tu spieghi cosa è previsto e cosa no. La conversazione parte da un riferimento personale.</p>
       </Section>
 
       <Section title="E se non ho tempo in poltrona?">
         <p>La simulazione richiede circa un minuto. Il video richiede qualche minuto in più, e intanto si può continuare a lavorare: arriva nell'app quando è pronto.</p>
-        <p>Non devi farla tu. La può preparare la segreteria o l'assistente: scatta la foto, avvia la simulazione, e tu trovi il risultato pronto da mostrare mentre resti in poltrona. Il tempo del clinico va sulla spiegazione, non sul software.</p>
+        <p>Non devi farla tu. La può preparare la segreteria o l'assistente: scatta la foto, avvia la simulazione, e tu trovi il risultato pronto da valutare e da mostrare mentre resti in poltrona. Il tempo del clinico va sulla spiegazione, non sul software.</p>
       </Section>
 
       <Section title="Cosa cambia avere tutto nello stesso strumento?">
