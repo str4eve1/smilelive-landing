@@ -2210,7 +2210,7 @@ const WhatYouGet = () => {
                 <Microphone size={22} />
               </div>
               <span className="rounded-full border border-orange-300/35 bg-orange-500/20 px-3 py-1.5 text-[12px] font-extrabold text-orange-100">
-                Esclusiva
+                Novità
               </span>
             </div>
             <div className="relative">

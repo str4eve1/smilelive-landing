@@ -1,0 +1,15 @@
+Caratteri ospitati dal sito, tutti con licenza SIL Open Font License, versione 1.1
+(testo: https://openfontlicense.org/open-font-license-official-text/).
+
+Syne (syne-latin.woff2)
+  Copyright 2017 The Syne Project Authors (https://gitlab.com/bonjour-monde/fonderie/syne-typeface)
+
+DM Serif Display (dm-serif-display-italic-latin.woff2)
+  Copyright 2014-2018 Adobe (http://www.adobe.com/), con Reserved Font Name "Source".
+  Copyright 2019 Google LLC.
+
+Inter (inter-latin.woff2)
+  Copyright 2020 The Inter Project Authors (https://github.com/rsms/inter)
+
+Plus Jakarta Sans (plus-jakarta-sans-latin.woff2)
+  Copyright 2020 The Plus Jakarta Sans Project Authors (https://github.com/tokotype/PlusJakartaSans)
