@@ -1,6 +1,7 @@
 /*
  * COME SI SCRIVE UNA PAGINA DI CONTENUTO (protocollo, guide). Modello: pages/guide/MockUpDigitaleInjectionTechnique.tsx
  * - Cornice: <GuidaLayout titolo="<h1>" aggiornato="10 ottobre 2026" posizione="guida_nome" inBreve={...} nota={...}>.
+ *   `firma={false}` toglie «A cura di …» sotto il titolo (serve solo alla pagina «Chi siamo»).
  *   `inBreve` è il testo del paragrafo «In breve» (nel riquadro; non ripetere il titolo); `nota` è la riga piccola a piè di pagina, se la bozza ne ha una.
  * - Ogni «## titolo» della bozza è una <Section title="...">; ogni «### titolo» una <Subsection>; i paragrafi sono <p>; **grassetto** è <strong>.
  * - Tabella: <Tabella colonne={["A", "B"]} righe={[[..., ...], ...]} />; la prima cella di ogni riga è l'intestazione di riga. Cella vuota: "".
@@ -26,10 +27,11 @@ type GuidaLayoutProps = {
   posizione: string;
   inBreve: ReactNode;
   nota?: ReactNode;
+  firma?: boolean;
   children?: ReactNode;
 };
 
-export default function GuidaLayout({ titolo, aggiornato, posizione, inBreve, nota, children }: GuidaLayoutProps) {
+export default function GuidaLayout({ titolo, aggiornato, posizione, inBreve, nota, firma = true, children }: GuidaLayoutProps) {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [titolo]);
@@ -43,7 +45,18 @@ export default function GuidaLayout({ titolo, aggiornato, posizione, inBreve, no
           <h1 className="font-headline font-bold text-2xl sm:text-3xl md:text-4xl tracking-tight leading-tight mb-3 [text-wrap:balance]">
             {titolo}
           </h1>
-          <p className="text-sm text-text-muted">Aggiornato il {aggiornato}</p>
+          <p className="text-sm text-text-muted">
+            {firma && (
+              <>
+                A cura di{" "}
+                <Link to="/chi-siamo" className="text-text-main underline underline-offset-2 hover:text-primary">
+                  Giampiero Lombardi
+                </Link>{" "}
+                ·{" "}
+              </>
+            )}
+            Aggiornato il {aggiornato}
+          </p>
         </header>
 
         <section className="mb-10 rounded-xl border border-primary/20 border-l-4 border-l-primary bg-primary/5 px-5 py-4 md:px-6 md:py-5">

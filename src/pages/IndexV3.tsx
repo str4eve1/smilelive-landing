@@ -2918,6 +2918,7 @@ const Footer = () => {
           <li><a href="#come-funziona" className={footerLink}>Come funziona</a></li>
           <li><a href="#pricing" className={footerLink}>Prezzi</a></li>
           <li><a href="#faq" className={footerLink}>FAQ</a></li>
+          <li><a href="/chi-siamo" className={footerLink}>Chi siamo</a></li>
           <li><a href="https://app.smilelive.it/" target="_blank" rel="noopener noreferrer" className={footerLink}>Accedi</a></li>
         </FooterCol>
 

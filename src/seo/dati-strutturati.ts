@@ -24,6 +24,18 @@ const offerta = (name: string, valore: string, description: string, mensile = tr
 
 const idOrganizzazione = { "@id": `${SITO}/#organizzazione` };
 
+const idFondatore = { "@id": `${SITO}/chi-siamo#giampiero-lombardi` };
+
+// Chi cura i contenuti. Come l'organizzazione, va ripetuto in ogni pagina che lo richiama.
+const fondatore = {
+  "@type": "Person",
+  ...idFondatore,
+  name: "Giampiero Lombardi",
+  jobTitle: "Fondatore di SmileLive",
+  url: `${SITO}/chi-siamo`,
+  worksFor: idOrganizzazione,
+};
+
 // Chi pubblica il sito. Il nodo va ripetuto in ogni pagina che lo richiama: chi legge una pagina sola non vede la home.
 const organizzazione = {
   "@type": "Organization",
@@ -41,6 +53,7 @@ const organizzazione = {
     addressRegion: "BA",
     addressCountry: "IT",
   },
+  founder: idFondatore,
   sameAs: ["https://www.instagram.com/smilelive.it"],
 };
 
@@ -48,6 +61,7 @@ export const datiStrutturatiHome = {
   "@context": "https://schema.org",
   "@graph": [
     organizzazione,
+    fondatore,
     {
       "@type": "WebSite",
       "@id": `${SITO}/#sito`,
@@ -87,7 +101,7 @@ export const datiStrutturatiHome = {
 };
 
 // Dati strutturati delle pagine di contenuto (protocollo, guide): tutto viene dalla voce della tabella.
-// L'autore e l'editore sono l'organizzazione, richiamata con il suo @id e descritta nello stesso blocco.
+// L'autore è la persona che cura i contenuti, l'editore è l'organizzazione: entrambi sono richiamati con il loro @id e descritti nello stesso blocco.
 export const datiStrutturatiArticolo = (pagina: Pagina) => {
   const a = pagina.articolo;
   if (!a) throw new Error(`${pagina.percorso}: manca "articolo" nella tabella delle pagine`);
@@ -103,11 +117,12 @@ export const datiStrutturatiArticolo = (pagina: Pagina) => {
         inLanguage: "it",
         datePublished: a.pubblicata,
         dateModified: a.modificata,
-        author: idOrganizzazione,
+        author: idFondatore,
         publisher: idOrganizzazione,
         mainEntityOfPage: canonico,
       },
       organizzazione,
+      fondatore,
       {
         "@type": "BreadcrumbList",
         itemListElement: [

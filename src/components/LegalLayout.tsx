@@ -71,6 +71,8 @@ export function PiedeSito() {
     <footer className="py-10 border-t border-secondary/10 text-sm text-text-muted">
       <div className="max-w-3xl mx-auto px-6 flex flex-col items-center gap-4">
         <div className="flex flex-wrap justify-center gap-x-5 gap-y-2">
+          <Link to="/chi-siamo" className="hover:text-primary transition-colors">Chi siamo</Link>
+          <span>·</span>
           <Link to="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
           <span>·</span>
           <Link to="/cookie-policy" className="hover:text-primary transition-colors">Cookie Policy</Link>

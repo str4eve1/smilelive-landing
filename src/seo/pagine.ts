@@ -67,6 +67,19 @@ export const pagine: Pagina[] = [
     },
   },
   {
+    percorso: "/chi-siamo",
+    title: "Chi siamo: la famiglia di odontotecnici dietro SmileLive",
+    description:
+      "SmileLive ha sede a Casamassima (Bari) ed è nato in una famiglia di odontotecnici: chi l'ha ideato, chi ha pensato il protocollo e da quale esperienza viene.",
+    sitemap: true,
+    articolo: {
+      h1: "Chi siamo: la famiglia di odontotecnici dietro SmileLive",
+      nome: "Chi siamo",
+      pubblicata: "2026-10-11",
+      modificata: "2026-10-11",
+    },
+  },
+  {
     percorso: "/guide/progettazione-digitale-del-sorriso",
     title: "Progettazione digitale del sorriso: come si fa in studio",
     description:

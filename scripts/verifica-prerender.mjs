@@ -69,6 +69,11 @@ for (const p of contenuti) {
     if (art.datePublished !== p.articolo.pubblicata || art.dateModified !== p.articolo.modificata) ko(`${p.percorso}: date dell'Article diverse dalla tabella`);
     if (art.mainEntityOfPage !== canonicoDi(p.percorso)) ko(`${p.percorso}: mainEntityOfPage diverso dal canonico`);
     if (!art.author?.["@id"] || !art.publisher?.["@id"]) ko(`${p.percorso}: author/publisher senza @id`);
+    else {
+      const persona = grafo.find((n) => n["@type"] === "Person" && n["@id"] === art.author["@id"]);
+      if (persona?.name !== "Giampiero Lombardi") ko(`${p.percorso}: nel grafo manca la Person «Giampiero Lombardi» con l'@id dell'autore`);
+      if (!grafo.some((n) => n["@type"] === "Organization" && n["@id"] === art.publisher["@id"])) ko(`${p.percorso}: nel grafo manca l'Organization con l'@id dell'editore`);
+    }
   }
   const voci = brif?.itemListElement ?? [];
   if (voci.length !== 2 || voci[0]?.name !== "Home" || voci[1]?.item !== canonicoDi(p.percorso)) ko(`${p.percorso}: BreadcrumbList non è Home → pagina`);
