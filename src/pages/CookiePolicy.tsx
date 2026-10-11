@@ -16,6 +16,12 @@ const essentialCookies: CookieRow[] = [
     purpose: "Memorizza le preferenze dell'utente sui cookie statistici e di marketing.",
     duration: "Persistente fino a cancellazione manuale",
   },
+  {
+    name: "pagina-ricaricata",
+    provider: "smilelive.it (sessionStorage)",
+    purpose: "Segna che la pagina è già stata ricaricata una volta dopo un aggiornamento del Sito, per non ricaricarla di nuovo. Non identifica l'utente.",
+    duration: "Fino alla chiusura della scheda",
+  },
 ];
 
 const statisticsCookies: CookieRow[] = [
@@ -80,7 +86,7 @@ export default function CookiePolicy() {
     <LegalLayout
       title="Cookie Policy"
       subtitle="Informativa sull'uso di cookie e tecnologie similari sul sito smilelive.it, ai sensi del provvedimento del Garante per la protezione dei dati personali del 10 giugno 2021."
-      lastUpdate="27 aprile 2026"
+      lastUpdate="11 ottobre 2026"
     >
       <Section title="1. Cosa sono i cookie">
         <p>

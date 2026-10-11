@@ -6,7 +6,7 @@ export default function Terms() {
     <LegalLayout
       title="Termini di Servizio"
       subtitle="Termini e condizioni di utilizzo del sito smilelive.it."
-      lastUpdate="27 aprile 2026"
+      lastUpdate="11 ottobre 2026"
     >
       <p>
         I presenti Termini di Servizio (di seguito "Termini") disciplinano l'accesso e
@@ -21,6 +21,7 @@ export default function Terms() {
         </p>
         <ul className="list-disc pl-6 space-y-1">
           <li><strong className="text-text-main">Giampiero Lombardi</strong> — Ditta Individuale</li>
+          <li>Partita IVA: 09125450727</li>
           <li>Attività: sviluppo e gestione della piattaforma SaaS SmileLive per studi odontoiatrici</li>
           <li>Sede: Casamassima (BA), Italia</li>
           <li>Email: <a href="mailto:privacy@smilelive.it" className="text-primary hover:underline">privacy@smilelive.it</a></li>
@@ -31,9 +32,10 @@ export default function Terms() {
         <p>
           Il Sito ha natura puramente <strong className="text-text-main">informativa e
           promozionale</strong>: presenta SmileLive, il software dedicato agli studi
-          odontoiatrici per la generazione di simulazioni AI di trattamenti estetici, e i
-          relativi piani commerciali. La sottoscrizione del servizio e l'utilizzo del software
-          avvengono esclusivamente sull'applicazione{" "}
+          odontoiatrici per la simulazione del sorriso con intelligenza artificiale, e i
+          relativi piani commerciali. Pubblica inoltre guide e contenuti informativi rivolti ai
+          professionisti del settore odontoiatrico e odontotecnico. La sottoscrizione del
+          servizio e l'utilizzo del software avvengono esclusivamente sull'applicazione{" "}
           <a href="https://app.smilelive.it/" className="text-primary hover:underline">app.smilelive.it</a>,
           regolati da contratti separati.
         </p>
@@ -87,7 +89,8 @@ export default function Terms() {
           con la massima diligenza, ma il Titolare non garantisce la loro completezza,
           accuratezza, attualità o adeguatezza a finalità specifiche. Le simulazioni mostrate
           a scopo dimostrativo non costituiscono diagnosi clinica né predizione di risultati
-          terapeutici certi.
+          terapeutici certi. Le guide e la pagina sul protocollo hanno scopo informativo, sono
+          rivolte a professionisti e non sostituiscono la valutazione clinica dell'odontoiatra.
         </p>
         <p>
           Nei limiti consentiti dalla legge, il Titolare non sarà responsabile per:
