@@ -37,6 +37,8 @@ import caso5Dopo from '../assets/esempi/caso5-dopo.webp';
 import caso6Mini from '../assets/esempi/caso6-mini.webp';
 import caso6Video from '../assets/esempi/caso6-video.mp4';
 import caso6VideoPoster from '../assets/esempi/caso6-video-poster.webp';
+import designerDenti from '../assets/designer/designer-denti.webp';
+import designerVistaClinica from '../assets/designer/designer-vista-clinica.webp';
 import prevSbiancamento from '../assets/WEBP/Sbiancamento prima e dopo2.webp';
 import prevFaccette from '../assets/WEBP/FACCETTE (1).jpeg';
 import prevOrtodonzia from '../assets/WEBP/TERMOSTAMPATA-CrUanAGb.jpg';
@@ -1563,6 +1565,86 @@ const Esempi = () => {
   );
 };
 
+// ─── DesignerSezione (la modifica a mano, dente per dente, e la Vista clinica) ─
+// I nomi degli strumenti sono quelli che si leggono nell'app: Designer, Pennello, Lazo, Specchia, Vista clinica, Vista pulita.
+const STRUMENTI_DESIGNER = [
+  { nome: "Posizione, larghezza, lunghezza.", testo: "Tocchi un dente e lo sposti, lo allarghi, lo allunghi o lo ruoti con le maniglie." },
+  { nome: "Forma.", testo: "Con il pennello arrotondi o squadri gli angoli e modelli il bordo; con il lazo ridisegni il contorno." },
+  { nome: "Specchia.", testo: "Copi un dente ribaltato al posto di un altro, oppure una metà dell'arcata superiore sull'altra." },
+  { nome: "Colore.", testo: "Scegli la tinta del sorriso, da 0M1 ad A3,5." },
+  { nome: "Rifinitura con IA e video.", testo: "Quando la forma ti convince, l'IA la rende realistica sul viso. Dalla foto modificata crei il video del sorriso." },
+];
+
+const DesignerSezione = () => {
+  const schermata = "relative rounded-2xl overflow-hidden shadow-xl ring-1 ring-slate-200 bg-[#0b1120]";
+  return (
+    <section data-sez="designer" className="py-16 md:py-24 bg-white">
+      <div className="max-w-7xl mx-auto px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="max-w-3xl"
+        >
+          <h2 className="text-3xl md:text-5xl font-headline font-bold tracking-tight text-text-main">Nel Designer <span className="whitespace-nowrap">decidi tu,</span> <span className="text-primary whitespace-nowrap">dente per dente</span>.</h2>
+          <p className="mt-4 text-lg text-text-muted leading-relaxed">La simulazione automatica è il punto di partenza. Nel Designer apri la foto, selezioni un dente o più denti e li modifichi a mano; alla fine l'IA rende il risultato realistico.</p>
+        </motion.div>
+
+        <div className="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+          <motion.figure
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6, ease: EASE_OUT }}
+            className={`m-0 lg:col-span-7 ${schermata}`}
+          >
+            <img src={designerDenti} width="1000" height="624" loading="lazy" alt="Il Designer di SmileLive: un dente selezionato con le maniglie, gli strumenti Denti, Lazo e Pennello e il tasto per la rifinitura con IA" className="block w-full h-auto" />
+            <AiBadge className="top-2 left-2" />
+          </motion.figure>
+          <motion.dl
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="lg:col-span-5 m-0 space-y-5"
+          >
+            {STRUMENTI_DESIGNER.map((s) => (
+              <motion.div key={s.nome} variants={fadeUp}>
+                <dt className="text-lg font-bold text-text-main">{s.nome}</dt>
+                <dd className="m-0 mt-1 text-base leading-relaxed text-text-muted">{s.testo}</dd>
+              </motion.div>
+            ))}
+          </motion.dl>
+        </div>
+
+        <div className="mt-16 md:mt-20 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+          <div className="lg:col-span-5 lg:order-1 order-2">
+            <h3 className="text-2xl md:text-3xl font-headline font-bold tracking-tight text-text-main">Vista clinica: la scansione sopra la foto.</h3>
+            <p className="mt-4 text-lg text-text-muted leading-relaxed">Carichi la scansione intraorale (file STL), indichi tre o quattro punti in comune e la vedi sovrapposta alla foto. Regoli quanto si vede e la prospettiva, e la ruoti in 3D.</p>
+            <p className="mt-3 text-lg text-text-muted leading-relaxed">Serve alla valutazione clinica del caso: è una visualizzazione, non una misura.</p>
+          </div>
+          <motion.figure
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6, ease: EASE_OUT }}
+            className={`m-0 lg:col-span-7 lg:order-2 order-1 ${schermata}`}
+          >
+            <img src={designerVistaClinica} width="1240" height="664" loading="lazy" alt="La Vista clinica di SmileLive: la scansione 3D dei denti sovrapposta alla foto del viso, con i comandi Scansione, Foto e Prospettiva" className="block w-full h-auto" />
+            <AiBadge className="top-2 left-2" />
+          </motion.figure>
+        </div>
+
+        <div className="mt-16 md:mt-20 max-w-3xl">
+          <h3 className="text-2xl md:text-3xl font-headline font-bold tracking-tight text-text-main">Tutto nella stessa pagina, durante il colloquio.</h3>
+          <p className="mt-4 text-lg text-text-muted leading-relaxed">Foto di partenza, simulazione, scansione e video del sorriso stanno insieme: passi dal prima al dopo con un tocco e con «Vista pulita» nascondi gli strumenti. Poi mandi al paziente il confronto con un link, che apre dal telefono senza installare nulla.</p>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 // ─── ProtocolloLab (le sette fasi, tra studio e laboratorio) ─────────────────
 // I testi vengono dalla pagina /protocollo: se cambiano là, vanno cambiati anche qui.
 const FASI = [
@@ -2939,6 +3021,7 @@ export default function IndexV3({ variant = "v3" }: { variant?: SmileLiveLanding
       <AISimShowcase />       {/* Dalla foto al video del sorriso */}
       <DemoVideo />           {/* Il software vero, 2 minuti con voce */}
       <Esempi />              {/* Simulazioni già pubblicate sui canali SmileLive */}
+      <DesignerSezione />     {/* La modifica a mano dente per dente e la Vista clinica */}
       <ProtocolloLab />       {/* Le sette fasi tra studio e laboratorio, e la prescrizione vocale */}
       <WhatYouGet />          {/* Per lo studio: tutto in un posto */}
       <Pricing />             {/* L'offerta */}

@@ -53,6 +53,8 @@ const FILES = [
   `${A}/esempi/caso6-mini.webp`,
   `${A}/esempi/caso6-video.mp4`,
   `${A}/esempi/caso6-video-poster.webp`,
+  `${A}/designer/designer-denti.webp`,
+  `${A}/designer/designer-vista-clinica.webp`,
 ];
 
 const SRC_TYPE = "http://cv.iptc.org/newscodes/digitalsourcetype/trainedAlgorithmicMedia";
