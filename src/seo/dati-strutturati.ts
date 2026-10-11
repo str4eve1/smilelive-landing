@@ -22,35 +22,46 @@ const offerta = (name: string, valore: string, description: string, mensile = tr
   url: `${SITO}/`,
 });
 
+const idOrganizzazione = { "@id": `${SITO}/#organizzazione` };
+
+// Chi pubblica il sito. Il nodo va ripetuto in ogni pagina che lo richiama: chi legge una pagina sola non vede la home.
+const organizzazione = {
+  "@type": "Organization",
+  ...idOrganizzazione,
+  name: "SmileLive",
+  description:
+    "Software per studi dentistici: simulazione del sorriso con intelligenza artificiale da una foto del paziente, in foto e in video.",
+  url: `${SITO}/`,
+  logo: `${SITO}/favicon.png`,
+  vatID: "IT09125450727",
+  email: "supporto@smilelive.it",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Casamassima",
+    addressRegion: "BA",
+    addressCountry: "IT",
+  },
+  sameAs: ["https://www.instagram.com/smilelive.it"],
+};
+
 export const datiStrutturatiHome = {
   "@context": "https://schema.org",
   "@graph": [
-    {
-      "@type": "Organization",
-      "@id": `${SITO}/#organizzazione`,
-      name: "SmileLive",
-      url: `${SITO}/`,
-      logo: `${SITO}/favicon.png`,
-      vatID: "IT09125450727",
-      email: "supporto@smilelive.it",
-      address: {
-        "@type": "PostalAddress",
-        addressLocality: "Casamassima",
-        addressRegion: "BA",
-        addressCountry: "IT",
-      },
-      sameAs: ["https://www.instagram.com/smilelive.it"],
-    },
+    organizzazione,
     {
       "@type": "WebSite",
       "@id": `${SITO}/#sito`,
       name: "SmileLive",
       url: `${SITO}/`,
       inLanguage: "it",
+      publisher: idOrganizzazione,
     },
     {
       "@type": "SoftwareApplication",
+      "@id": `${SITO}/#software`,
       name: "SmileLive",
+      url: `${SITO}/`,
+      publisher: idOrganizzazione,
       applicationCategory: "BusinessApplication",
       operatingSystem: "Web",
       inLanguage: "it",
@@ -76,12 +87,11 @@ export const datiStrutturatiHome = {
 };
 
 // Dati strutturati delle pagine di contenuto (protocollo, guide): tutto viene dalla voce della tabella.
-// L'autore e l'editore sono l'organizzazione già descritta nella home, richiamata con il suo @id.
+// L'autore e l'editore sono l'organizzazione, richiamata con il suo @id e descritta nello stesso blocco.
 export const datiStrutturatiArticolo = (pagina: Pagina) => {
   const a = pagina.articolo;
   if (!a) throw new Error(`${pagina.percorso}: manca "articolo" nella tabella delle pagine`);
   const canonico = canonicoDi(pagina.percorso);
-  const organizzazione = { "@id": `${SITO}/#organizzazione` };
   return {
     "@context": "https://schema.org",
     "@graph": [
@@ -93,10 +103,11 @@ export const datiStrutturatiArticolo = (pagina: Pagina) => {
         inLanguage: "it",
         datePublished: a.pubblicata,
         dateModified: a.modificata,
-        author: organizzazione,
-        publisher: organizzazione,
+        author: idOrganizzazione,
+        publisher: idOrganizzazione,
         mainEntityOfPage: canonico,
       },
+      organizzazione,
       {
         "@type": "BreadcrumbList",
         itemListElement: [
