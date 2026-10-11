@@ -661,7 +661,7 @@ const Hero = () => {
         <motion.h1 variants={fadeUp} className="text-2xl sm:text-5xl md:text-6xl font-headline font-bold tracking-tight leading-[1.15] sm:leading-[1.1] text-text-main">
           {isV5 ? (
             <>
-              <span className="block">Simulazione del sorriso con IA.</span>
+              <span className="block">Simulazione del sorriso con IA.</span>{" "}
               <span className="block text-primary">In prima visita, in foto e in video.</span>
             </>
           ) : (
