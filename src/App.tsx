@@ -81,6 +81,19 @@ const TitoloPagina = () => {
   return null;
 };
 
+declare global {
+  interface Window {
+    __paginaViva?: () => void;
+  }
+}
+
+// Un bottone toccato prima che la pagina fosse viva (vedi index.html) si preme adesso.
+// Sta dentro Suspense: il suo effetto parte quando anche la pagina è idratata.
+const PaginaViva = () => {
+  useEffect(() => window.__paginaViva?.(), []);
+  return null;
+};
+
 export const AppRoutes = () => (
   <Suspense fallback={<div className="min-h-screen bg-background" />}>
     <TitoloPagina />
@@ -105,6 +118,7 @@ export const AppRoutes = () => (
       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
       <Route path="*" element={<NotFound />} />
     </Routes>
+    <PaginaViva />
   </Suspense>
 );
 

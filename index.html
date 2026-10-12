@@ -20,6 +20,23 @@
     <meta name="theme-color" content="#0284c7" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="icon" type="image/png" href="/favicon.png" />
+    <script>
+      // La pagina si vede prima di rispondere ai tocchi: si ricorda l'ultimo bottone toccato nel frattempo
+      // e lo si preme appena è pronta (src/App.tsx chiama __paginaViva).
+      (function () {
+        var ultimo = null;
+        function ricorda(e) {
+          var b = e.target && e.target.closest ? e.target.closest('button:not([type="submit"]), [role="button"]') : null;
+          if (b) ultimo = b;
+        }
+        addEventListener("click", ricorda, true);
+        window.__paginaViva = function () {
+          removeEventListener("click", ricorda, true);
+          if (ultimo && ultimo.isConnected) ultimo.click();
+          ultimo = null;
+        };
+      })();
+    </script>
   </head>
 
   <body>
