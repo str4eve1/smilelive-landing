@@ -26,7 +26,6 @@ export default function ChiSiamo() {
           <li><strong>Giuseppe Lombardi</strong>: esperto di CAD/CAM e stampa 3D, con più di otto anni di esperienza. È la mente del <LinkInterno to="/protocollo">protocollo SmileLive</LinkInterno>. Lavora in un laboratorio odontotecnico di Bari.</li>
           <li><strong>Nicola Lombardi</strong>: odontotecnico, con più di quarant'anni di esperienza. Ha avuto laboratori odontotecnici e studi dentistici; oggi fa ricerca in autonomia.</li>
         </Elenco>
-        <p>Giuseppe è il fratello di Giampiero, Nicola è il padre.</p>
       </Section>
 
       <Section title="Chi scrive le guide di questo sito?">
