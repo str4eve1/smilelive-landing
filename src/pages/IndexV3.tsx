@@ -2973,7 +2973,7 @@ const Footer = () => {
       className="border-t border-white/10"
     >
       <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
-        <p>© {new Date().getFullYear()} SmileLive · P.IVA 09125450727. Tutti i diritti riservati.</p>
+        <p>© {new Date().getFullYear()} SmileLive · P.IVA 09125450727 · REA BA-673495. Tutti i diritti riservati.</p>
         <div className="flex items-center gap-4">
           <a href="/privacy" className="hover:text-slate-300 transition-colors">Privacy</a>
           <a href="/terms" className="hover:text-slate-300 transition-colors">Termini</a>

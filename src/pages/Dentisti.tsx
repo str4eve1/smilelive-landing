@@ -167,7 +167,7 @@ export default function Dentisti() {
 
       <footer className="dn-footer">
         <div className="dn-wrap">
-          <p>© {new Date().getFullYear()} SmileLive — Giampiero Lombardi, Ditta Individuale — P.IVA 09125450727 — Casamassima (BA), Italia</p>
+          <p>© {new Date().getFullYear()} SmileLive — Giampiero Lombardi, Ditta Individuale — P.IVA 09125450727 — REA BA-673495 — Casamassima (BA), Italia</p>
           <nav aria-label="Informazioni legali">
             <a href="/privacy">Privacy</a>
             <a href="/cookie-policy">Cookie</a>

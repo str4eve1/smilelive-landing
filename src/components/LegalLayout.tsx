@@ -83,7 +83,7 @@ export function PiedeSito() {
           <span>·</span>
           <a href="mailto:supporto@smilelive.it" className="hover:text-primary transition-colors">Contatti</a>
         </div>
-        <p className="text-xs text-text-muted/60">© {new Date().getFullYear()} SmileLive · P.IVA 09125450727. Tutti i diritti riservati.</p>
+        <p className="text-xs text-text-muted/60">© {new Date().getFullYear()} SmileLive · P.IVA 09125450727 · REA BA-673495. Tutti i diritti riservati.</p>
       </div>
     </footer>
   );

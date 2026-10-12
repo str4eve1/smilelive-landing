@@ -6,7 +6,7 @@ export default function Privacy() {
     <LegalLayout
       title="Privacy Policy"
       subtitle="Informativa sul trattamento dei dati personali ai sensi dell'art. 13 del Regolamento (UE) 2016/679 (GDPR)."
-      lastUpdate="10 ottobre 2026"
+      lastUpdate="12 ottobre 2026"
     >
       <p>
         La presente informativa descrive le modalità con cui i dati personali degli utenti che
@@ -20,6 +20,7 @@ export default function Privacy() {
         <ul className="list-disc pl-6 space-y-1">
           <li><strong className="text-text-main">Giampiero Lombardi</strong> — Ditta Individuale</li>
           <li>Partita IVA: 09125450727</li>
+          <li>Numero REA: BA-673495</li>
           <li>Attività: sviluppo e gestione della piattaforma SaaS SmileLive per studi odontoiatrici</li>
           <li>Sede: Casamassima (BA), Italia</li>
           <li>Email: <a href="mailto:privacy@smilelive.it" className="text-primary hover:underline">privacy@smilelive.it</a></li>
