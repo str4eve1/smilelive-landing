@@ -132,6 +132,12 @@ for (const f of readdirSync(dist, { recursive: true }).filter((x) => /\.(html|js
   if (/fonts\.(googleapis|gstatic)\.com/.test(leggi(f))) ko(`${f}: carica un carattere da Google`);
 }
 
+// Il contenitore del pulsante WhatsApp è più grande di ciò che si vede: se prende i tocchi, su telefono
+// copre mezza pagina (bottoni e collegamenti sotto non rispondono).
+for (const f of readdirSync(join(dist, "assets")).filter((x) => x.endsWith(".css"))) {
+  if (/\.wa-widget(\.visible)?\{[^}]*pointer-events:auto/.test(leggi(join("assets", f)))) ko(`${f}: il contenitore .wa-widget prende i tocchi`);
+}
+
 if (errori.length) {
   console.error("Verifica prerender FALLITA:\n- " + errori.join("\n- "));
   process.exit(1);
