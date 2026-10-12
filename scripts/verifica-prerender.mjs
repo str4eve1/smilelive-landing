@@ -1,5 +1,5 @@
 // Controllo in coda alla build: se qualcosa dell'HTML prodotto non torna, la build si ferma.
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
@@ -125,6 +125,11 @@ else {
   for (const p of pagine.filter((x) => x.sitemap)) {
     if (!l.includes(`](${canonicoDi(p.percorso)})`)) ko(`llms.txt: manca ${p.percorso}`);
   }
+}
+
+// I caratteri li serve il sito: nessun file costruito deve chiamare Google.
+for (const f of readdirSync(dist, { recursive: true }).filter((x) => /\.(html|js|css)$/.test(x))) {
+  if (/fonts\.(googleapis|gstatic)\.com/.test(leggi(f))) ko(`${f}: carica un carattere da Google`);
 }
 
 if (errori.length) {

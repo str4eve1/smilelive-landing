@@ -1,4 +1,13 @@
 /* Stili solo della pagina /dentisti. Colori come variabili in cima. */
+/* Il carattere del marchio, servito dal sito stesso: lo stesso file della home. */
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url("../../assets/fonts/plus-jakarta-sans-latin.woff2") format("woff2");
+}
+
 .dn-page {
   --dn-navy: #0b1120;
   --dn-blue: #2563eb;

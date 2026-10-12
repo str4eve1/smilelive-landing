@@ -20,8 +20,6 @@ const PROTOCOL_URL = "https://app.smilelive.it/protocollo-smilelive.pdf";
 const WA_PHONE = "393289598557"; // stesso numero di WhatsAppWidget
 const WA_TEXT = "Buongiorno, sono un dentista e vorrei informazioni su SmileLive.";
 const PAGE_TITLE = "SmileLive per i dentisti — la simulazione del sorriso in prima visita";
-const FONT_HREF =
-  "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap";
 
 // Il link all'app porta con sé gli utm_* con cui il visitatore è arrivato; se mancano, questi.
 const UTM_DI_RISERVA = { source: "sito", medium: "dentisti" };
@@ -45,18 +43,13 @@ export default function Dentisti() {
   const [barVisible, setBarVisible] = useState(false);
   const ctaRef = useRef<HTMLAnchorElement>(null);
 
-  // Titolo della scheda e carattere (solo per questa pagina), ripristinati all'uscita.
+  // Titolo della scheda (solo per questa pagina), ripristinato all'uscita.
   useEffect(() => {
     const prevTitle = document.title;
     document.title = PAGE_TITLE;
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.href = FONT_HREF;
-    document.head.appendChild(link);
     setAppUrl(appLink(window.location.search, UTM_DI_RISERVA));
     return () => {
       document.title = prevTitle;
-      link.remove();
     };
   }, []);
 
