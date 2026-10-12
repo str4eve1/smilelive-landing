@@ -6,7 +6,7 @@ export default function Terms() {
     <LegalLayout
       title="Termini di Servizio"
       subtitle="Termini e condizioni di utilizzo del sito smilelive.it."
-      lastUpdate="11 ottobre 2026"
+      lastUpdate="12 ottobre 2026"
     >
       <p>
         I presenti Termini di Servizio (di seguito "Termini") disciplinano l'accesso e
@@ -22,6 +22,7 @@ export default function Terms() {
         <ul className="list-disc pl-6 space-y-1">
           <li><strong className="text-text-main">Giampiero Lombardi</strong> — Ditta Individuale</li>
           <li>Partita IVA: 09125450727</li>
+          <li>Numero REA: BA-673495</li>
           <li>Attività: sviluppo e gestione della piattaforma SaaS SmileLive per studi odontoiatrici</li>
           <li>Sede: Casamassima (BA), Italia</li>
           <li>Email: <a href="mailto:privacy@smilelive.it" className="text-primary hover:underline">privacy@smilelive.it</a></li>

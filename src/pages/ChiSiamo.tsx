@@ -6,7 +6,7 @@ export default function ChiSiamo() {
   return (
     <GuidaLayout
       titolo="Chi siamo: la famiglia di odontotecnici dietro SmileLive"
-      aggiornato="11 ottobre 2026"
+      aggiornato="12 ottobre 2026"
       posizione="chi_siamo"
       firma={false}
       inBreve={
@@ -42,6 +42,7 @@ export default function ChiSiamo() {
           <li>SmileLive è sviluppato e gestito da Giampiero Lombardi, ditta individuale.</li>
           <li>Sede: Casamassima (BA), Italia.</li>
           <li>Partita IVA: 09125450727.</li>
+          <li>Numero REA: BA-673495.</li>
           <li>Email: <a href="mailto:supporto@smilelive.it" className={stileMail}>supporto@smilelive.it</a>.</li>
           <li>Instagram: <LinkEsterno href="https://www.instagram.com/smilelive.it">@smilelive.it</LinkEsterno>.</li>
         </Elenco>

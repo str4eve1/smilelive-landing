@@ -86,7 +86,7 @@ export default function CookiePolicy() {
     <LegalLayout
       title="Cookie Policy"
       subtitle="Informativa sull'uso di cookie e tecnologie similari sul sito smilelive.it, ai sensi del provvedimento del Garante per la protezione dei dati personali del 10 giugno 2021."
-      lastUpdate="11 ottobre 2026"
+      lastUpdate="12 ottobre 2026"
     >
       <Section title="1. Cosa sono i cookie">
         <p>
