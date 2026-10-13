@@ -6,7 +6,7 @@ export default function ChiSiamo() {
   return (
     <GuidaLayout
       titolo="Chi siamo: la famiglia di odontotecnici dietro SmileLive"
-      aggiornato="12 ottobre 2026"
+      aggiornato="13 ottobre 2026"
       posizione="chi_siamo"
       firma={false}
       inBreve={
@@ -24,7 +24,7 @@ export default function ChiSiamo() {
         <Elenco>
           <li><strong>Giampiero Lombardi</strong>: fondatore e ideatore di SmileLive. Ha quattro anni di esperienza nel settore odontotecnico.</li>
           <li><strong>Giuseppe Lombardi</strong>: esperto di CAD/CAM e stampa 3D, con più di otto anni di esperienza. È la mente del <LinkInterno to="/protocollo">protocollo SmileLive</LinkInterno>. Lavora in un laboratorio odontotecnico di Bari.</li>
-          <li><strong>Nicola Lombardi</strong>: odontotecnico, con più di quarant'anni di esperienza. Ha avuto laboratori odontotecnici e studi dentistici; oggi fa ricerca in autonomia.</li>
+          <li><strong>Nicola Lombardi</strong>: odontotecnico, con più di quarant'anni di esperienza. Ha avuto laboratori odontotecnici e studi dentistici.</li>
         </Elenco>
       </Section>
 

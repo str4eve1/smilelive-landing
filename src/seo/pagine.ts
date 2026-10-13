@@ -76,7 +76,7 @@ export const pagine: Pagina[] = [
       h1: "Chi siamo: la famiglia di odontotecnici dietro SmileLive",
       nome: "Chi siamo",
       pubblicata: "2026-10-12",
-      modificata: "2026-10-12",
+      modificata: "2026-10-13",
     },
   },
   {
