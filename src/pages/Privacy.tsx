@@ -211,7 +211,7 @@ export default function Privacy() {
         <p>
           Il Titolare raccoglie i recapiti professionali degli studi odontoiatrici pubblicati
           online da fonti accessibili a chiunque (siti web degli studi, schede di Google Maps,
-          inserzioni pubbliche su Facebook): nome dello studio, telefono, email, città e nome del
+          mappe con dati aperti come OpenStreetMap, inserzioni pubbliche su Facebook): nome dello studio, telefono, email, città e nome del
           medico, se indicato. Li usa per proporre i servizi di SmileLive ai professionisti del
           settore. Questi recapiti possono essere caricati in forma cifrata su Meta Platforms
           Ireland Ltd. per mostrare le inserzioni di SmileLive su Facebook e Instagram agli stessi
