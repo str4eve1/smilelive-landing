@@ -88,6 +88,7 @@ export const datiStrutturatiHome = {
         "Fattura e invio al Sistema Tessera Sanitaria (piani Studio Medio e Studio Grande)",
         "Prescrizione vocale al laboratorio e portale per il laboratorio",
         "Anagrafica pazienti e agenda",
+        "Designer: modifica della simulazione dente per dente",
         "Vista clinica: scansione 3D sovrapposta alla foto",
       ],
       offers: [
