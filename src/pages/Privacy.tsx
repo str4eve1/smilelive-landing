@@ -5,14 +5,16 @@ export default function Privacy() {
   return (
     <LegalLayout
       title="Privacy Policy"
-      subtitle="Informativa sul trattamento dei dati personali ai sensi dell'art. 13 del Regolamento (UE) 2016/679 (GDPR)."
-      lastUpdate="12 ottobre 2026"
+      subtitle="Informativa sul trattamento dei dati personali ai sensi degli artt. 13 e 14 del Regolamento (UE) 2016/679 (GDPR)."
+      lastUpdate="14 ottobre 2026"
     >
       <p>
         La presente informativa descrive le modalità con cui i dati personali degli utenti che
         visitano il sito <strong className="text-text-main">smilelive.it</strong> (di seguito
         "Sito") vengono trattati dal Titolare. La Privacy Policy si applica esclusivamente a
-        questo Sito, non a siti web di terzi che possano essere raggiunti tramite link.
+        questo Sito, non a siti web di terzi che possano essere raggiunti tramite link. La
+        sezione 8 riguarda invece i recapiti professionali degli studi odontoiatrici che il
+        Titolare raccoglie da fonti pubbliche.
       </p>
 
       <Section title="1. Titolare del trattamento">
@@ -127,7 +129,8 @@ export default function Privacy() {
           </li>
           <li>
             <strong className="text-text-main">Meta Platforms Ireland Ltd.</strong> — fornitore
-            del servizio Meta Pixel per finalità di marketing. Sede del titolare europeo: Irlanda.
+            del servizio Meta Pixel e dei pubblici personalizzati (sezione 8) per finalità di
+            marketing. Sede del titolare europeo: Irlanda.
             I dati possono essere trasferiti al gruppo Meta (USA) sulla base del Data Privacy
             Framework EU-USA e delle Clausole Contrattuali Standard.
           </li>
@@ -204,7 +207,29 @@ export default function Privacy() {
         </p>
       </Section>
 
-      <Section title="8. Modifiche alla Privacy Policy">
+      <Section title="8. Contatti professionali e pubblicità su Meta">
+        <p>
+          Il Titolare raccoglie i recapiti professionali degli studi odontoiatrici pubblicati
+          online da fonti accessibili a chiunque (siti web degli studi, schede di Google Maps,
+          inserzioni pubbliche su Facebook): nome dello studio, telefono, email, città e nome del
+          medico, se indicato. Li usa per proporre i servizi di SmileLive ai professionisti del
+          settore. Questi recapiti possono essere caricati in forma cifrata su Meta Platforms
+          Ireland Ltd. per mostrare le inserzioni di SmileLive su Facebook e Instagram agli stessi
+          professionisti o a persone con caratteristiche simili.
+        </p>
+        <p>
+          <em>Base giuridica:</em> legittimo interesse del Titolare a far conoscere i propri
+          servizi ai professionisti del settore (art. 6, par. 1, lett. f, GDPR).
+        </p>
+        <p>
+          Il professionista può opporsi in qualsiasi momento scrivendo a{" "}
+          <a href="mailto:privacy@smilelive.it" className="text-primary hover:underline">privacy@smilelive.it</a>:
+          lo togliamo dagli elenchi entro 30 giorni. I dati sono conservati per 24 mesi
+          dall'ultimo aggiornamento.
+        </p>
+      </Section>
+
+      <Section title="9. Modifiche alla Privacy Policy">
         <p>
           Il Titolare si riserva di modificare la presente Privacy Policy in qualsiasi momento per
           adeguarla a evoluzioni normative o organizzative. Le modifiche saranno pubblicate su
