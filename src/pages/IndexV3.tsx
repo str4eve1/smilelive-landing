@@ -2403,8 +2403,8 @@ const Pricing = () => {
   const studioPlans = [
     // valore: il confronto con Studio Piccolo, da riallineare se cambiano prezzi o quote.
     { name: "Studio Piccolo", tagline: "Per iniziare: circa 5 foto a settimana", monthly: 57, annualMonthly: 47, annualTotal: 564, foto: 20, video: 8, promemoria: 25, fatture: false, extra: "5€/foto · 5€/video · €0,20/promemoria", cta: "Scegli Studio Piccolo", ctaId: "scegli_studio_piccolo", highlighted: false, accent: "#0d9488", grad: "linear-gradient(135deg,#2dd4bf,#0d9488)" },
-    { name: "Studio Medio", tagline: "Per studi attivi: circa 12 foto a settimana", monthly: 114, annualMonthly: 94, annualTotal: 1128, foto: 50, video: 18, promemoria: 50, fatture: true, valore: "Costa il doppio di Studio Piccolo e include 2,5 volte le foto, più fatture e Sistema TS.", extra: "5€/foto · 5€/video · €0,19/promemoria", cta: "Scegli Studio Medio", ctaId: "scegli_studio_medio", highlighted: true, accent: "#2563eb", grad: "linear-gradient(135deg,#38bdf8,#4f46e5)" },
-    { name: "Studio Grande", tagline: "Per grandi studi e cliniche: oltre 20 foto a settimana", monthly: 157, annualMonthly: 137, annualTotal: 1644, foto: 100, video: 30, promemoria: 125, fatture: true, extra: "2€/foto · 3€/video · €0,18/promemoria", cta: "Scegli Studio Grande", ctaId: "scegli_studio_grande", highlighted: false, accent: "#7c3aed", grad: "linear-gradient(135deg,#a78bfa,#7c3aed)" },
+    { name: "Studio Medio", tagline: "Per studi attivi: circa 12 foto a settimana", monthly: 114, annualMonthly: 94, annualTotal: 1128, foto: 50, video: 18, promemoria: 50, fatture: true, prioritario: true, valore: "Costa il doppio di Studio Piccolo e include 2,5 volte le foto, più fatture, Sistema TS e supporto prioritario.", extra: "5€/foto · 5€/video · €0,19/promemoria", cta: "Scegli Studio Medio", ctaId: "scegli_studio_medio", highlighted: true, accent: "#2563eb", grad: "linear-gradient(135deg,#38bdf8,#4f46e5)" },
+    { name: "Studio Grande", tagline: "Per grandi studi e cliniche: oltre 20 foto a settimana", monthly: 157, annualMonthly: 137, annualTotal: 1644, foto: 100, video: 30, promemoria: 125, fatture: true, prioritario: true, extra: "2€/foto · 3€/video · €0,18/promemoria", cta: "Scegli Studio Grande", ctaId: "scegli_studio_grande", highlighted: false, accent: "#7c3aed", grad: "linear-gradient(135deg,#a78bfa,#7c3aed)" },
   ];
 
   // Cosa c'è in ogni abbonamento, a prescindere dal piano: le quote cambiano, gli strumenti no.
@@ -2448,6 +2448,9 @@ const Pricing = () => {
           transition={{ duration: 0.6 }}
           className="flex flex-col items-center mb-16"
         >
+          <span className="mb-4 inline-flex items-center gap-1.5 rounded-full bg-gold/15 px-3 py-1 text-xs font-bold uppercase tracking-wider text-gold">
+            <Sparkle size={14} weight="fill" aria-hidden="true" />Prezzi di lancio
+          </span>
           <h2 className="text-4xl md:text-5xl font-headline font-bold text-center mb-4 tracking-tight">Scegli il tuo <span className="text-gold">piano</span></h2>
           <p className="text-xl text-text-muted text-center mb-4">Inizia gratis con 5 foto e 2 video. Poi scegli il piano giusto per il tuo studio.</p>
           <p className="text-lg font-semibold text-text-main text-center max-w-2xl mb-4">Studio Piccolo costa {studioPlans[0].monthly} € al mese. Basta un piano di cura accettato in più per ripagare anni di abbonamento.</p>
@@ -2459,7 +2462,7 @@ const Pricing = () => {
               </li>
             ))}
           </ul>
-          <p className="text-sm text-text-muted text-center mb-8">Prezzi IVA inclusa. L'opzione annuale si paga in un'unica soluzione, al prezzo più basso.</p>
+          <p className="text-sm text-text-muted text-center max-w-2xl mb-8">Prezzi di lancio, IVA inclusa: in futuro aumenteranno, ma <strong className="text-text-main">chi si abbona ora mantiene questo prezzo per sempre</strong>, finché l'abbonamento resta attivo. L'opzione annuale si paga in un'unica soluzione, al prezzo più basso.</p>
           <div className="inline-flex items-center gap-1 bg-slate-50 border border-slate-200 rounded-full p-1.5">
             <button onClick={() => setIsAnnual(false)} className={`px-5 py-2 rounded-full font-medium transition-all duration-200 ${!isAnnual ? 'bg-white shadow-sm text-text-main ring-2 ring-primary/60' : 'text-text-muted hover:text-text-main'}`}>Mensile</button>
             <button onClick={() => setIsAnnual(true)} className={`px-5 py-2 rounded-full font-medium transition-all duration-200 flex items-center gap-2 ${isAnnual ? 'bg-white shadow-sm text-text-main ring-2 ring-primary/60' : 'text-text-muted hover:text-text-main'}`}>
@@ -2500,7 +2503,7 @@ const Pricing = () => {
               { icon: ChatCircle, node: <><strong className="text-text-main">{plan.promemoria} promemoria</strong> WhatsApp/SMS</> },
             ];
             if (plan.fatture) feats.push({ icon: Receipt, node: <><strong className="text-text-main">Fatture</strong> e invio al Sistema TS</> });
-            if (plan.highlighted) feats.push({ icon: Headset, node: <><strong className="text-text-main">Supporto</strong> prioritario</> });
+            if (plan.prioritario) feats.push({ icon: Headset, node: <><strong className="text-text-main">Supporto</strong> prioritario</> });
 
             const body = (
               <>
@@ -2529,7 +2532,7 @@ const Pricing = () => {
             if (plan.highlighted) {
               return (
                 <motion.div key={plan.name} variants={fadeUp} className="relative rounded-[26px] p-[2.5px] lg:scale-[1.04] lg:z-10" style={{ background: "conic-gradient(from 140deg,#38bdf8,#818cf8,#a855f7,#38bdf8)", boxShadow: "0 26px 60px rgba(99,102,241,0.35)" }}>
-                  <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-white text-xs font-bold uppercase tracking-wider px-4 py-1.5 rounded-full whitespace-nowrap" style={{ background: "linear-gradient(135deg,#38bdf8,#4f46e5)", boxShadow: "0 8px 20px rgba(37,99,235,0.45)" }}>Il più scelto</div>
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-white text-xs font-bold uppercase tracking-wider px-4 py-1.5 rounded-full whitespace-nowrap" style={{ background: "linear-gradient(135deg,#38bdf8,#4f46e5)", boxShadow: "0 8px 20px rgba(37,99,235,0.45)" }}>Consigliato</div>
                   <div className="rounded-[23px] bg-white p-8 flex flex-col text-center h-full">{body}</div>
                 </motion.div>
               );
@@ -2763,7 +2766,7 @@ const FAQ = () => {
   const faqs = [
     { q: "Che cos'è SmileLive?", a: "SmileLive è un software per studi dentistici: da una foto del paziente genera con l'intelligenza artificiale una simulazione del sorriso, in foto e in video, in circa un minuto, da mostrare in prima visita; ogni foto comprende fino a 4 varianti. Nello stesso strumento c'è il gestionale dello studio: agenda con medici e poltrone, scheda paziente con odontogramma, file e documenti, preventivo con firma a schermo, promemoria automatici, prescrizione vocale al laboratorio e, nei piani Studio Medio e Studio Grande, fatture con invio al Sistema TS." },
     { q: "Come si fa una simulazione del sorriso veloce e intuitiva?", a: "Simulazione del sorriso veloce e semplice: una foto in prima visita e in circa un minuto il paziente vede il possibile risultato sul suo viso. La può preparare anche la segreteria o l'ASO, dal telefono o dal tablet." },
-    { q: "Quanto costa SmileLive?", a: "La prova è gratuita: 5 foto e 2 video, senza carta di credito. Poi puoi pagare a consumo, 5 € a foto e 5 € a video senza canone, oppure scegliere un piano: Studio Piccolo a 57 € al mese (47 € con il piano annuale), Studio Medio a 114 € (94 €), Studio Grande a 157 € (137 €). Tutti i prezzi sono IVA inclusa." },
+    { q: "Quanto costa SmileLive?", a: "La prova è gratuita: 5 foto e 2 video, senza carta di credito. Poi puoi pagare a consumo, 5 € a foto e 5 € a video senza canone, oppure scegliere un piano: Studio Piccolo a 57 € al mese (47 € con il piano annuale), Studio Medio a 114 € (94 €), Studio Grande a 157 € (137 €). Sono prezzi di lancio, IVA inclusa: in futuro aumenteranno, ma chi si abbona ora mantiene questo prezzo per sempre, finché l'abbonamento resta attivo." },
     { q: "Posso provarlo senza abbonarmi?", a: "Sì. La registrazione è gratuita e ti regaliamo 5 foto e 2 video in omaggio nella tab SmileLive Preview, senza carta e senza impegno. Il resto del software resta visibile e si sblocca quando attivi un abbonamento. Per generare ancora senza abbonarti, paghi 5€ a foto e 5€ a video." },
     { q: "Meglio l'abbonamento o pagare a consumo?", a: "Dipende dal volume. Senza abbonamento generi a 5€/foto e 5€/video, comodo per testare. Con un abbonamento Studio hai foto e video inclusi ogni mese a un costo unitario molto più basso, più i promemoria WhatsApp/SMS e tutto il software sbloccato. Sul piano Studio Grande anche gli extra costano meno: 2€/foto e 3€/video." },
     { q: "Cosa succede se una simulazione esce male (denti deformati, artefatti)?", a: "La generazione scala comunque dal piano, ma ce la puoi segnalare: verifichiamo il caso e, se l'errore è nostro, la rigeneriamo gratis entro 24 ore. Le modifiche creative che chiedi tu (più bianchi, forma diversa) contano invece come una generazione normale." },
