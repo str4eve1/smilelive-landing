@@ -134,7 +134,7 @@ const collegamento = (p) => `- [${p.title}](${canonicoDi(p.percorso)}): ${p.desc
 const llms = [
   "# SmileLive",
   "",
-  "> SmileLive è un software per studi dentistici: da una foto del paziente genera con l'intelligenza artificiale una simulazione del sorriso, in foto e in video, da mostrare in prima visita. Nello stesso strumento ci sono preventivo, firma a schermo, fattura e prescrizione vocale al laboratorio.",
+  "> SmileLive è un software per studi dentistici: da una foto del paziente genera con l'intelligenza artificiale una simulazione del sorriso, in foto e in video, da mostrare in prima visita; ogni foto comprende fino a 4 varianti. Nello stesso strumento c'è il gestionale dello studio: agenda con medici e poltrone, scheda paziente con odontogramma, file e documenti, preventivo con firma a schermo, promemoria automatici, prescrizione vocale al laboratorio e, nei piani Studio Medio e Studio Grande, fatture con invio al Sistema TS.",
   "",
   "Una simulazione richiede circa un minuto. La prova gratuita comprende 5 foto e 2 video, senza carta di credito. I piani sono Studio Piccolo a 57 € al mese (47 con il piano annuale), Studio Medio a 114 € (94) e Studio Grande a 157 € (137), prezzi IVA inclusa. Si usa dal browser, senza installare nulla. La simulazione è uno strumento di comunicazione e non sostituisce diagnosi né progettazione clinica. Il sito è rivolto ai dentisti. SmileLive è ideato da Giampiero Lombardi, in una famiglia di odontotecnici, e ha sede a Casamassima (Bari).",
   ...sezioniLlms.flatMap(([titolo, scelta]) => ["", `## ${titolo}`, "", ...pagine.filter(scelta).map(collegamento)]),

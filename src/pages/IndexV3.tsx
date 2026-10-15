@@ -683,7 +683,7 @@ const Hero = () => {
       >
         <motion.p variants={fadeUp} className="text-lg text-text-muted leading-relaxed max-w-lg">
           {isV5 ? (
-            <>Scatti una foto e in circa un minuto il paziente vede il possibile risultato sul suo viso. Poi preventivo, firma, reminder e gestione dello studio nello stesso software.</>
+            <>Scatti una foto e in circa un minuto il paziente vede il possibile risultato sul suo viso. Poi agenda, preventivo con firma, promemoria e il resto della gestione dello studio, nello stesso software.</>
           ) : (
             <>Ogni giorno escono dallo studio pazienti che volevano cambiare il loro sorriso. Non li hai persi perche' il prezzo era troppo alto. Li hai persi perche' <strong className="text-text-main font-semibold">non riuscivano a immaginarlo.</strong><br /><br />SmileLive mostra loro il risultato. Prima che escano dalla porta. Inizi gratis: 5 anteprime in omaggio.</>
           )}
@@ -1437,7 +1437,7 @@ const OtSlider = ({ prima, dopo, alt, focus = "center", aspect = "aspect-[16/9]"
 // Ogni caso ha uno o due riquadri: la foto con la linea da trascinare, oppure un video che parte al tocco.
 // Si vede un caso solo: gli altri si caricano quando li si sceglie.
 type Riquadro =
-  | { tipo: "linea"; prima: string; dopo: string; width: number; height: number; focus: string }
+  | { tipo: "linea"; prima: string; dopo: string; width: number; height: number; focus: string; intera?: boolean } // intera: la foto nelle sue proporzioni, senza ritaglio 4:5
   | { tipo: "video"; src: string; poster: string; width: number; height: number; etichetta: string; didascalia: string };
 type Caso = { mini: string; riquadri: Riquadro[] };
 
@@ -1456,7 +1456,7 @@ const CASI: Caso[] = [
   {
     mini: caso2Mini,
     riquadri: [
-      { tipo: "linea", prima: caso2Prima, dopo: caso2Dopo, width: 1104, height: 760, focus: "center" },
+      { tipo: "linea", prima: caso2Prima, dopo: caso2Dopo, width: 1104, height: 746, focus: "center", intera: true },
       videoSorriso(caso2Video, caso2VideoPoster, 478, 414),
     ],
   },
@@ -1531,7 +1531,7 @@ const Esempi = () => {
           {caso.riquadri.map((r, i) => (
             <figure key={i} className="m-0 max-w-full">
               {r.tipo === "linea" ? (
-                <div className={`${riquadro} aspect-[4/5]`}>
+                <div className={r.intera ? riquadro : `${riquadro} aspect-[4/5]`} style={r.intera ? { aspectRatio: `${r.width} / ${r.height}` } : undefined}>
                   <OtSlider
                     prima={r.prima}
                     dopo={r.dopo}
@@ -2078,8 +2078,8 @@ const WhatYouGet = () => {
       span: "lg:col-span-4",
       title: "Scheda paziente unica",
       label: "Pazienti",
-      body: "Simulazioni, preventivi, note, stato del trattamento e cronologia raccolti in una vista chiara.",
-      states: ["Timeline", "Stato pratica", "Note cliniche"],
+      body: "Simulazioni, odontogramma, preventivi, file e documenti, note e cronologia raccolti in una vista chiara.",
+      states: ["Odontogramma", "Documenti", "Note cliniche"],
     },
     {
       icon: Microphone,
@@ -2094,10 +2094,10 @@ const WhatYouGet = () => {
       icon: ChatCircle,
       accent: "#14b8a6",
       span: "lg:col-span-4",
-      title: "Promemoria WhatsApp",
-      label: "Reminder",
-      body: "Messaggi automatici 24 ore e 2 ore prima dell'appuntamento, per ridurre assenze e telefonate.",
-      states: ["24h prima", "2h prima", "Automatico"],
+      title: "Agenda e promemoria automatici",
+      label: "Agenda",
+      body: "Agenda con medici e poltrone configurabili. Messaggi WhatsApp automatici 24 ore e 2 ore prima dell'appuntamento, per ridurre assenze e telefonate.",
+      states: ["Medici e poltrone", "24h prima", "2h prima"],
     },
     {
       icon: Receipt,
@@ -2137,13 +2137,13 @@ const WhatYouGet = () => {
               <span className="text-orange-500">Aspetta.</span><br className="sm:hidden" /> SmileLive non è solo la simulazione del sorriso.
             </h2>
             <p className="mt-5 text-base md:text-lg leading-relaxed text-slate-300 max-w-2xl">
-              Oltre alla simulazione, segue il resto del percorso: scheda paziente, preventivi, promemoria degli appuntamenti e adempimenti fiscali. Meno strumenti separati, meno tempo in segreteria, tutto in un unico posto.
+              Oltre alla simulazione c'è il gestionale di tutti i giorni: agenda con medici e poltrone, scheda paziente con odontogramma, file e documenti, preventivi, promemoria automatici e fatture. Meno strumenti separati, meno tempo in segreteria, tutto in un unico posto.
             </p>
           </div>
           <aside className="relative overflow-hidden rounded-2xl border border-orange-300/50 bg-[linear-gradient(150deg,rgba(249,115,22,0.34),rgba(217,70,20,0.14))] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_30px_78px_-58px_rgba(0,0,0,0.88)] backdrop-blur">
             <strong className="block text-2xl font-headline font-bold tracking-tight leading-none text-white">Sì, tutto incluso.</strong>
             <span className="block mt-3 text-sm leading-relaxed text-slate-200">
-              CRM, preventivi, firma, reminder e prescrizione vocale nello stesso flusso commerciale. Fatture e Sistema TS nei piani Studio Medio e Studio Grande.
+              Agenda, pazienti, odontogramma, documenti, preventivi con firma, promemoria e prescrizione vocale nello stesso software. Fatture e invio al Sistema TS nei piani Studio Medio e Studio Grande.
             </span>
           </aside>
         </motion.div>
@@ -2401,9 +2401,21 @@ const Pricing = () => {
   const [isAnnual, setIsAnnual] = useState(true);
 
   const studioPlans = [
-    { name: "Studio Piccolo", tagline: "Per studi che iniziano", monthly: 57, annualMonthly: 47, annualTotal: 564, foto: 20, video: 8, promemoria: 25, extra: "5€/foto · 5€/video · €0,20/promemoria", cta: "Scegli Studio Piccolo", ctaId: "scegli_studio_piccolo", highlighted: false, accent: "#0d9488", grad: "linear-gradient(135deg,#2dd4bf,#0d9488)" },
-    { name: "Studio Medio", tagline: "Per studi attivi", monthly: 114, annualMonthly: 94, annualTotal: 1128, foto: 50, video: 18, promemoria: 50, extra: "5€/foto · 5€/video · €0,19/promemoria", cta: "Scegli Studio Medio", ctaId: "scegli_studio_medio", highlighted: true, accent: "#2563eb", grad: "linear-gradient(135deg,#38bdf8,#4f46e5)" },
-    { name: "Studio Grande", tagline: "Per grandi studi e cliniche", monthly: 157, annualMonthly: 137, annualTotal: 1644, foto: 100, video: 30, promemoria: 125, extra: "2€/foto · 3€/video · €0,18/promemoria", cta: "Scegli Studio Grande", ctaId: "scegli_studio_grande", highlighted: false, accent: "#7c3aed", grad: "linear-gradient(135deg,#a78bfa,#7c3aed)" },
+    // valore: il confronto con Studio Piccolo, da riallineare se cambiano prezzi o quote.
+    { name: "Studio Piccolo", tagline: "Per iniziare: circa 5 foto a settimana", monthly: 57, annualMonthly: 47, annualTotal: 564, foto: 20, video: 8, promemoria: 25, fatture: false, extra: "5€/foto · 5€/video · €0,20/promemoria", cta: "Scegli Studio Piccolo", ctaId: "scegli_studio_piccolo", highlighted: false, accent: "#0d9488", grad: "linear-gradient(135deg,#2dd4bf,#0d9488)" },
+    { name: "Studio Medio", tagline: "Per studi attivi: circa 12 foto a settimana", monthly: 114, annualMonthly: 94, annualTotal: 1128, foto: 50, video: 18, promemoria: 50, fatture: true, valore: "Costa il doppio di Studio Piccolo e include 2,5 volte le foto, più fatture e Sistema TS.", extra: "5€/foto · 5€/video · €0,19/promemoria", cta: "Scegli Studio Medio", ctaId: "scegli_studio_medio", highlighted: true, accent: "#2563eb", grad: "linear-gradient(135deg,#38bdf8,#4f46e5)" },
+    { name: "Studio Grande", tagline: "Per grandi studi e cliniche: oltre 20 foto a settimana", monthly: 157, annualMonthly: 137, annualTotal: 1644, foto: 100, video: 30, promemoria: 125, fatture: true, extra: "2€/foto · 3€/video · €0,18/promemoria", cta: "Scegli Studio Grande", ctaId: "scegli_studio_grande", highlighted: false, accent: "#7c3aed", grad: "linear-gradient(135deg,#a78bfa,#7c3aed)" },
+  ];
+
+  // Cosa c'è in ogni abbonamento, a prescindere dal piano: le quote cambiano, gli strumenti no.
+  const inclusi = [
+    "Fino a 4 varianti per ogni foto",
+    "Video del sorriso",
+    "Designer dente per dente",
+    "Agenda con medici e poltrone",
+    "Pazienti, odontogramma e documenti",
+    "Preventivi con firma e promemoria automatici",
+    "Prescrizione al laboratorio",
   ];
 
   const rules = [
@@ -2439,8 +2451,15 @@ const Pricing = () => {
           <h2 className="text-4xl md:text-5xl font-headline font-bold text-center mb-4 tracking-tight">Scegli il tuo <span className="text-gold">piano</span></h2>
           <p className="text-xl text-text-muted text-center mb-4">Inizia gratis con 5 foto e 2 video. Poi scegli il piano giusto per il tuo studio.</p>
           <p className="text-lg font-semibold text-text-main text-center max-w-2xl mb-4">Studio Piccolo costa {studioPlans[0].monthly} € al mese. Basta un piano di cura accettato in più per ripagare anni di abbonamento.</p>
-          <p className="text-base text-text-muted text-center max-w-2xl mb-2">L'abbonamento sblocca tutto il software e le generazioni incluse ogni mese. L'opzione annuale si paga in un'unica soluzione, al prezzo più basso.</p>
-          <p className="text-sm text-text-muted text-center mb-8">Prezzi IVA inclusa.</p>
+          <p className="text-base font-semibold text-text-main text-center mb-3">Non solo un simulatore: in ogni abbonamento</p>
+          <ul className="flex flex-wrap justify-center gap-2 max-w-3xl mb-6">
+            {inclusi.map((voce, i) => (
+              <li key={voce} className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm ${i === 0 ? "border-primary/40 bg-primary/5 font-semibold text-text-main" : "border-slate-200 bg-white text-text-muted"}`}>
+                <Check size={14} weight="bold" className="text-primary shrink-0" aria-hidden="true" />{voce}
+              </li>
+            ))}
+          </ul>
+          <p className="text-sm text-text-muted text-center mb-8">Prezzi IVA inclusa. L'opzione annuale si paga in un'unica soluzione, al prezzo più basso.</p>
           <div className="inline-flex items-center gap-1 bg-slate-50 border border-slate-200 rounded-full p-1.5">
             <button onClick={() => setIsAnnual(false)} className={`px-5 py-2 rounded-full font-medium transition-all duration-200 ${!isAnnual ? 'bg-white shadow-sm text-text-main ring-2 ring-primary/60' : 'text-text-muted hover:text-text-main'}`}>Mensile</button>
             <button onClick={() => setIsAnnual(true)} className={`px-5 py-2 rounded-full font-medium transition-all duration-200 flex items-center gap-2 ${isAnnual ? 'bg-white shadow-sm text-text-main ring-2 ring-primary/60' : 'text-text-muted hover:text-text-main'}`}>
@@ -2467,7 +2486,7 @@ const Pricing = () => {
               <Feat icon={Gift} grad={freeTokens.grad}><strong className="text-text-main">5 foto + 2 video</strong> in omaggio</Feat>
               <Feat icon={Sparkle} grad={freeTokens.grad}>Tab <strong className="text-text-main">SmileLive Preview</strong> attiva subito</Feat>
               <Feat icon={Lightning} grad={freeTokens.grad}>Poi <strong className="text-text-main">5€/foto · 5€/video</strong>, senza canone</Feat>
-              <li className="text-sm pt-2 border-t border-slate-100 text-text-muted text-left">Il resto si sblocca con l'abbonamento.</li>
+              <li className="text-sm pt-2 border-t border-slate-100 text-text-muted text-left">Agenda, pazienti, preventivi e il resto del gestionale si sbloccano con l'abbonamento.</li>
             </ul>
             <a href="https://app.smilelive.it/" onClick={() => trackCta("inizia_gratis", "pricing_free")} className="w-full py-3 rounded-full border-[1.5px] hover:bg-slate-50 transition-all font-bold text-sm text-center" style={{ borderColor: freeTokens.accent, color: freeTokens.accent }}>Inizia gratis</a>
           </motion.div>
@@ -2476,10 +2495,11 @@ const Pricing = () => {
             const price = isAnnual ? plan.annualMonthly : plan.monthly;
             const saving = (plan.monthly - plan.annualMonthly) * 12;
             const feats = [
-              { icon: Camera, node: <><strong className="text-text-main">{plan.foto} foto</strong> (simulazioni)/mese</> },
+              { icon: Camera, node: <><strong className="text-text-main">{plan.foto} foto</strong>/mese, fino a 4 varianti l'una</> },
               { icon: VideoCamera, node: <><strong className="text-text-main">{plan.video} video</strong>/mese</> },
               { icon: ChatCircle, node: <><strong className="text-text-main">{plan.promemoria} promemoria</strong> WhatsApp/SMS</> },
             ];
+            if (plan.fatture) feats.push({ icon: Receipt, node: <><strong className="text-text-main">Fatture</strong> e invio al Sistema TS</> });
             if (plan.highlighted) feats.push({ icon: Headset, node: <><strong className="text-text-main">Supporto</strong> prioritario</> });
 
             const body = (
@@ -2492,6 +2512,7 @@ const Pricing = () => {
                 </div>
                 {isAnnual && <div className="text-sm font-semibold mb-0.5" style={{ color: plan.accent }}>€{plan.annualTotal.toLocaleString("it-IT")}/anno · risparmi €{saving}</div>}
                 {isAnnual && <div className="text-xs mb-1 text-text-muted">in un'unica soluzione</div>}
+                {plan.valore && <p className="mt-3 rounded-xl px-3 py-2 text-xs font-semibold leading-snug" style={{ background: `${plan.accent}12`, color: plan.accent }}>{plan.valore}</p>}
                 <div className="h-px w-full my-5 bg-slate-100"></div>
                 <ul className="space-y-3 mb-8 flex-grow w-full">
                   {feats.map((f, i) => <Feat key={i} icon={f.icon} grad={plan.grad}>{f.node}</Feat>)}
@@ -2740,7 +2761,7 @@ const FAQ = () => {
   const isV5 = useIsV5();
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const faqs = [
-    { q: "Che cos'è SmileLive?", a: "SmileLive è un software per studi dentistici: da una foto del paziente genera con l'intelligenza artificiale una simulazione del sorriso, in foto e in video, in circa un minuto, da mostrare in prima visita. Nello stesso strumento ci sono preventivo, firma a schermo, fattura e prescrizione vocale al laboratorio." },
+    { q: "Che cos'è SmileLive?", a: "SmileLive è un software per studi dentistici: da una foto del paziente genera con l'intelligenza artificiale una simulazione del sorriso, in foto e in video, in circa un minuto, da mostrare in prima visita; ogni foto comprende fino a 4 varianti. Nello stesso strumento c'è il gestionale dello studio: agenda con medici e poltrone, scheda paziente con odontogramma, file e documenti, preventivo con firma a schermo, promemoria automatici, prescrizione vocale al laboratorio e, nei piani Studio Medio e Studio Grande, fatture con invio al Sistema TS." },
     { q: "Come si fa una simulazione del sorriso veloce e intuitiva?", a: "Simulazione del sorriso veloce e semplice: una foto in prima visita e in circa un minuto il paziente vede il possibile risultato sul suo viso. La può preparare anche la segreteria o l'ASO, dal telefono o dal tablet." },
     { q: "Quanto costa SmileLive?", a: "La prova è gratuita: 5 foto e 2 video, senza carta di credito. Poi puoi pagare a consumo, 5 € a foto e 5 € a video senza canone, oppure scegliere un piano: Studio Piccolo a 57 € al mese (47 € con il piano annuale), Studio Medio a 114 € (94 €), Studio Grande a 157 € (137 €). Tutti i prezzi sono IVA inclusa." },
     { q: "Posso provarlo senza abbonarmi?", a: "Sì. La registrazione è gratuita e ti regaliamo 5 foto e 2 video in omaggio nella tab SmileLive Preview, senza carta e senza impegno. Il resto del software resta visibile e si sblocca quando attivi un abbonamento. Per generare ancora senza abbonarti, paghi 5€ a foto e 5€ a video." },
