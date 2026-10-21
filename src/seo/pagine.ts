@@ -25,7 +25,7 @@ export const pagine: Pagina[] = [
     percorso: "/",
     title: "Simulazione del sorriso con IA per dentisti | SmileLive",
     description:
-      "Mostra al paziente il possibile risultato sul suo viso, in foto e in video, in prima visita: circa un minuto. Prova gratis con 5 foto e 2 video, senza carta.",
+      "Mostra al paziente il possibile risultato sul suo viso, in foto e in video, in prima visita: circa un minuto. Prova gratis con 2 foto e 2 video, senza carta.",
     sitemap: true,
   },
   {

@@ -67,7 +67,7 @@ describe("ModuloRichiamata", () => {
     compilaEInvia(async () => Response.json({ ok: true }));
     invia();
     await screen.findByText(GRAZIE);
-    const prova = screen.getByRole("link", { name: "Prova gratis: 5 simulazioni e 2 video" });
+    const prova = screen.getByRole("link", { name: "Prova gratis: 2 simulazioni e 2 video" });
     expect(prova.getAttribute("href")).toBe(APP);
     prova.addEventListener("click", (e) => e.preventDefault()); // jsdom non sa navigare
     fireEvent.click(prova);

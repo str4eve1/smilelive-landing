@@ -53,7 +53,7 @@ export default function ProgettazioneDigitaleDelSorriso() {
 
       <Section title="Dove si colloca SmileLive">
         <p>SmileLive è uno strumento di comunicazione con il paziente: da una foto genera con l'IA una simulazione del sorriso, in foto e in video. Non sostituisce diagnosi né progettazione clinica. La simulazione richiede circa un minuto; il video alcuni minuti. Si può scegliere fra una modalità rapida, una personalizzata (tipo di anteprima, forma del dente, gestione gengivale) e un editor avanzato. La «Vista clinica» sovrappone la scansione 3D alla foto, per facilitare l'analisi e la verifica di fattibilità. Per il momento SmileLive non esegue ceratura, non fa misure e non esporta pacchetti per il laboratorio: dà al clinico il necessario per valutare la fattibilità delle simulazioni proposte. Ogni immagine generata è contrassegnata come generata con IA.</p>
-        <p>Prova gratuita: 5 foto e 2 video, senza carta di credito.</p>
+        <p>Prova gratuita: 2 foto e 2 video, senza carta di credito.</p>
       </Section>
 
       <Section title="Digital smile design è un marchio?">

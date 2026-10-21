@@ -48,7 +48,7 @@ export default function FarAccettarePiuPreventivi() {
       </Section>
 
       <Section title="Come si prova senza impegno?">
-        <p>La prova è gratuita: 5 foto e 2 video, senza carta di credito. Si usa dal browser, senza installare nulla; su telefono si può aggiungere alla schermata iniziale. Il modo più onesto di valutarla è su un tuo paziente reale, in una prima visita vera.</p>
+        <p>La prova è gratuita: 2 foto e 2 video, senza carta di credito. Si usa dal browser, senza installare nulla; su telefono si può aggiungere alla schermata iniziale. Il modo più onesto di valutarla è su un tuo paziente reale, in una prima visita vera.</p>
         <p><LinkEsterno href="https://app.smilelive.it/">Prova gratuita su app.smilelive.it</LinkEsterno></p>
       </Section>
 

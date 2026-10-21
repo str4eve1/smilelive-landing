@@ -244,7 +244,7 @@ export default function Protocollo() {
             <LinkEsterno href="https://app.smilelive.it/protocollo-smilelive.pdf">Scarica il protocollo in PDF</LinkEsterno>
           </li>
           <li>
-            <LinkEsterno href="https://app.smilelive.it/">Prova gratuita: 5 foto e 2 video, senza carta di credito</LinkEsterno>
+            <LinkEsterno href="https://app.smilelive.it/">Prova gratuita: 2 foto e 2 video, senza carta di credito</LinkEsterno>
           </li>
         </Elenco>
       </Section>

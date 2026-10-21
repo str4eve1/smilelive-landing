@@ -74,7 +74,7 @@ export default function GuidaLayout({ titolo, aggiornato, posizione, inBreve, no
             onClick={() => trackCta("prova_gratis", posizione)}
             className="inline-block rounded-full bg-primary px-6 py-3.5 text-[15px] font-semibold leading-snug text-white shadow-sm transition-opacity hover:opacity-90 sm:px-7 sm:text-base [text-wrap:balance]"
           >
-            Prova gratis: 5 foto e 2 video
+            Prova gratis: 2 foto e 2 video
           </a>
           <p className="mt-3 text-sm text-text-muted">senza carta di credito</p>
         </aside>

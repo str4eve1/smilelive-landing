@@ -94,7 +94,7 @@ export const datiStrutturatiHome = {
         "Vista clinica: scansione 3D sovrapposta alla foto",
       ],
       offers: [
-        offerta("Prova gratuita", "0", "5 foto e 2 video, senza carta di credito.", false),
+        offerta("Prova gratuita", "0", "2 foto e 2 video, senza carta di credito.", false),
         offerta("Studio Piccolo", "57", "Al mese, IVA inclusa; 47 al mese con il piano annuale. 20 foto e 8 video al mese."),
         offerta("Studio Medio", "114", "Al mese, IVA inclusa; 94 al mese con il piano annuale. 50 foto e 18 video al mese."),
         offerta("Studio Grande", "157", "Al mese, IVA inclusa; 137 al mese con il piano annuale. 100 foto e 30 video al mese."),

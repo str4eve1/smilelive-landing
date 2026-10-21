@@ -63,7 +63,7 @@ export default function ModuloRichiamata({ appUrl, onTry, waHref }: Props) {
           <>
             <p className="dn-grazie">Grazie, ti richiamiamo noi.</p>
             <a href={appUrl} onClick={onTry} className="dn-btn dn-btn--blue">
-              Prova gratis: 5 simulazioni e 2 video
+              Prova gratis: 2 simulazioni e 2 video
             </a>
           </>
         ) : (

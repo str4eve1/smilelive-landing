@@ -104,7 +104,7 @@ export default function Dentisti() {
             </div>
             <div className="dn-cta">
               <a ref={ctaRef} href={appUrl} onClick={onTry} className="dn-btn dn-btn--navy">
-                Prova gratis: 5 simulazioni e 2 video
+                Prova gratis: 2 simulazioni e 2 video
               </a>
               <p className="dn-small">Senza carta di credito.</p>
               <a
@@ -176,7 +176,7 @@ export default function Dentisti() {
 
       <div className={`dn-bar${barVisible ? " is-visible" : ""}`} aria-hidden={!barVisible}>
         <a href={appUrl} onClick={onTry} className="dn-btn dn-btn--blue" tabIndex={barVisible ? 0 : -1}>
-          Prova gratis: 5 simulazioni e 2 video
+          Prova gratis: 2 simulazioni e 2 video
         </a>
       </div>
     </div>

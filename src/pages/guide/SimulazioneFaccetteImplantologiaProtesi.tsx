@@ -55,7 +55,7 @@ export default function SimulazioneFaccetteImplantologiaProtesi() {
       </Section>
 
       <Section title="Come si prova?">
-        <p>La prova è gratuita: 5 foto e 2 video, senza carta di credito. La simulazione richiede circa un minuto, il video qualche minuto in più. Si usa dal browser, senza installare nulla.</p>
+        <p>La prova è gratuita: 2 foto e 2 video, senza carta di credito. La simulazione richiede circa un minuto, il video qualche minuto in più. Si usa dal browser, senza installare nulla.</p>
         <p><LinkEsterno href="https://app.smilelive.it/">Prova gratuita su app.smilelive.it</LinkEsterno></p>
       </Section>
 
