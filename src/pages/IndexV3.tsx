@@ -50,10 +50,15 @@ import faccettePrima from '../assets/trattamenti/faccetta-prima.webp';
 import faccetteDopo from '../assets/trattamenti/faccetta-dopo.webp';
 import implantologiaPrima from '../assets/trattamenti/implantologia-prima.webp';
 import implantologiaDopo from '../assets/trattamenti/implantologia-dopo.webp';
-import aperturaPrima from '../assets/apertura/apertura-prima.webp';
-import aperturaDopo from '../assets/apertura/apertura-dopo.webp';
-import aperturaOriginale from '../assets/apertura/apertura-originale.webp';
-import aperturaOriginaleMini from '../assets/apertura/apertura-originale-mini.webp';
+import aperturaBiancoPrima from '../assets/apertura/apertura-bianco-prima.webp';
+import aperturaBiancoDopo from '../assets/apertura/apertura-bianco-dopo.webp';
+import aperturaBiancoVideo from '../assets/apertura/apertura-bianco-video.mp4';
+import aperturaBiancoPoster from '../assets/apertura/apertura-bianco-video-poster.webp';
+import aperturaStudioPrima from '../assets/apertura/apertura-studio-prima.webp';
+import aperturaStudioDopo from '../assets/apertura/apertura-studio-dopo.webp';
+import aperturaStudioMini from '../assets/apertura/apertura-studio-mini.webp';
+import aperturaStudioVideo from '../assets/apertura/apertura-studio-video.mp4';
+import aperturaStudioPoster from '../assets/apertura/apertura-studio-video-poster.webp';
 import aperturaBiancoMini from '../assets/apertura/apertura-bianco-mini.webp';
 import aperturaNero1Prima from '../assets/apertura/apertura-nero1-prima.webp';
 import aperturaNero1Dopo from '../assets/apertura/apertura-nero1-dopo.webp';
@@ -615,36 +620,37 @@ const TopBar = () => {
 
 // ─── Hero ────────────────────────────────────────────────────────────────────
 // ─── Apertura: un caso con le sue varianti, come nell'app ────────────────────
-// Sotto la finestra le miniature: la foto scattata e le varianti (▶ = c'è il video).
-// Si parte dalla variante su sfondo bianco, la stessa immagine che c'era prima in apertura.
-type VarianteApertura = { id: string; nome: string; mini: string; foto: string; prima?: string; video?: { src: string; poster: string } };
+// Sotto la finestra le miniature delle varianti (▶ = c'è anche il video, con l'interruttore Foto | Video).
+// Si parte dalla variante su sfondo bianco, come prima in apertura.
+type VarianteApertura = { id: string; nome: string; mini: string; prima: string; dopo: string; video?: { src: string; poster: string } };
 const VARIANTI_APERTURA: VarianteApertura[] = [
-  { id: "originale", nome: "Foto scattata", mini: aperturaOriginaleMini, foto: aperturaOriginale },
-  { id: "bianco", nome: "Variante 1", mini: aperturaBiancoMini, prima: aperturaPrima, foto: aperturaDopo },
-  { id: "nero1", nome: "Variante 2", mini: aperturaNero1Mini, prima: aperturaNero1Prima, foto: aperturaNero1Dopo, video: { src: aperturaNero1Video, poster: aperturaNero1Poster } },
-  { id: "nero2", nome: "Variante 3", mini: aperturaNero2Mini, prima: aperturaNero2Prima, foto: aperturaNero2Dopo, video: { src: aperturaNero2Video, poster: aperturaNero2Poster } },
+  { id: "bianco", nome: "Sfondo bianco", mini: aperturaBiancoMini, prima: aperturaBiancoPrima, dopo: aperturaBiancoDopo, video: { src: aperturaBiancoVideo, poster: aperturaBiancoPoster } },
+  { id: "studio", nome: "In studio", mini: aperturaStudioMini, prima: aperturaStudioPrima, dopo: aperturaStudioDopo, video: { src: aperturaStudioVideo, poster: aperturaStudioPoster } },
+  { id: "nero1", nome: "Sfondo nero", mini: aperturaNero1Mini, prima: aperturaNero1Prima, dopo: aperturaNero1Dopo, video: { src: aperturaNero1Video, poster: aperturaNero1Poster } },
+  { id: "nero2", nome: "Con poltrona", mini: aperturaNero2Mini, prima: aperturaNero2Prima, dopo: aperturaNero2Dopo, video: { src: aperturaNero2Video, poster: aperturaNero2Poster } },
 ];
 
 const AperturaVarianti = () => {
-  const [scelta, setScelta] = useState("bianco");
+  const [scelta, setScelta] = useState(VARIANTI_APERTURA[0].id);
   const [video, setVideo] = useState(false);
-  const v = VARIANTI_APERTURA.find((x) => x.id === scelta) ?? VARIANTI_APERTURA[1];
+  const v = VARIANTI_APERTURA.find((x) => x.id === scelta) ?? VARIANTI_APERTURA[0];
   const conVideo = video && v.video;
   const tasto = (attivo: boolean) => `inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold transition-colors ${attivo ? "bg-primary text-white" : "text-text-main hover:bg-slate-100"}`;
   return (
     <div className="relative rounded-3xl overflow-hidden border border-slate-200 bg-white p-2 shadow-[0_24px_80px_rgba(2,132,199,0.18)]">
       <div className="relative rounded-2xl overflow-hidden">
         {conVideo ? (
-          <div className="relative aspect-[1060/1094] bg-[#111]">
-            {/* il video è 4:5: object-contain lascia ai lati due bande, dello stesso nero dello sfondo del video (#0e-#12) */}
-            <video key={v.id} src={conVideo.src} poster={conVideo.poster} width={720} height={900} autoPlay muted loop playsInline preload="auto" aria-label={`Il video del sorriso, ${v.nome.toLowerCase()}`} className="absolute inset-0 w-full h-full object-contain" />
+          <div className="relative aspect-[1060/1094] overflow-hidden bg-slate-900">
+            {/* il video è 4:5: ai lati, al posto delle bande, la sua copertina sfocata */}
+            <img src={conVideo.poster} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover scale-110 blur-2xl" />
+            <video key={v.id} src={conVideo.src} poster={conVideo.poster} width={720} height={900} autoPlay muted loop playsInline preload="auto" aria-label={`Il video del sorriso simulato, ${v.nome.toLowerCase()}`} className="absolute inset-0 w-full h-full object-contain" />
             <AiBadge className="top-3 left-1/2 -translate-x-1/2" />
           </div>
-        ) : v.prima ? (
+        ) : (
           <OtSlider
             key={v.id}
             prima={v.prima}
-            dopo={v.foto}
+            dopo={v.dopo}
             alt="Sorriso"
             altPrima="Sorriso prima della simulazione"
             altDopo={`Lo stesso sorriso nella simulazione con IA, ${v.nome.toLowerCase()}`}
@@ -652,16 +658,10 @@ const AperturaVarianti = () => {
             aspect="aspect-[1060/1094]"
             width={1060}
             height={1094}
-            priority={v.id === "bianco"}
+            priority={v.id === VARIANTI_APERTURA[0].id}
             tagClass="!text-[11px] !px-2.5 !py-1"
             badgeClass="top-3 left-1/2 -translate-x-1/2"
           />
-        ) : (
-          <div className="relative aspect-[1060/1094]">
-            <img src={v.foto} width={1060} height={1094} alt="La foto del paziente scattata in studio, da cui parte la simulazione" className="absolute inset-0 w-full h-full object-cover" style={{ objectPosition: "center 40%" }} />
-            <span className="ot-tag ot-prima !text-[11px] !px-2.5 !py-1">Foto scattata in studio</span>
-            <AiBadge className="top-3 right-3" />
-          </div>
         )}
         {v.video && (
           <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-40 flex gap-0.5 rounded-full bg-white/90 p-1 shadow-md backdrop-blur-sm" role="group" aria-label="Foto o video">
@@ -670,7 +670,7 @@ const AperturaVarianti = () => {
           </div>
         )}
       </div>
-      <div className="flex justify-center gap-2 sm:gap-3 pt-2.5 pb-1" role="group" aria-label="Foto scattata e varianti della simulazione">
+      <div className="flex justify-center gap-2 sm:gap-3 pt-2.5 pb-1" role="group" aria-label="Varianti della simulazione">
         {VARIANTI_APERTURA.map((x) => {
           const attiva = x.id === scelta;
           return (
@@ -690,7 +690,7 @@ const AperturaVarianti = () => {
                   </span>
                 )}
               </span>
-              <span className={`text-[10px] leading-none font-semibold ${attiva ? "text-primary" : "text-text-muted"}`}>{x.nome}</span>
+              <span className={`text-[10px] leading-none font-semibold whitespace-nowrap ${attiva ? "text-primary" : "text-text-muted"}`}>{x.nome}</span>
             </button>
           );
         })}
