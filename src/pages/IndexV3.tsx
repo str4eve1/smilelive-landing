@@ -747,7 +747,7 @@ const Hero = () => {
                 <Camera size={16} weight="fill" className="text-primary" />
               </div>
               <div>
-                <div className="text-xs sm:text-sm font-bold text-text-main num-tabular leading-none">5 + 2</div>
+                <div className="text-xs sm:text-sm font-bold text-text-main num-tabular leading-none">2 + 2</div>
                 <div className="text-[10px] text-text-muted font-medium mt-0.5">foto e video gratis</div>
               </div>
             </motion.div>
@@ -843,7 +843,7 @@ const Hero = () => {
               <Camera size={16} weight="fill" className="text-primary hidden sm:block" />
             </div>
             <div>
-              <div className="text-xs sm:text-sm font-bold text-text-main num-tabular leading-none">5 + 2</div>
+              <div className="text-xs sm:text-sm font-bold text-text-main num-tabular leading-none">2 + 2</div>
               <div className="text-[9px] sm:text-[10px] text-text-muted font-medium mt-0.5">foto e video gratis</div>
             </div>
           </motion.div>
@@ -2334,7 +2334,7 @@ const IntermediateCTA = () => {
   const isV5 = useIsV5();
   const stats = isV5 ? [
     { icon: <ClipboardText size={22} weight="fill" className="text-gold" />, value: "7", label: "Fasi del protocollo clinico" },
-    { icon: <Camera size={22} weight="fill" className="text-primary" />, value: "5 + 2", label: "Foto e video in prova gratuita" },
+    { icon: <Camera size={22} weight="fill" className="text-primary" />, value: "2 + 2", label: "Foto e video in prova gratuita" },
     { icon: <Gift size={22} weight="fill" className="text-text-main" />, value: "0 €", label: "Per iniziare, senza carta" },
     { icon: <Lightning size={22} weight="fill" className="text-text-main" />, value: "~1 min", label: "Per simulazione" },
   ] : [

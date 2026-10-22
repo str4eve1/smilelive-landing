@@ -71,7 +71,7 @@ export default function MockUpDigitaleInjectionTechnique() {
       </Section>
 
       <Section title="Dove si colloca SmileLive">
-        <p>SmileLive sta all'inizio del percorso. Da una foto genera con l'IA una simulazione del sorriso (mock-up digitale), in foto e in video; richiede circa un minuto. È uno strumento di comunicazione con il paziente e non sostituisce diagnosi né progettazione clinica. La «Vista clinica» sovrappone la scansione 3D alla foto, per facilitare l'analisi e la verifica di fattibilità. Per il momento SmileLive non esegue ceratura, non fa misure e non esporta pacchetti per il laboratorio: dà al clinico il necessario per valutare la fattibilità delle simulazioni proposte. Ogni immagine generata è contrassegnata come generata con IA. Prova gratuita: 5 foto e 2 video, senza carta di credito.</p>
+        <p>SmileLive sta all'inizio del percorso. Da una foto genera con l'IA una simulazione del sorriso (mock-up digitale), in foto e in video; richiede circa un minuto. È uno strumento di comunicazione con il paziente e non sostituisce diagnosi né progettazione clinica. La «Vista clinica» sovrappone la scansione 3D alla foto, per facilitare l'analisi e la verifica di fattibilità. Per il momento SmileLive non esegue ceratura, non fa misure e non esporta pacchetti per il laboratorio: dà al clinico il necessario per valutare la fattibilità delle simulazioni proposte. Ogni immagine generata è contrassegnata come generata con IA. Prova gratuita: 2 foto e 2 video, senza carta di credito.</p>
       </Section>
 
       <Section title="Per approfondire">
