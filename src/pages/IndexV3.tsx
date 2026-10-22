@@ -626,8 +626,8 @@ type VarianteApertura = { id: string; nome: string; mini: string; prima: string;
 const VARIANTI_APERTURA: VarianteApertura[] = [
   { id: "bianco", nome: "Sfondo bianco", mini: aperturaBiancoMini, prima: aperturaBiancoPrima, dopo: aperturaBiancoDopo, video: { src: aperturaBiancoVideo, poster: aperturaBiancoPoster } },
   { id: "studio", nome: "In studio", mini: aperturaStudioMini, prima: aperturaStudioPrima, dopo: aperturaStudioDopo, video: { src: aperturaStudioVideo, poster: aperturaStudioPoster } },
-  { id: "nero1", nome: "Sfondo nero", mini: aperturaNero1Mini, prima: aperturaNero1Prima, dopo: aperturaNero1Dopo, video: { src: aperturaNero1Video, poster: aperturaNero1Poster } },
-  { id: "nero2", nome: "Con poltrona", mini: aperturaNero2Mini, prima: aperturaNero2Prima, dopo: aperturaNero2Dopo, video: { src: aperturaNero2Video, poster: aperturaNero2Poster } },
+  { id: "nero1", nome: "Sfondo nero 1", mini: aperturaNero1Mini, prima: aperturaNero1Prima, dopo: aperturaNero1Dopo, video: { src: aperturaNero1Video, poster: aperturaNero1Poster } },
+  { id: "nero2", nome: "Sfondo nero 2", mini: aperturaNero2Mini, prima: aperturaNero2Prima, dopo: aperturaNero2Dopo, video: { src: aperturaNero2Video, poster: aperturaNero2Poster } },
 ];
 
 const AperturaVarianti = () => {
