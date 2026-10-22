@@ -52,6 +52,19 @@ import implantologiaPrima from '../assets/trattamenti/implantologia-prima.webp';
 import implantologiaDopo from '../assets/trattamenti/implantologia-dopo.webp';
 import aperturaPrima from '../assets/apertura/apertura-prima.webp';
 import aperturaDopo from '../assets/apertura/apertura-dopo.webp';
+import aperturaOriginale from '../assets/apertura/apertura-originale.webp';
+import aperturaOriginaleMini from '../assets/apertura/apertura-originale-mini.webp';
+import aperturaBiancoMini from '../assets/apertura/apertura-bianco-mini.webp';
+import aperturaNero1Prima from '../assets/apertura/apertura-nero1-prima.webp';
+import aperturaNero1Dopo from '../assets/apertura/apertura-nero1-dopo.webp';
+import aperturaNero1Mini from '../assets/apertura/apertura-nero1-mini.webp';
+import aperturaNero1Video from '../assets/apertura/apertura-nero1-video.mp4';
+import aperturaNero1Poster from '../assets/apertura/apertura-nero1-video-poster.webp';
+import aperturaNero2Prima from '../assets/apertura/apertura-nero2-prima.webp';
+import aperturaNero2Dopo from '../assets/apertura/apertura-nero2-dopo.webp';
+import aperturaNero2Mini from '../assets/apertura/apertura-nero2-mini.webp';
+import aperturaNero2Video from '../assets/apertura/apertura-nero2-video.mp4';
+import aperturaNero2Poster from '../assets/apertura/apertura-nero2-video-poster.webp';
 import emotionalVideo from '../assets/video per SITO 1080p FINITO.mp4';
 import demoVideo from '../assets/demo-smilelive-4x5.mp4';
 import demoPoster from '../assets/demo-smilelive-poster.jpg';
@@ -601,6 +614,91 @@ const TopBar = () => {
 };
 
 // ─── Hero ────────────────────────────────────────────────────────────────────
+// ─── Apertura: un caso con le sue varianti, come nell'app ────────────────────
+// Sotto la finestra le miniature: la foto scattata e le varianti (▶ = c'è il video).
+// Si parte dalla variante su sfondo bianco, la stessa immagine che c'era prima in apertura.
+type VarianteApertura = { id: string; nome: string; mini: string; foto: string; prima?: string; video?: { src: string; poster: string } };
+const VARIANTI_APERTURA: VarianteApertura[] = [
+  { id: "originale", nome: "Foto scattata", mini: aperturaOriginaleMini, foto: aperturaOriginale },
+  { id: "bianco", nome: "Variante 1", mini: aperturaBiancoMini, prima: aperturaPrima, foto: aperturaDopo },
+  { id: "nero1", nome: "Variante 2", mini: aperturaNero1Mini, prima: aperturaNero1Prima, foto: aperturaNero1Dopo, video: { src: aperturaNero1Video, poster: aperturaNero1Poster } },
+  { id: "nero2", nome: "Variante 3", mini: aperturaNero2Mini, prima: aperturaNero2Prima, foto: aperturaNero2Dopo, video: { src: aperturaNero2Video, poster: aperturaNero2Poster } },
+];
+
+const AperturaVarianti = () => {
+  const [scelta, setScelta] = useState("bianco");
+  const [video, setVideo] = useState(false);
+  const v = VARIANTI_APERTURA.find((x) => x.id === scelta) ?? VARIANTI_APERTURA[1];
+  const conVideo = video && v.video;
+  const tasto = (attivo: boolean) => `inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold transition-colors ${attivo ? "bg-primary text-white" : "text-text-main hover:bg-slate-100"}`;
+  return (
+    <div className="relative rounded-3xl overflow-hidden border border-slate-200 bg-white p-2 shadow-[0_24px_80px_rgba(2,132,199,0.18)]">
+      <div className="relative rounded-2xl overflow-hidden">
+        {conVideo ? (
+          <div className="relative aspect-[1060/1094] bg-[#111]">
+            {/* il video è 4:5: object-contain lascia ai lati due bande, dello stesso nero dello sfondo del video (#0e-#12) */}
+            <video key={v.id} src={conVideo.src} poster={conVideo.poster} width={720} height={900} autoPlay muted loop playsInline preload="auto" aria-label={`Il video del sorriso, ${v.nome.toLowerCase()}`} className="absolute inset-0 w-full h-full object-contain" />
+            <AiBadge className="top-3 left-1/2 -translate-x-1/2" />
+          </div>
+        ) : v.prima ? (
+          <OtSlider
+            key={v.id}
+            prima={v.prima}
+            dopo={v.foto}
+            alt="Sorriso"
+            altPrima="Sorriso prima della simulazione"
+            altDopo={`Lo stesso sorriso nella simulazione con IA, ${v.nome.toLowerCase()}`}
+            focus="center 40%"
+            aspect="aspect-[1060/1094]"
+            width={1060}
+            height={1094}
+            priority={v.id === "bianco"}
+            tagClass="!text-[11px] !px-2.5 !py-1"
+            badgeClass="top-3 left-1/2 -translate-x-1/2"
+          />
+        ) : (
+          <div className="relative aspect-[1060/1094]">
+            <img src={v.foto} width={1060} height={1094} alt="La foto del paziente scattata in studio, da cui parte la simulazione" className="absolute inset-0 w-full h-full object-cover" style={{ objectPosition: "center 40%" }} />
+            <span className="ot-tag ot-prima !text-[11px] !px-2.5 !py-1">Foto scattata in studio</span>
+            <AiBadge className="top-3 right-3" />
+          </div>
+        )}
+        {v.video && (
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-40 flex gap-0.5 rounded-full bg-white/90 p-1 shadow-md backdrop-blur-sm" role="group" aria-label="Foto o video">
+            <button type="button" onClick={() => setVideo(false)} aria-pressed={!video} className={tasto(!video)}><Camera size={14} weight="fill" />Foto</button>
+            <button type="button" onClick={() => setVideo(true)} aria-pressed={video} className={tasto(video)}><VideoCamera size={14} weight="fill" />Video</button>
+          </div>
+        )}
+      </div>
+      <div className="flex justify-center gap-2 sm:gap-3 pt-2.5 pb-1" role="group" aria-label="Foto scattata e varianti della simulazione">
+        {VARIANTI_APERTURA.map((x) => {
+          const attiva = x.id === scelta;
+          return (
+            <button
+              key={x.id}
+              type="button"
+              onClick={() => setScelta(x.id)}
+              aria-pressed={attiva}
+              aria-label={x.video ? `${x.nome}, con video` : x.nome}
+              className="group flex flex-col items-center gap-1 focus-visible:outline-none"
+            >
+              <span className={`relative block w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden transition-all ${attiva ? "ring-2 ring-primary ring-offset-2" : "ring-1 ring-slate-200 opacity-80 group-hover:opacity-100"} group-focus-visible:ring-2 group-focus-visible:ring-primary`}>
+                <img src={x.mini} width={128} height={128} alt="" className="w-full h-full object-cover" loading="lazy" />
+                {x.video && (
+                  <span className="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-primary flex items-center justify-center shadow" aria-hidden="true">
+                    <Play size={8} weight="fill" className="text-white ml-px" />
+                  </span>
+                )}
+              </span>
+              <span className={`text-[10px] leading-none font-semibold ${attiva ? "text-primary" : "text-text-muted"}`}>{x.nome}</span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
 const Hero = () => {
   const isV5 = useIsV5();
   const proofBlock = (
@@ -719,29 +817,14 @@ const Hero = () => {
       >
         {isV5 ? (
           <div className="relative w-full max-w-[340px] sm:max-w-[400px] lg:max-w-[480px]">
-            <div className="relative rounded-3xl overflow-hidden border border-slate-200 bg-white p-2 shadow-[0_24px_80px_rgba(2,132,199,0.18)]">
-              <div className="rounded-2xl overflow-hidden">
-                <OtSlider
-                  prima={aperturaPrima}
-                  dopo={aperturaDopo}
-                  alt="Sorriso"
-                  altPrima="Sorriso prima della simulazione"
-                  altDopo="Lo stesso sorriso nella simulazione con IA"
-                  focus="center 40%"
-                  aspect="aspect-[1060/1094]"
-                  width={1060}
-                  height={1094}
-                  priority
-                  tagClass="!text-[11px] !px-2.5 !py-1"
-                  badgeClass="top-3 left-1/2 -translate-x-1/2"
-                />
-              </div>
-            </div>
+            <AperturaVarianti />
+            {/* Su telefono le due schede stanno in fila sotto la finestra (non coprono le miniature); da lg fluttuano ai lati */}
+            <div className="mt-4 flex justify-center gap-3 lg:contents">
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.9, type: "spring", stiffness: 180, damping: 18 }}
-              className="card-float-a absolute -bottom-5 left-3 lg:-left-8 lg:bottom-auto lg:top-[16%] flex items-center gap-2 sm:gap-3 bg-white rounded-xl sm:rounded-2xl px-3 py-2 sm:px-4 sm:py-3 border border-slate-200 shadow-md"
+              className="card-float-a lg:absolute lg:-left-8 lg:top-[16%] flex items-center gap-2 sm:gap-3 bg-white rounded-xl sm:rounded-2xl px-3 py-2 sm:px-4 sm:py-3 border border-slate-200 shadow-md"
             >
               <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
                 <Camera size={16} weight="fill" className="text-primary" />
@@ -755,7 +838,7 @@ const Hero = () => {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.1, type: "spring", stiffness: 180, damping: 18 }}
-              className="card-float-b absolute -bottom-5 right-3 lg:-right-6 lg:bottom-[14%] flex items-center gap-2 sm:gap-3 bg-white rounded-xl sm:rounded-2xl px-3 py-2 sm:px-4 sm:py-3 border border-slate-200 shadow-md"
+              className="card-float-b lg:absolute lg:-right-6 lg:bottom-[14%] flex items-center gap-2 sm:gap-3 bg-white rounded-xl sm:rounded-2xl px-3 py-2 sm:px-4 sm:py-3 border border-slate-200 shadow-md"
             >
               <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-gold/10 flex items-center justify-center shrink-0">
                 <Lightning size={16} weight="fill" className="text-gold" />
@@ -765,6 +848,7 @@ const Hero = () => {
                 <div className="text-[10px] text-text-muted font-medium mt-0.5">per simulazione</div>
               </div>
             </motion.div>
+            </div>
           </div>
         ) : (
         <div className="phone-wrap relative w-[240px] sm:w-[290px] md:w-[310px]">
