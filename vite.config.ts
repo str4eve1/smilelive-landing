@@ -1,9 +1,19 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
+import { pricingMode } from "./src/lib/pricing";
 
 // https://vitejs.dev/config/
 export default defineConfig(() => ({
+  // PRICING_MODE (listino): "lancio" o "listino", già normalizzata qui come fa l'app
+  // (assente o sconosciuta = lancio). La leggono il browser, la build del server
+  // (prerender, JSON-LD, llms.txt) e i test: una sola fonte, la variabile del build.
+  // Si fissa al BUILD: su Vercel, dopo aver cambiato PRICING_MODE, serve un Redeploy senza
+  // cache di build, altrimenti il sito resta nella modalità di prima. Nei test vale «lancio»
+  // se manca la variabile; src/test/site-pricing.test.ts prova anche «listino» con vi.stubEnv.
+  define: {
+    "import.meta.env.PRICING_MODE": JSON.stringify(pricingMode(process.env.PRICING_MODE)),
+  },
   server: {
     host: "::",
     port: 8081,

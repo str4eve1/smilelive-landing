@@ -9,12 +9,14 @@ const NUDGE_TEXT = "Ciao, vorrei parlare con un operatore.";
 export type WaMessage = { emoji: string; text: string };
 
 // Default = funnel studi (la home). Le pagine rivolte ai pazienti passano i propri.
-const DEFAULT_PHONE = "393289598557";
+export const DEFAULT_PHONE = "393289598557";
+// Il messaggio della demo: lo usa anche il box della promozione di lancio (prezzi, modalità listino).
+export const DEMO_TEXT = "Ciao, vorrei vedere una demo di SmileLive per il mio studio.";
 // emoji = solo nella bolla mostrata; text = quello inviato a WhatsApp (senza emoji:
 // l'unicode esce sballato nel link wa.me)
 const DEFAULT_MESSAGES: WaMessage[] = [
   { emoji: "ℹ️", text: "Ciao, vorrei maggiori informazioni su SmileLive." },
-  { emoji: "🎬", text: "Ciao, vorrei vedere una demo di SmileLive per il mio studio." },
+  { emoji: "🎬", text: DEMO_TEXT },
   { emoji: "💳", text: "Ciao, vorrei sapere di più su piani e prezzi." },
 ];
 

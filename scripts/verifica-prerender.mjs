@@ -5,7 +5,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 const radice = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const dist = join(radice, "dist");
-const { pagine, canonicoDi } = await import(pathToFileURL(join(radice, "dist-server", "entry-server.js")).href);
+const { pagine, canonicoDi, modalitaPrezzi } = await import(pathToFileURL(join(radice, "dist-server", "entry-server.js")).href);
 
 const errori = [];
 const ko = (msg) => errori.push(msg);
@@ -103,6 +103,49 @@ if (existsSync(join(dist, "index.html"))) {
   const h1 = prendi(home, /<h1[^>]*>([\s\S]*?)<\/h1>/)?.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim() ?? "";
   if (h1.length < 10) ko("home: il testo dell'<h1> manca nell'HTML");
   if (!/<link rel="stylesheet" crossorigin href="\/assets\/IndexV5-[^"]+\.css" \/>/.test(home)) ko("home: manca il foglio di stile della pagina (comparirebbe con lo stile di base e poi cambierebbe)");
+}
+
+// Modalità prezzi «listino» (PRICING_MODE): la home, il suo JSON-LD e llms.txt non parlano più dei prezzi di lancio.
+// In «lancio» non si controlla nulla in più: la home resta quella di prima.
+if (modalitaPrezzi === "listino" && existsSync(join(dist, "index.html")) && existsSync(join(dist, "llms.txt"))) {
+  const home = leggi("index.html");
+  const testoHome = decodifica(home);
+  // Card e toggle come li prerenderizza la build (vista annuale, quella di partenza): se le card
+  // tornano alla tabella di lancio, qui mancano le cifre di listino.
+  const obbligatorie = [
+    "Prezzi finali, nessuna IVA aggiunta",
+    "Promozione di lancio per i primi 100 studi",
+    "Prenota la demo",
+    "Fino a -15%",
+    "924 €/anno",
+    "1.524 €/anno",
+    "2.004 €/anno",
+    "risparmi 120 €",
+    "risparmi 240 €",
+    "risparmi 360 €",
+  ];
+  for (const frase of obbligatorie) {
+    if (!testoHome.includes(frase)) ko(`home (listino): manca «${frase}»`);
+  }
+  // Cifre di lancio, in tutte le forme in cui le scriveva la home: «€57», «€47/mese», «€1128/anno»,
+  // «57 €», «1.644 €». Si cerca sul testo senza tag: React separa «€» e cifra con <!-- -->,
+  // che decodifica() trasforma in uno spazio. I limiti di cifra evitano i falsi allarmi
+  // (per esempio «47 €» dentro «147 €»).
+  const cifreLancio = [
+    /€\s?(?:57|47|114|94|157|137|564|1\.?128|1\.?644)(?![\d.,])/,
+    /(?<![\d.,])(?:57|47|114|94|157|137|564|1\.?128|1\.?644)\s?€/,
+  ];
+  for (const [dove, testo] of [["home", testoHome], ["llms.txt", leggi("llms.txt")]]) {
+    for (const re of cifreLancio) {
+      const trovata = testo.match(re)?.[0];
+      if (trovata) ko(`${dove} (listino): contiene ancora la cifra di lancio «${trovata}»`);
+    }
+  }
+  for (const [dove, testo] of [["home", home], ["llms.txt", leggi("llms.txt")]]) {
+    for (const vietata of ["IVA inclusa", "aumenteranno", "valueAddedTaxIncluded", "line-through", "Fino a -17%"]) {
+      if (testo.includes(vietata)) ko(`${dove} (listino): contiene ancora «${vietata}»`);
+    }
+  }
 }
 
 if (existsSync(join(dist, "spa.html"))) {

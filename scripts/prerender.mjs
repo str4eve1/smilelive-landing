@@ -15,9 +15,11 @@ const spa = join(dist, "spa.html");
 if (!existsSync(spa)) copyFileSync(join(dist, "index.html"), spa);
 const modello = readFileSync(spa, "utf8");
 
-const { render, pagine, canonicoDi, SITO, datiStrutturatiHome, datiStrutturatiArticolo } = await import(
+const { render, pagine, canonicoDi, SITO, datiStrutturatiHome, datiStrutturatiArticolo, testoPrezziLlms, modalitaPrezzi } = await import(
   pathToFileURL(join(radice, "dist-server", "entry-server.js")).href
 );
+// Modalità prezzi fissata al build (PRICING_MODE): nei log del deploy si vede quale è uscita.
+console.log(`prerender: modalità prezzi «${modalitaPrezzi}»`);
 
 const attr = (testo) => testo.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
 const testoHtml = (testo) => testo.replace(/&/g, "&amp;").replace(/</g, "&lt;");
@@ -136,7 +138,8 @@ const llms = [
   "",
   "> SmileLive è un software per studi dentistici: da una foto del paziente genera con l'intelligenza artificiale una simulazione del sorriso, in foto e in video, da mostrare in prima visita; ogni foto comprende fino a 4 varianti. Nello stesso strumento c'è il gestionale dello studio: agenda con medici e poltrone, scheda paziente con odontogramma, file e documenti, preventivo con firma a schermo, promemoria automatici, prescrizione vocale al laboratorio e, nei piani Studio Medio e Studio Grande, fatture con invio al Sistema TS.",
   "",
-  "Una simulazione richiede circa un minuto. La prova gratuita comprende 2 foto e 2 video, senza carta di credito. I piani sono Studio Piccolo a 57 € al mese (47 con il piano annuale), Studio Medio a 114 € (94) e Studio Grande a 157 € (137): prezzi di lancio IVA inclusa, che chi si abbona ora mantiene finché l'abbonamento resta attivo. Si usa dal browser, senza installare nulla. La simulazione è uno strumento di comunicazione e non sostituisce diagnosi né progettazione clinica. Il sito è rivolto ai dentisti. SmileLive è ideato da Giampiero Lombardi, in una famiglia di odontotecnici, e ha sede a Casamassima (Bari).",
+  // il paragrafo prezzi viene dalla tabella del sito, nella modalità del build (src/seo/llms.ts)
+  `Una simulazione richiede circa un minuto. ${testoPrezziLlms} Si usa dal browser, senza installare nulla. La simulazione è uno strumento di comunicazione e non sostituisce diagnosi né progettazione clinica. Il sito è rivolto ai dentisti. SmileLive è ideato da Giampiero Lombardi, in una famiglia di odontotecnici, e ha sede a Casamassima (Bari).`,
   ...sezioniLlms.flatMap(([titolo, scelta]) => ["", `## ${titolo}`, "", ...pagine.filter(scelta).map(collegamento)]),
   "",
 ].join("\n");

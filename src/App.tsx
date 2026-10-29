@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, type ReactNode } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -8,10 +8,9 @@ import CookieBanner from "@/components/CookieBanner";
 import { paginaDi } from "@/seo/pagine";
 
 // Ogni pagina è un file a parte: chi atterra su una pagina non scarica le altre.
-const caricaIndex = () => import("./pages/Index.tsx");
-const caricaIndexV2 = () => import("./pages/IndexV2.tsx");
+// /v1, /v2 e /v4 (varianti vecchie della home, con i prezzi di prima) rimandano alla home:
+// i loro file non si caricano più e non entrano nel build.
 const caricaIndexV3 = () => import("./pages/IndexV3.tsx");
-const caricaIndexV4 = () => import("./pages/IndexV4.tsx");
 const caricaIndexV5 = () => import("./pages/IndexV5.tsx");
 const caricaNotFound = () => import("./pages/NotFound.tsx");
 const caricaPrivacy = () => import("./pages/Privacy.tsx");
@@ -26,10 +25,7 @@ const caricaMockUp = () => import("./pages/guide/MockUpDigitaleInjectionTechniqu
 const caricaPreventivi = () => import("./pages/guide/FarAccettarePiuPreventivi.tsx");
 const caricaFaccette = () => import("./pages/guide/SimulazioneFaccetteImplantologiaProtesi.tsx");
 
-const Index = lazy(caricaIndex);
-const IndexV2 = lazy(caricaIndexV2);
 const IndexV3 = lazy(caricaIndexV3);
-const IndexV4 = lazy(caricaIndexV4);
 const IndexV5 = lazy(caricaIndexV5);
 const NotFound = lazy(caricaNotFound);
 const Privacy = lazy(caricaPrivacy);
@@ -46,10 +42,7 @@ const Faccette = lazy(caricaFaccette);
 
 const caricatori: Record<string, () => Promise<unknown>> = {
   "/": caricaIndexV5,
-  "/v1": caricaIndex,
-  "/v2": caricaIndexV2,
   "/v3": caricaIndexV3,
-  "/v4": caricaIndexV4,
   "/v5": caricaIndexV5,
   "/simulazione": caricaSimulazione,
   "/dentisti": caricaDentisti,
@@ -87,6 +80,13 @@ declare global {
   }
 }
 
+// Le varianti vecchie della home (/v1, /v2, /v4) rimandano alla home tenendo i parametri
+// (UTM), come il redirect di vercel.json, che in produzione arriva prima.
+const RedirectHome = () => {
+  const { search } = useLocation();
+  return <Navigate to={{ pathname: "/", search }} replace />;
+};
+
 // Un bottone toccato prima che la pagina fosse viva (vedi index.html) si preme adesso.
 // Sta dentro Suspense: il suo effetto parte quando anche la pagina è idratata.
 const PaginaViva = () => {
@@ -99,10 +99,10 @@ export const AppRoutes = () => (
     <TitoloPagina />
     <Routes>
       <Route path="/" element={<IndexV5 />} />
-      <Route path="/v1" element={<Index />} />
-      <Route path="/v2" element={<IndexV2 />} />
+      <Route path="/v1" element={<RedirectHome />} />
+      <Route path="/v2" element={<RedirectHome />} />
       <Route path="/v3" element={<IndexV3 />} />
-      <Route path="/v4" element={<IndexV4 />} />
+      <Route path="/v4" element={<RedirectHome />} />
       <Route path="/v5" element={<IndexV5 />} />
       <Route path="/simulazione" element={<Simulazione />} />
       <Route path="/dentisti" element={<Dentisti />} />

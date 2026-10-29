@@ -5,6 +5,8 @@ import { AppRoutes, Provider } from "./App";
 
 export { pagine, canonicoDi, SITO } from "./seo/pagine";
 export { datiStrutturatiHome, datiStrutturatiArticolo } from "./seo/dati-strutturati";
+export { testoPrezziLlms } from "./seo/llms";
+export { SITE_PRICING_MODE as modalitaPrezzi } from "./lib/site-pricing";
 
 // HTML della pagina già scritto. Si aspetta che tutto sia pronto (pagine lazy comprese):
 // renderToString si fermerebbe al segnaposto.

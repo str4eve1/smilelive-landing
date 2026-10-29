@@ -1,26 +1,48 @@
 // Dati strutturati della home. Importato solo dal server della build: non entra nel codice del browser.
 import { SITO, canonicoDi, paginaDi, type Pagina } from "./pagine";
+import { annualMonthlyCents, pricesFor, type PricingMode } from "@/lib/pricing";
+import { SITE_PRICING_MODE } from "@/lib/site-pricing";
 
 const descrizione = paginaDi("/")!.description;
 
 // L'unità mensile c'è solo per i piani a pagamento: la prova gratuita non è un canone.
-const prezzo = (valore: string, mensile: boolean) => ({
+// «IVA inclusa» (valueAddedTaxIncluded) resta solo in modalità lancio: a listino i prezzi
+// sono «finali, nessuna IVA aggiunta» e la chiave si toglie.
+const prezzo = (valore: string, mensile: boolean, ivaInclusa: boolean) => ({
   "@type": "UnitPriceSpecification",
   price: valore,
   priceCurrency: "EUR",
-  valueAddedTaxIncluded: true,
+  ...(ivaInclusa ? { valueAddedTaxIncluded: true } : {}),
   ...(mensile ? { unitCode: "MON" } : {}),
 });
 
-const offerta = (name: string, valore: string, description: string, mensile = true) => ({
+const offertaDi = (ivaInclusa: boolean) => (name: string, valore: string, description: string, mensile = true) => ({
   "@type": "Offer",
   name,
   description,
   price: valore,
   priceCurrency: "EUR",
-  priceSpecification: prezzo(valore, mensile),
+  priceSpecification: prezzo(valore, mensile, ivaInclusa),
   url: `${SITO}/`,
 });
+
+const euro = (centesimi: number) => String(centesimi / 100);
+
+// Le offerte di una modalità: cifre dalla tabella prezzi, quote dei piani come sulle card.
+function offerte(mode: PricingMode) {
+  const listino = mode === "listino";
+  const offerta = offertaDi(!listino);
+  const prezzi = pricesFor(mode);
+  const formula = listino ? "Al mese, prezzo finale, nessuna IVA aggiunta" : "Al mese, IVA inclusa";
+  const piano = (name: string, p: typeof prezzi.starter, quote: string) =>
+    offerta(name, euro(p.monthlyCents), `${formula}; ${euro(annualMonthlyCents(p))} al mese con il piano annuale. ${quote}`);
+  return [
+    offerta(listino ? "Registrazione gratuita" : "Prova gratuita", "0", "2 foto e 2 video, senza carta di credito.", false),
+    piano("Studio Piccolo", prezzi.starter, "20 foto e 8 video al mese."),
+    piano("Studio Medio", prezzi.premium, "50 foto e 18 video al mese."),
+    piano("Studio Grande", prezzi.business, "100 foto e 30 video al mese."),
+  ];
+}
 
 const idOrganizzazione = { "@id": `${SITO}/#organizzazione` };
 
@@ -57,7 +79,7 @@ const organizzazione = {
   sameAs: ["https://www.instagram.com/smilelive.it"],
 };
 
-export const datiStrutturatiHome = {
+export const homeStructuredData = (mode: PricingMode) => ({
   "@context": "https://schema.org",
   "@graph": [
     organizzazione,
@@ -93,15 +115,13 @@ export const datiStrutturatiHome = {
         "Designer: modifica della simulazione dente per dente",
         "Vista clinica: scansione 3D sovrapposta alla foto",
       ],
-      offers: [
-        offerta("Prova gratuita", "0", "2 foto e 2 video, senza carta di credito.", false),
-        offerta("Studio Piccolo", "57", "Al mese, IVA inclusa; 47 al mese con il piano annuale. 20 foto e 8 video al mese."),
-        offerta("Studio Medio", "114", "Al mese, IVA inclusa; 94 al mese con il piano annuale. 50 foto e 18 video al mese."),
-        offerta("Studio Grande", "157", "Al mese, IVA inclusa; 137 al mese con il piano annuale. 100 foto e 30 video al mese."),
-      ],
+      offers: offerte(mode),
     },
   ],
-};
+});
+
+// Quelli che la build scrive nella home: modalità fissata al build da PRICING_MODE.
+export const datiStrutturatiHome = homeStructuredData(SITE_PRICING_MODE);
 
 // Dati strutturati delle pagine di contenuto (protocollo, guide): tutto viene dalla voce della tabella.
 // L'autore è la persona che cura i contenuti, l'editore è l'organizzazione: entrambi sono richiamati con il loro @id e descritti nello stesso blocco.

@@ -90,6 +90,10 @@ import stepDentista from '../assets/steps/step-4-dentista.webp';
 import logoFinale from '../assets/WEBP/SmileLive FINALE senza sfondo COLORI CORRETTI (1).webp';
 import { trackCta } from "@/lib/analytics";
 import WhatsAppWidget from "../components/WhatsAppWidget";
+import LaunchPromoBox from "../components/LaunchPromoBox";
+import { annualMonthlyCents, annualSavingsCents, formatEuro, maxAnnualDiscountPercent, type PlanPrice } from "@/lib/pricing";
+import { listinoFaqPriceAnswer } from "@/lib/pricing-copy";
+import { IS_LISTINO, SITE_PRICES } from "@/lib/site-pricing";
 import AiBadge from "../components/AiBadge";
 import { openCookieBanner } from "@/lib/consent";
 
@@ -2481,14 +2485,43 @@ const IntermediateCTA = () => {
 };
 
 // ─── Pricing ───────────────────────────────────────────────────────────────────
+// Cifre di una card dalla tabella prezzi del sito (modalità fissata al build: lancio o listino).
+const planFigures = (price: PlanPrice) => ({
+  monthly: price.monthlyCents / 100,
+  annualMonthly: annualMonthlyCents(price) / 100,
+  annualTotal: price.annualCents / 100,
+  annualCents: price.annualCents,
+  savingCents: annualSavingsCents(price),
+});
+
+type StudioPlanCard = ReturnType<typeof planFigures> & {
+  name: string;
+  tagline: string;
+  foto: number;
+  video: number;
+  promemoria: number;
+  fatture: boolean;
+  prioritario?: boolean;
+  valore?: string;
+  extra: string;
+  cta: string;
+  ctaId: string;
+  highlighted: boolean;
+  accent: string;
+  grad: string;
+};
+
 const Pricing = () => {
   const [isAnnual, setIsAnnual] = useState(true);
+  // Pulsanti Mensile/Annuale alti almeno 44 px (regola mobile-first). Solo a listino: in lancio
+  // la stringa delle classi resta identica a prima, e con lei l'HTML prerenderizzato della home.
+  const toggleTouch = IS_LISTINO ? "min-h-[44px] " : "";
 
-  const studioPlans = [
+  const studioPlans: StudioPlanCard[] = [
     // valore: il confronto con Studio Piccolo, da riallineare se cambiano le quote. Mai «costa»: si dice cosa comprende.
-    { name: "Studio Piccolo", tagline: "Per iniziare: circa 5 foto a settimana", monthly: 57, annualMonthly: 47, annualTotal: 564, foto: 20, video: 8, promemoria: 25, fatture: false, extra: "5€/foto · 5€/video · €0,20/promemoria", cta: "Scegli Studio Piccolo", ctaId: "scegli_studio_piccolo", highlighted: false, accent: "#0d9488", grad: "linear-gradient(135deg,#2dd4bf,#0d9488)" },
-    { name: "Studio Medio", tagline: "Per studi attivi: circa 12 foto a settimana", monthly: 114, annualMonthly: 94, annualTotal: 1128, foto: 50, video: 18, promemoria: 50, fatture: true, prioritario: true, valore: "Comprende 2,5 volte le foto di Studio Piccolo, più fatture, Sistema TS e supporto prioritario.", extra: "5€/foto · 5€/video · €0,19/promemoria", cta: "Scegli Studio Medio", ctaId: "scegli_studio_medio", highlighted: true, accent: "#2563eb", grad: "linear-gradient(135deg,#38bdf8,#4f46e5)" },
-    { name: "Studio Grande", tagline: "Per grandi studi e cliniche: oltre 20 foto a settimana", monthly: 157, annualMonthly: 137, annualTotal: 1644, foto: 100, video: 30, promemoria: 125, fatture: true, prioritario: true, valore: "Comprende 5 volte le foto di Studio Piccolo, più fatture, Sistema TS, supporto prioritario ed extra a prezzo ridotto.", extra: "2€/foto · 3€/video · €0,18/promemoria", cta: "Scegli Studio Grande", ctaId: "scegli_studio_grande", highlighted: false, accent: "#7c3aed", grad: "linear-gradient(135deg,#a78bfa,#7c3aed)" },
+    { name: "Studio Piccolo", tagline: "Per iniziare: circa 5 foto a settimana", ...planFigures(SITE_PRICES.starter), foto: 20, video: 8, promemoria: 25, fatture: false, extra: "5€/foto · 5€/video · €0,20/promemoria", cta: "Scegli Studio Piccolo", ctaId: "scegli_studio_piccolo", highlighted: false, accent: "#0d9488", grad: "linear-gradient(135deg,#2dd4bf,#0d9488)" },
+    { name: "Studio Medio", tagline: "Per studi attivi: circa 12 foto a settimana", ...planFigures(SITE_PRICES.premium), foto: 50, video: 18, promemoria: 50, fatture: true, prioritario: true, valore: "Comprende 2,5 volte le foto di Studio Piccolo, più fatture, Sistema TS e supporto prioritario.", extra: "5€/foto · 5€/video · €0,19/promemoria", cta: "Scegli Studio Medio", ctaId: "scegli_studio_medio", highlighted: true, accent: "#2563eb", grad: "linear-gradient(135deg,#38bdf8,#4f46e5)" },
+    { name: "Studio Grande", tagline: "Per grandi studi e cliniche: oltre 20 foto a settimana", ...planFigures(SITE_PRICES.business), foto: 100, video: 30, promemoria: 125, fatture: true, prioritario: true, valore: "Comprende 5 volte le foto di Studio Piccolo, più fatture, Sistema TS, supporto prioritario ed extra a prezzo ridotto.", extra: "2€/foto · 3€/video · €0,18/promemoria", cta: "Scegli Studio Grande", ctaId: "scegli_studio_grande", highlighted: false, accent: "#7c3aed", grad: "linear-gradient(135deg,#a78bfa,#7c3aed)" },
   ];
 
   // Cosa c'è in ogni abbonamento, a prescindere dal piano: le quote cambiano, gli strumenti no.
@@ -2533,11 +2566,16 @@ const Pricing = () => {
           className="flex flex-col items-center mb-16"
         >
           <span className="mb-4 inline-flex items-center gap-1.5 rounded-full bg-gold/15 px-3 py-1 text-xs font-bold uppercase tracking-wider text-gold">
-            <Sparkle size={14} weight="fill" aria-hidden="true" />Prezzi di lancio
+            <Sparkle size={14} weight="fill" aria-hidden="true" />{IS_LISTINO ? "Prezzi" : "Prezzi di lancio"}
           </span>
           <h2 className="text-4xl md:text-5xl font-headline font-bold text-center mb-4 tracking-tight">Scegli il tuo <span className="text-gold">piano</span></h2>
           <p className="text-xl text-text-muted text-center mb-4">Inizia gratis con 2 foto e 2 video. Poi scegli il piano giusto per il tuo studio.</p>
-          <p className="text-lg font-semibold text-text-main text-center max-w-2xl mb-4">Con Studio Piccolo, a {studioPlans[0].monthly} € al mese, basta un piano di cura accettato in più per ripagare anni di abbonamento.</p>
+          {/* Lancio: le righe di prima, nodo per nodo (l'HTML della home deve restare identico). Listino: testi nuovi, senza cifre. */}
+          {IS_LISTINO ? (
+            <p className="text-lg font-semibold text-text-main text-center max-w-2xl mb-4">Con Studio Piccolo basta un piano di cura accettato in più per ripagare anni di abbonamento.</p>
+          ) : (
+            <p className="text-lg font-semibold text-text-main text-center max-w-2xl mb-4">Con Studio Piccolo, a {studioPlans[0].monthly} € al mese, basta un piano di cura accettato in più per ripagare anni di abbonamento.</p>
+          )}
           <p className="text-base font-semibold text-text-main text-center mb-3">Non solo un simulatore: in ogni abbonamento</p>
           <ul className="flex flex-wrap justify-center gap-2 max-w-3xl mb-6">
             {inclusi.map((voce, i) => (
@@ -2546,12 +2584,17 @@ const Pricing = () => {
               </li>
             ))}
           </ul>
-          <p className="text-sm text-text-muted text-center max-w-2xl mb-8">Prezzi di lancio, IVA inclusa: in futuro aumenteranno, ma <strong className="text-text-main">chi si abbona ora mantiene questo prezzo per sempre</strong>, finché l'abbonamento resta attivo. L'opzione annuale si paga in un'unica soluzione, al prezzo più basso.</p>
+          {IS_LISTINO ? (
+            <p className="text-sm text-text-muted text-center max-w-2xl mb-8">Prezzi finali, nessuna IVA aggiunta. L'opzione annuale si paga in un'unica soluzione, al prezzo più basso.</p>
+          ) : (
+            <p className="text-sm text-text-muted text-center max-w-2xl mb-8">Prezzi di lancio, IVA inclusa: in futuro aumenteranno, ma <strong className="text-text-main">chi si abbona ora mantiene questo prezzo per sempre</strong>, finché l'abbonamento resta attivo. L'opzione annuale si paga in un'unica soluzione, al prezzo più basso.</p>
+          )}
           <div className="inline-flex items-center gap-1 bg-slate-50 border border-slate-200 rounded-full p-1.5">
-            <button onClick={() => setIsAnnual(false)} className={`px-5 py-2 rounded-full font-medium transition-all duration-200 ${!isAnnual ? 'bg-white shadow-sm text-text-main ring-2 ring-primary/60' : 'text-text-muted hover:text-text-main'}`}>Mensile</button>
-            <button onClick={() => setIsAnnual(true)} className={`px-5 py-2 rounded-full font-medium transition-all duration-200 flex items-center gap-2 ${isAnnual ? 'bg-white shadow-sm text-text-main ring-2 ring-primary/60' : 'text-text-muted hover:text-text-main'}`}>
+            {/* toggleTouch: tocchi da 44 px solo a listino (in lancio le classi restano quelle di prima) */}
+            <button onClick={() => setIsAnnual(false)} className={`${toggleTouch}px-5 py-2 rounded-full font-medium transition-all duration-200 ${!isAnnual ? 'bg-white shadow-sm text-text-main ring-2 ring-primary/60' : 'text-text-muted hover:text-text-main'}`}>Mensile</button>
+            <button onClick={() => setIsAnnual(true)} className={`${toggleTouch}px-5 py-2 rounded-full font-medium transition-all duration-200 flex items-center gap-2 ${isAnnual ? 'bg-white shadow-sm text-text-main ring-2 ring-primary/60' : 'text-text-muted hover:text-text-main'}`}>
               Annuale
-              <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-gold/15 text-gold whitespace-nowrap">Fino a -17%</span>
+              <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-gold/15 text-gold whitespace-nowrap">{`Fino a -${maxAnnualDiscountPercent(SITE_PRICES)}%`}</span>
             </button>
           </div>
         </motion.div>
@@ -2594,10 +2637,15 @@ const Pricing = () => {
                 <h3 className="text-xl font-bold mb-1" style={{ color: plan.accent }}>{plan.name}</h3>
                 <p className="text-sm text-text-muted mb-4">{plan.tagline}</p>
                 <div className="text-4xl font-headline font-bold mb-1 num-tabular text-text-main flex items-baseline justify-center gap-2">
-                  {isAnnual && <span className="text-2xl font-semibold text-text-muted/70 line-through decoration-2">€{plan.monthly}</span>}
+                  {/* niente prezzi barrati a listino */}
+                  {isAnnual && !IS_LISTINO && <span className="text-2xl font-semibold text-text-muted/70 line-through decoration-2">€{plan.monthly}</span>}
                   <span>€{price}<span className="text-sm font-normal text-text-muted">/mese</span></span>
                 </div>
-                {isAnnual && <div className="text-sm font-semibold mb-0.5" style={{ color: plan.accent }}>€{plan.annualTotal.toLocaleString("it-IT")}/anno · risparmi €{saving}</div>}
+                {isAnnual && (IS_LISTINO ? (
+                  <div className="text-sm font-semibold mb-0.5" style={{ color: plan.accent }}><span className="whitespace-nowrap">{`${formatEuro(plan.annualCents)}/anno`}</span> · risparmi <span className="whitespace-nowrap">{formatEuro(plan.savingCents)}</span></div>
+                ) : (
+                  <div className="text-sm font-semibold mb-0.5" style={{ color: plan.accent }}>€{plan.annualTotal.toLocaleString("it-IT")}/anno · risparmi €{saving}</div>
+                ))}
                 {isAnnual && <div className="text-xs mb-1 text-text-muted">in un'unica soluzione</div>}
                 {plan.valore && <p className="mt-3 rounded-xl px-3 py-2 text-xs font-semibold leading-snug" style={{ background: `${plan.accent}12`, color: plan.accent }}>{plan.valore}</p>}
                 <div className="h-px w-full my-5 bg-slate-100"></div>
@@ -2626,6 +2674,19 @@ const Pricing = () => {
             );
           })}
         </motion.div>
+
+        {/* Box della promozione di lancio, sotto la griglia: solo a listino. */}
+        {IS_LISTINO && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="mt-10 max-w-3xl mx-auto"
+          >
+            <LaunchPromoBox />
+          </motion.div>
+        )}
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -2850,7 +2911,7 @@ const FAQ = () => {
   const faqs = [
     { q: "Che cos'è SmileLive?", a: "SmileLive è un software per studi dentistici: da una foto del paziente genera con l'intelligenza artificiale una simulazione del sorriso, in foto e in video, in circa un minuto, da mostrare in prima visita; ogni foto comprende fino a 4 varianti. Nello stesso strumento c'è il gestionale dello studio: agenda con medici e poltrone, scheda paziente con odontogramma, file e documenti, preventivo con firma a schermo, promemoria automatici, prescrizione vocale al laboratorio e, nei piani Studio Medio e Studio Grande, fatture con invio al Sistema TS." },
     { q: "Come si fa una simulazione del sorriso veloce e intuitiva?", a: "Simulazione del sorriso veloce e semplice: una foto in prima visita e in circa un minuto il paziente vede il possibile risultato sul suo viso. La può preparare anche la segreteria o l'ASO, dal telefono o dal tablet." },
-    { q: "Quanto costa SmileLive?", a: "La prova è gratuita: 2 foto e 2 video, senza carta di credito. Poi puoi pagare a consumo, 5 € a foto e 5 € a video senza canone, oppure scegliere un piano: Studio Piccolo a 57 € al mese (47 € con il piano annuale), Studio Medio a 114 € (94 €), Studio Grande a 157 € (137 €). Sono prezzi di lancio, IVA inclusa: in futuro aumenteranno, ma chi si abbona ora mantiene questo prezzo per sempre, finché l'abbonamento resta attivo." },
+    { q: "Quanto costa SmileLive?", a: IS_LISTINO ? listinoFaqPriceAnswer() : "La prova è gratuita: 2 foto e 2 video, senza carta di credito. Poi puoi pagare a consumo, 5 € a foto e 5 € a video senza canone, oppure scegliere un piano: Studio Piccolo a 57 € al mese (47 € con il piano annuale), Studio Medio a 114 € (94 €), Studio Grande a 157 € (137 €). Sono prezzi di lancio, IVA inclusa: in futuro aumenteranno, ma chi si abbona ora mantiene questo prezzo per sempre, finché l'abbonamento resta attivo." },
     { q: "Posso provarlo senza abbonarmi?", a: "Sì. La registrazione è gratuita e ti regaliamo 2 foto e 2 video in omaggio nella tab SmileLive Preview, senza carta e senza impegno. Il resto del software resta visibile e si sblocca quando attivi un abbonamento. Per generare ancora senza abbonarti, paghi 5€ a foto e 5€ a video." },
     { q: "Meglio l'abbonamento o pagare a consumo?", a: "Dipende dal volume. Senza abbonamento generi a 5€/foto e 5€/video, comodo per testare. Con un abbonamento Studio hai foto e video inclusi ogni mese, a un prezzo per foto molto più basso, più i promemoria WhatsApp/SMS e tutto il software sbloccato. Sul piano Studio Grande anche gli extra scendono a 2€/foto e 3€/video." },
     { q: "Cosa succede se una simulazione esce male (denti deformati, artefatti)?", a: "La generazione scala comunque dal piano, ma ce la puoi segnalare: verifichiamo il caso e, se l'errore è nostro, la rigeneriamo gratis entro 24 ore. Le modifiche creative che chiedi tu (più bianchi, forma diversa) contano invece come una generazione normale." },

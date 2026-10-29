@@ -3,11 +3,16 @@
   "trailingSlash": false,
   "rewrites": [
     {
-      "source": "/(dentisti|v1|v2|v3|v4|v5)",
+      "source": "/(dentisti|v3|v5)",
       "destination": "/spa.html"
     }
   ],
   "redirects": [
+    {
+      "source": "/(v1|v2|v4)",
+      "destination": "/",
+      "permanent": false
+    },
     {
       "source": "/inizia",
       "destination": "/?utm_source=scatola&utm_medium=qr&utm_campaign=scatola",
@@ -42,7 +47,7 @@
       ]
     },
     {
-      "source": "/(v1|v2|v3|v4|v5)",
+      "source": "/(v3|v5)",
       "headers": [
         {
           "key": "X-Robots-Tag",
