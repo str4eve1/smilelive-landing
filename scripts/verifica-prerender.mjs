@@ -115,7 +115,7 @@ if (modalitaPrezzi === "listino" && existsSync(join(dist, "index.html")) && exis
   const obbligatorie = [
     "Prezzi finali, nessuna IVA aggiunta",
     "Promozione di lancio per i primi 100 studi",
-    "Prenota la demo",
+    "Richiedi demo",
     "Fino a -15%",
     "924 €/anno",
     "1.524 €/anno",
@@ -127,6 +127,8 @@ if (modalitaPrezzi === "listino" && existsSync(join(dist, "index.html")) && exis
   for (const frase of obbligatorie) {
     if (!testoHome.includes(frase)) ko(`home (listino): manca «${frase}»`);
   }
+  // Il box della promozione sta sopra le card: chi legge i prezzi sa già che la promo ne ha di diversi.
+  if (testoHome.indexOf("Promozione di lancio per i primi 100 studi") > testoHome.indexOf("924 €/anno")) ko("home (listino): il box della promozione deve stare sopra i prezzi");
   // Cifre di lancio, in tutte le forme in cui le scriveva la home: «€57», «€47/mese», «€1128/anno»,
   // «57 €», «1.644 €». Si cerca sul testo senza tag: React separa «€» e cifra con <!-- -->,
   // che decodifica() trasforma in uno spazio. I limiti di cifra evitano i falsi allarmi

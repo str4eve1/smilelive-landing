@@ -19,16 +19,16 @@ describe("box «Promozione di lancio» (modalità listino)", () => {
     expect(screen.getByRole("heading", { name: "Promozione di lancio per i primi 100 studi" })).toBeTruthy();
     expect(
       screen.getByText(
-        "Chi attiva dopo la demo mantiene per sempre il prezzo di lancio, finché l'abbonamento resta attivo. Le condizioni te le comunica direttamente il fondatore.",
+        "Chi attiva dopo la demo ha prezzi più bassi di quelli qui sotto e li mantiene per sempre, finché l'abbonamento resta attivo. Le condizioni te le comunica direttamente il fondatore.",
       ),
     ).toBeTruthy();
     expect(container.textContent).not.toMatch(/€|\beuro\b/i);
     expect(container.textContent?.match(/\d+/g)).toEqual(["100"]);
   });
 
-  it("«Prenota la demo» apre WhatsApp col testo della demo del widget, in una scheda nuova", () => {
+  it("«Richiedi demo» apre WhatsApp col testo della demo del widget, in una scheda nuova", () => {
     render(<LaunchPromoBox />);
-    const cta = screen.getByRole("link", { name: "Prenota la demo" });
+    const cta = screen.getByRole("link", { name: "Richiedi demo" });
     expect(cta.getAttribute("href")).toBe(
       "https://wa.me/393289598557?text=Ciao%2C%20vorrei%20vedere%20una%20demo%20di%20SmileLive%20per%20il%20mio%20studio.",
     );

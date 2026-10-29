@@ -2589,6 +2589,12 @@ const Pricing = () => {
           ) : (
             <p className="text-sm text-text-muted text-center max-w-2xl mb-8">Prezzi di lancio, IVA inclusa: in futuro aumenteranno, ma <strong className="text-text-main">chi si abbona ora mantiene questo prezzo per sempre</strong>, finché l'abbonamento resta attivo. L'opzione annuale si paga in un'unica soluzione, al prezzo più basso.</p>
           )}
+          {/* Box della promozione di lancio, sopra i prezzi (solo a listino): i prezzi della promo sono diversi da quelli delle card. */}
+          {IS_LISTINO && (
+            <div className="w-full max-w-3xl mb-8">
+              <LaunchPromoBox />
+            </div>
+          )}
           <div className="inline-flex items-center gap-1 bg-slate-50 border border-slate-200 rounded-full p-1.5">
             {/* toggleTouch: tocchi da 44 px solo a listino (in lancio le classi restano quelle di prima) */}
             <button onClick={() => setIsAnnual(false)} className={`${toggleTouch}px-5 py-2 rounded-full font-medium transition-all duration-200 ${!isAnnual ? 'bg-white shadow-sm text-text-main ring-2 ring-primary/60' : 'text-text-muted hover:text-text-main'}`}>Mensile</button>
@@ -2674,19 +2680,6 @@ const Pricing = () => {
             );
           })}
         </motion.div>
-
-        {/* Box della promozione di lancio, sotto la griglia: solo a listino. */}
-        {IS_LISTINO && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="mt-10 max-w-3xl mx-auto"
-          >
-            <LaunchPromoBox />
-          </motion.div>
-        )}
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
